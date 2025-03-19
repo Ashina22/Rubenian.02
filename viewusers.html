@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <style>
+    /* Optional: Adjust profile image on smaller devices */
+    @media (max-width: 576px) {
+      .table img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .btn-danger.btn-sm {
+        padding: 5px 8px;
+        font-size: 12px;
+      }
+    }
+    .container {
+      margin-top: 20px;
+    }
+
+    .table img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    .container {
+      margin-top: 20px;
+    }
+
+    .table-container {
+      margin-bottom: 40px;
+    }
+
+    /* Make tables scrollable */
+    .table-container {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* Ensure search bar and dropdown fit well */
+    @media (max-width: 768px) {
+      .input-group {
+        width: 100% !important;
+      }
+      select.form-control {
+        width: 100% !important;
+      }
+    }
+  </style>
+
+  <body>
+    <div class="wrapper">
+      <aside id="sidebar" class="js-sidebar">
+        <!-- Content For Sidebar -->
+        <div class="h-100">
+          <div
+            class="sidebar-logo d-flex flex-column align-items-center text-center"
+          >
+            <img
+              src="image/Rubenian-Logo-344.png"
+              alt="Logo"
+              style="
+                width: 50px;
+                height: 50px;
+                margin-bottom: 5px;
+                margin-top: 5px;
+              "
+            />
+            <a href="#">Rubenian</a>
+          </div>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="index.html" class="sidebar-link">
+                <i class="fa-solid fa-home pe-2"></i> Home
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="masterlist.html"
+                class="sidebar-link"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-file-lines pe-2"></i> Master List
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="chapters.html" class="sidebar-link">
+                  <i class="fa-solid fa-list pe-2"></i> Chapters
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#posts"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="posts"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="regionalchapter.html" class="sidebar-link"
+                    >Regional Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="provinces.html" class="sidebar-link"
+                    >Province Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="municipalities.html" class="sidebar-link"
+                    >Municipal Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="#" class="sidebar-link">Barangay Chapter</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="viewusers.html" class="sidebar-link">
+                  <i class="fa-solid fa-users pe-2"></i>Users
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#users"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="users"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="createusers.html" class="sidebar-link"
+                    >Create User</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="main">
+        <nav class="navbar navbar-expand-lg px-3 border-bottom">
+          <button class="btn" id="sidebar-toggle" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
+          >
+            <!-- Search Form -->
+            <form class="d-flex mx-auto w-50" role="search">
+              <input
+                class="form-control me-2 custom-search-input"
+                type="search"
+                placeholder="Search Member"
+                aria-label="Search"
+              />
+              <button class="btn search-btn" type="submit">
+                <i class="fa-solid fa-search"></i>
+              </button>
+            </form>
+            <!-- Profile Dropdown -->
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                  <img
+                    src="image/profile.jpg"
+                    class="avatar img-fluid rounded"
+                    alt=""
+                  />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a href="#" class="dropdown-item">Profile</a>
+                  <a href="#" class="dropdown-item">Setting</a>
+                  <a href="login.html" class="dropdown-item">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!--main content-->
+
+        <main class="content px-lg-3 py-2">
+          <div class="container">
+            <h2 class="text-center my-4">User Management</h2>
+
+            <div class="row mb-3 d-flex justify-content-between">
+              <div class="col-12 col-md-3 d-flex mb-2 mb-md-0">
+                <div class="input-group w-100">
+                  <span class="input-group-text"
+                    ><i class="fa-solid fa-search"></i
+                  ></span>
+                  <input
+                    type="text"
+                    id="roleFilter"
+                    class="form-control"
+                    placeholder="Search"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="col-12 col-md-6 d-flex flex-column flex-md-row justify-content-end"
+              >
+                <!-- Filter by Position Dropdown -->
+                <div class="dropdown me-0 me-md-2 mb-2 mb-md-0" id="filter">
+                  <button
+                    class="btn dropdown-toggle"
+                    type="button"
+                    id="positionDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Filter by Position
+                  </button>
+                  <ul
+                    class="dropdown-menu w-100"
+                    aria-labelledby="positionDropdown"
+                  >
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="admin"
+                        >Admin</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="staff"
+                        >Staff</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- Filter by Department Dropdown -->
+                <div class="dropdown w-md-auto" id="filter">
+                  <button
+                    class="btn dropdown-toggle"
+                    type="button"
+                    id="departmentDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Filter by Department
+                  </button>
+                  <ul
+                    class="dropdown-menu w-100"
+                    aria-labelledby="departmentDropdown"
+                  >
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="IT">IT</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#" data-value="HR">HR</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="table table-bordered">
+                <thead class="thead-dark">
+                  <tr id="usertables">
+                    <th colspan="8" class="text-center">Admin</th>
+                  </tr>
+                  <tr id="usertables">
+                    <th>Profile</th>
+                    <th>Full Name</th>
+                    <th>Username</th>
+                    <th>Department</th>
+                    <th>Position</th>
+                    <th>Location</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTable">
+                  <tr data-role="admin" data-department="IT">
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html"
+                        >Erlinda Consilba Abarquez</a
+                      >
+                    </td>
+                    <td>johndoe</td>
+                    <td>IT</td>
+                    <td>Manager</td>
+                    <td>New York</td>
+                    <td>Admin</td>
+                    <td>
+                      <button class="btn edit">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody id="adminTable">
+                  <tr data-role="admin" data-department="IT">
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html"
+                        >Erlinda Consilba Abarquez</a
+                      >
+                    </td>
+                    <td>johndoe</td>
+                    <td>IT</td>
+                    <td>Manager</td>
+                    <td>New York</td>
+                    <td>Admin</td>
+                    <td>
+                      <button class="btn edit">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody id="adminTable">
+                  <tr data-role="admin" data-department="IT">
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html"
+                        >Erlinda Consilba Abarquez</a
+                      >
+                    </td>
+                    <td>johndoe</td>
+                    <td>IT</td>
+                    <td>Manager</td>
+                    <td>New York</td>
+                    <td>Admin</td>
+                    <td>
+                      <button class="btn edit">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-container">
+              <table class="table table-bordered">
+                <thead class="thead-dark">
+                  <tr id="usertables">
+                    <th colspan="8" class="text-center">Staff</th>
+                  </tr>
+                  <tr id="usertables">
+                    <th>Profile</th>
+                    <th>Full Name</th>
+                    <th>Username</th>
+                    <th>Department</th>
+                    <th>Position</th>
+                    <th>Location</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="staffTable">
+                  <tr data-role="staff" data-department="HR">
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html">Argie Lorenzana Abejuro</a>
+                    </td>
+                    <td>janesmith</td>
+                    <td>HR</td>
+                    <td>Assistant</td>
+                    <td>California</td>
+                    <td>Staff</td>
+                    <td>
+                      <button class="btn edit">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody id="staffTable">
+                  <tr data-role="staff" data-department="HR">
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html">Argie Lorenzana Abejuro</a>
+                    </td>
+                    <td>janesmith</td>
+                    <td>HR</td>
+                    <td>Assistant</td>
+                    <td>California</td>
+                    <td>Staff</td>
+                    <td>
+                      <button class="btn edit">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody id="staffTable">
+                  <tr data-role="staff" data-department="HR">
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html"
+                        >Argie Lorenzana Abejuro
+                      </a>
+                    </td>
+                    <td>janesmith</td>
+                    <td>HR</td>
+                    <td>Assistant</td>
+                    <td>California</td>
+                    <td>Staff</td>
+                    <td>
+                      <button class="btn edit">
+                        <i class="fa-solid fa-edit"></i>
+                      </button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+        <a href="#" class="theme-toggle">
+          <i class="fa-regular fa-moon"></i>
+          <i class="fa-regular fa-sun"></i>
+        </a>
+        <footer class="text-center text-lg-start">
+          <div class="container pb-2">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-6 text-md-left text-center">
+                <p class="mb-0">
+                  &copy; 2024 Rubenian Membership Portal. Made with
+                  <span><i class="fa-solid fa-heart"></i></span> by
+                  <span>BehindWeb</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

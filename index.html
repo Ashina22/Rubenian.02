@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <script
+      src="https://kit.fontawesome.com/ae360af17e.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <aside id="sidebar" class="js-sidebar">
+        <!-- Content For Sidebar -->
+        <div class="h-100">
+          <div
+            class="sidebar-logo d-flex flex-column align-items-center text-center"
+          >
+            <img
+              src="image/Rubenian-Logo-344.png"
+              alt="Logo"
+              style="
+                width: 50px;
+                height: 50px;
+                margin-bottom: 5px;
+                margin-top: 5px;
+              "
+            />
+            <a href="#">Rubenian</a>
+          </div>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="#" class="sidebar-link">
+                <i class="fa-solid fa-home pe-2"></i> Home
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="masterlist.html"
+                class="sidebar-link"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-file-lines pe-2"></i> Master List
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="chapters.html" class="sidebar-link">
+                  <i class="fa-solid fa-list pe-2"></i> Chapters
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#posts"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="posts"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="regionalchapter.html" class="sidebar-link"
+                    >Regional Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="provinces.html" class="sidebar-link"
+                    >Province Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="municipalities.html" class="sidebar-link"
+                    >Municipal Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="#" class="sidebar-link">Barangay Chapter</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="viewusers.html" class="sidebar-link">
+                  <i class="fa-solid fa-users pe-2"></i>Users
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#users"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="users"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="createusers.html" class="sidebar-link"
+                    >Create User</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="main">
+        <nav class="navbar navbar-expand-lg px-3 border-bottom">
+          <button class="btn" id="sidebar-toggle" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
+          >
+            <!-- Search Form -->
+            <form class="d-flex mx-auto w-50" role="search">
+              <input
+                class="form-control me-2 custom-search-input"
+                type="search"
+                placeholder="Search Member"
+                aria-label="Search"
+              />
+              <button class="btn search-btn" type="submit">
+                <i class="fa-solid fa-search"></i>
+              </button>
+            </form>
+            <!-- Profile Dropdown -->
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                  <img
+                    src="image/profile.jpg"
+                    class="avatar img-fluid rounded"
+                    alt=""
+                  />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a href="#" class="dropdown-item">Profile</a>
+                  <a href="#" class="dropdown-item">Setting</a>
+                  <a href="login.html" class="dropdown-item">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="content px-lg-3py-2">
+          <div class="container-fluid">
+            <div class="mb-3 mt-5">
+              <h2>Welcome to RII membership Portal</h2>
+            </div>
+            <div class="row">
+              <div
+                id="carouselExampleAutoplaying"
+                class="carousel slide p-0 d-flex"
+                data-bs-ride="carousel"
+              >
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img
+                      src="image/customer-support.jpg"
+                      class="d-block w-100"
+                      alt="..."
+                    />
+                  </div>
+                  <div class="carousel-item">
+                    <img
+                      src="image/Rubenian.png"
+                      class="d-block w-100"
+                      alt="..."
+                    />
+                  </div>
+                  <div class="carousel-item">
+                    <img
+                      src="image/Rubenian.png"
+                      class="d-block w-100"
+                      alt="..."
+                    />
+                  </div>
+                </div>
+                <button
+                  class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#carouselExampleAutoplaying"
+                  data-bs-slide="prev"
+                >
+                  <span
+                    class="carousel-control-prev-icon"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button
+                  class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#carouselExampleAutoplaying"
+                  data-bs-slide="next"
+                >
+                  <span
+                    class="carousel-control-next-icon"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+              <div class="col-12 col-md-6 d-flex">
+                <div class="card flex-fill border-0 illustration">
+                  <div class="card-body p-0 d-flex flex-fill">
+                    <div class="row g-0 w-100">
+                      <div class="col-6">
+                        <div class="p-3 m-1">
+                          <h4>Welcome Back, Admin</h4>
+                          <p class="mb-0">Admin Dashboard, CodzSword</p>
+                        </div>
+                      </div>
+                      <div class="col-6 align-self-end text-end">
+                        <img
+                          src="image/Rubenian-Logo-344.png"
+                          class="img-fluid illustration-img"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 d-flex">
+                <div class="card flex-fill border-0">
+                  <div class="card-body py-4">
+                    <div class="d-flex align-items-start">
+                      <div class="flex-grow-1">
+                        <h4 class="mb-2">$ 78.00</h4>
+                        <p class="mb-2">Total Earnings</p>
+                        <div class="mb-0">
+                          <span class="badge text-success me-2"> +9.0% </span>
+                          <span class="text-muted"> Since Last Month </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper mySwiper d-flex">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img src="image/Reyo.png" alt="Image 1" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/visayas.png" alt="Image 2" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/R.png" alt="Image 3" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/rsl.png" alt="Image 4" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/dinagat.png" alt="Image 5" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/ushers.png" alt="Image 6" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/rws.png" alt="Image 7" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/steward.png" alt="Image 8" />
+              </div>
+              <div class="swiper-slide">
+                <img src="image/RGS.png" alt="Image 9" />
+              </div>
+            </div>
+          </div>
+        </main>
+        <a href="#" class="theme-toggle">
+          <i class="fa-regular fa-moon"></i>
+          <i class="fa-regular fa-sun"></i>
+        </a>
+        <footer class="text-center text-lg-start">
+          <div class="container pb-2">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-6 text-md-left text-center">
+                <p class="mb-0">
+                  &copy; 2024 Rubenian Membership Portal. Made with
+                  <span><i class="fa-solid fa-heart"></i></span> by
+                  <span>BehindWeb</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        slidesPerView: "auto" /* Adjusts slides dynamically */,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+          delay: 2000 /* 2 seconds delay */,
+          disableOnInteraction: false,
+        },
+        breakpoints: {
+          320: { slidesPerView: 2 },
+          768: { slidesPerView: 3 },
+          1024: { slidesPerView: 6 },
+        },
+      });
+    </script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

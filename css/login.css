@@ -1,0 +1,239 @@
+/* General body styling */
+body,
+html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  font-family: "League Spartan" !important;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+/* Ensure content starts below the navbar */
+.form-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Form Styling */
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 350px; /* Limit max-width */
+  background-color: #ffffff;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-bottom: 30px;
+  border-radius: 15px;
+  gap: 10px;
+  position: relative;
+}
+
+/* Button Styling */
+.submit {
+  border: none;
+  outline: none;
+  background-color: rgb(37, 153, 134);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 18px;
+  transition: 0.3s ease;
+  margin: 5px 0;
+}
+
+h4 {
+  padding-left: 10%;
+  padding-right: 10%;
+  text-transform: capitalize;
+}
+
+.notice {
+  color: rgb(243, 96, 96) !important;
+  font-size: 12px;
+  margin-bottom: 0%;
+}
+
+.submit:hover {
+  background-color: rgb(37, 153, 134);
+}
+
+.form-header {
+  text-align: center;
+  width: 100%;
+}
+
+.form-title {
+  font-size: 30px;
+  color: #333;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .form {
+    width: 80%; /* Make form container more flexible on tablets and mobile */
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 22px;
+    padding-left: 15px;
+  }
+
+  .submit {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .form-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-header img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .form-title {
+    font-size: 20px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .submit {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .form-container {
+    padding-top: 60px; /* Adjust for smaller screen height */
+  }
+}
+
+.flex {
+  display: flex;
+  width: 100%;
+  gap: 6px;
+}
+
+.form label {
+  position: relative;
+}
+
+.form label .input {
+  width: 100%;
+  padding: 5px 5px 20px 10px;
+  outline: 0;
+  border: 1px solid rgba(105, 105, 105, 0.397);
+  border-radius: 10px;
+}
+
+.form label .input + span {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  color: grey;
+  font-size: 0.9em;
+  cursor: text;
+  transition: 0.3s ease;
+}
+
+.form label .input:placeholder-shown + span {
+  top: 15px;
+  font-size: 0.9em;
+}
+
+.form label .input:focus + span,
+.form label .input:valid + span {
+  top: 30px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+.form label .input:valid + span {
+  color: green;
+}
+
+.card {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+/* Prevents card from taking full width on small screens */
+@media (max-width: 1000px) {
+  .card {
+    margin: 30px 30px; /* Adds space on left & right */
+  }
+}
+
+.card .form-container {
+  width: 100%;
+}
+
+.vh-100 {
+  height: 100vh;
+}
+
+.footer {
+  position: relative;
+  color: #fff;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 14px;
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #2a2a2b !important;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #28c986;
+  font-weight: 500;
+  margin: 0 5px;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+  color: #28c986;
+}
+
+footer span {
+  color: #28c986;
+}
+
+.extra-links {
+  margin-top: 10px;
+  font-size: 14px;
+}
+.extra-links a {
+  text-decoration: none;
+  color: rgb(37, 153, 134);
+  font-weight: bold;
+  transition: 0.3s;
+}
+.extra-links a:hover {
+  text-decoration: underline;
+  color: rgb(37, 153, 134);
+}

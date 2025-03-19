@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masterlist</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <aside id="sidebar" class="js-sidebar">
+        <!-- Content For Sidebar -->
+        <div class="h-100">
+          <div
+            class="sidebar-logo d-flex flex-column align-items-center text-center"
+          >
+            <img
+              src="image/Rubenian-Logo-344.png"
+              alt="Logo"
+              style="
+                width: 50px;
+                height: 50px;
+                margin-bottom: 5px;
+                margin-top: 5px;
+              "
+            />
+            <a href="#">Rubenian</a>
+          </div>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="index.html" class="sidebar-link">
+                <i class="fa-solid fa-home pe-2"></i> Home
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="masterlist.html"
+                class="sidebar-link"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-file-lines pe-2"></i> Master List
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="chapters.html" class="sidebar-link">
+                  <i class="fa-solid fa-list pe-2"></i> Chapters
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#posts"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="posts"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="regionalchapter.html" class="sidebar-link"
+                    >Regional Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="provinces.html" class="sidebar-link"
+                    >Province Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="municipalities.html" class="sidebar-link"
+                    >Municipal Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="#" class="sidebar-link">Barangay Chapter</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="viewusers.html" class="sidebar-link">
+                  <i class="fa-solid fa-users pe-2"></i>Users
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#users"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="users"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="createusers.html" class="sidebar-link"
+                    >Create User</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="main">
+        <nav class="navbar navbar-expand-lg px-3 border-bottom">
+          <button class="btn" id="sidebar-toggle" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
+          >
+            <!-- Search Form -->
+            <form class="d-flex mx-auto w-50" role="search">
+              <input
+                class="form-control me-2 custom-search-input"
+                type="search"
+                placeholder="Search Member"
+                aria-label="Search"
+              />
+              <button class="btn search-btn" type="submit">
+                <i class="fa-solid fa-search"></i>
+              </button>
+            </form>
+            <!-- Profile Dropdown -->
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                  <img
+                    src="image/profile.jpg"
+                    class="avatar img-fluid rounded"
+                    alt=""
+                  />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a href="#" class="dropdown-item">Profile</a>
+                  <a href="#" class="dropdown-item">Setting</a>
+                  <a href="login.html" class="dropdown-item">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!--main content-->
+
+        <main class="content px-lg-3 py-2">
+          <div class="container-fluid">
+            <h2 class="text-center my-4">Members Masterlist</h2>
+            <div class="d-flex justify-content-end">
+              <a href="addmembers.html"
+                ><button class="btn btn-add">
+                  <i class="fas fa-user-plus"></i> Add Members
+                </button></a
+              >
+            </div>
+            <!-- Responsive wrapper -->
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class="thead-dark">
+                  <tr>
+                    <th onclick="sortTable(0)">Profile</th>
+                    <th onclick="sortTable(1)">Name</th>
+                    <th onclick="sortTable(2)">Location</th>
+                    <th onclick="sortTable(3)">Reg. No.</th>
+                    <th>Action</th>
+                    <!-- Action column -->
+                  </tr>
+                </thead>
+                <tbody id="memberTable">
+                  <tr>
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html"
+                        >Erlinda Consilba Abarquez</a
+                      >
+                    </td>
+                    <td>Libjo, Dinagat Islands</td>
+                    <td>14258</td>
+                    <td>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        onclick="deleteRow(this)"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html">Argie Lorenzana Abejuro</a>
+                    </td>
+                    <td>Cuyoayao, Pio Duran, Albay</td>
+                    <td>23137</td>
+                    <td>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        onclick="deleteRow(this)"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html"
+                        >Aiza Baricuatro Abacajan</a
+                      >
+                    </td>
+                    <td>P-2 Sta. Cruz, San Jose, Dinagat Islands</td>
+                    <td>12260</td>
+                    <td>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        onclick="deleteRow(this)"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a href="members-profile.html"
+                        ><img src="image/profile.jpg" alt="Profile"
+                      /></a>
+                    </td>
+                    <td>
+                      <a href="members-profile.html">Sherwin Cruz Aguilar</a>
+                    </td>
+                    <td>P-2 Batucan, Talacogon, Agusan del Sur</td>
+                    <td>18180</td>
+                    <td>
+                      <button
+                        class="btn btn-danger btn-sm"
+                        onclick="deleteRow(this)"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+        <a href="#" class="theme-toggle">
+          <i class="fa-regular fa-moon"></i>
+          <i class="fa-regular fa-sun"></i>
+        </a>
+        <footer class="text-center text-lg-start">
+          <div class="container pb-2">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-6 text-md-left text-center">
+                <p class="mb-0">
+                  &copy; 2024 Rubenian Membership Portal. Made with
+                  <span><i class="fa-solid fa-heart"></i></span> by
+                  <span>BehindWeb</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

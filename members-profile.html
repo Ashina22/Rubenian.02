@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Members-Profile</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <style>
+    main {
+      margin-bottom: 30px;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+  </style>
+
+  <body>
+    <div class="wrapper">
+      <aside id="sidebar" class="js-sidebar">
+        <!-- Content For Sidebar -->
+        <div class="h-100">
+          <div
+            class="sidebar-logo d-flex flex-column align-items-center text-center"
+          >
+            <img
+              src="image/Rubenian-Logo-344.png"
+              alt="Logo"
+              style="
+                width: 50px;
+                height: 50px;
+                margin-bottom: 5px;
+                margin-top: 5px;
+              "
+            />
+            <a href="#">Rubenian</a>
+          </div>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="index.html" class="sidebar-link">
+                <i class="fa-solid fa-home pe-2"></i> Home
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="masterlist.html"
+                class="sidebar-link"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-file-lines pe-2"></i> Master List
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="#"
+                class="sidebar-link collapsed"
+                data-bs-target="#posts"
+                data-bs-toggle="collapse"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-list pe-2"></i> Chapters
+              </a>
+              <ul
+                id="posts"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="regionalchapter.html" class="sidebar-link"
+                    >Regional Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="#" class="sidebar-link">Municipal Chapter</a>
+                </li>
+                <li class="sidebar-item">
+                  <a href="#" class="sidebar-link">Barangay Chapter</a>
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="createusers.html"
+                class="sidebar-link collapsed"
+                data-bs-target="#users"
+                data-bs-toggle="collapse"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-users pe-2"></i> Users
+              </a>
+              <ul
+                id="users"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="registration.html" class="sidebar-link"
+                    >Create User</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="main">
+        <nav class="navbar navbar-expand-lg px-3 border-bottom">
+          <button class="btn" id="sidebar-toggle" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
+          >
+            <!-- Search Form -->
+            <form class="d-flex mx-auto w-50" role="search">
+              <input
+                class="form-control me-2 custom-search-input"
+                type="search"
+                placeholder="Search Member"
+                aria-label="Search"
+              />
+              <button class="btn search-btn" type="submit">
+                <i class="fa-solid fa-search"></i>
+              </button>
+            </form>
+            <!-- Profile Dropdown -->
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                  <img
+                    src="image/profile.jpg"
+                    class="avatar img-fluid rounded"
+                    alt=""
+                  />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a href="#" class="dropdown-item">Profile</a>
+                  <a href="#" class="dropdown-item">Setting</a>
+                  <a href="login.html" class="dropdown-item">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!--main content-->
+
+        <main class="content px-lg-3 py-2">
+          <div class="container-fluid">
+            <div class="text-center p-4 mb-4">
+              <img
+                id="profileImage"
+                src="image/profile.jpg"
+                alt="Profile Image"
+                class="rounded-circle mb-3"
+                width="150"
+                height="150"
+              />
+
+              <!-- Edit Photo Section (Hidden by Default) -->
+              <div id="editPhotoSection" class="d-none mb-2">
+                <input
+                  type="file"
+                  id="photoInput"
+                  accept="image/*"
+                  class="form-control mb-2"
+                />
+              </div>
+
+              <h5><li>Abejuro, Argie Lorenzana</li></h5>
+              <span
+                ><li>
+                  <i class="fa-solid fa-location-dot"></i> Cuyaoyao, Pio Duran,
+                  Albay
+                </li></span
+              >
+              <li>RICN : 23137</li>
+              <button id="editBtn" class="btn btn-edit mt-3">
+                Edit Profile
+              </button>
+              <button id="cancelBtn" class="btn btn-danger d-none">
+                Cancel
+              </button>
+            </div>
+
+            <form id="profileForm">
+              <h5 class="mb-3">About Candidate</h5>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Argie"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Middle Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Lorenzana"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Registered No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="23137"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Volume No.</label>
+                  <input type="text" class="form-control" value="78" disabled />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Page No.</label>
+                  <input type="text" class="form-control" value="1" disabled />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Birth Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    value="1982-10-06"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Birth Place</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Agol, Pioduran, Albay"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Nationality</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Filipino"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Gender</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Female"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Religion</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Catholic"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Occupation</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Sewer"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Contact No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="09153968548"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Civil Status</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Married"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Residence</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Cuyaoyao, Pio Duran, Albay"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Spouse Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Father's Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Mother's Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>SSS No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>GSIS No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Tax Identification No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>PhilHealth No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>HDMF No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <h5 class="mt-4 mb-3">In Case of Emergency</h5>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="Reynate M. Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Contact No.</label>
+                  <input type="text" class="form-control" value="0" disabled />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Address</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="La Medalla, Pio Duran"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <h5 class="mt-4 mb-3">Paid Under</h5>
+              <div class="row">
+                <div class="col-md-3 mb-3">
+                  <label>OR No.</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="30155"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label>Issued at</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value="National Office"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label>Issued on</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    value="2017-12-25"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label>Issued by</label>
+                  <input type="text" class="form-control" value="" disabled />
+                </div>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn d-none btn-edit" id="saveBtn">
+                  Save Changes
+                </button>
+                <button
+                  type="button"
+                  class="btn d-none btn-secondary cancel"
+                  id="cancelBtn"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </main>
+        <a href="#" class="theme-toggle">
+          <i class="fa-regular fa-moon"></i>
+          <i class="fa-regular fa-sun"></i>
+        </a>
+        <footer class="text-center text-lg-start">
+          <div class="container pb-2">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-6 text-md-left text-center">
+                <p class="mb-0">
+                  &copy; 2024 Rubenian Membership Portal. Made with
+                  <span><i class="fa-solid fa-heart"></i></span> by
+                  <span>BehindWeb</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
