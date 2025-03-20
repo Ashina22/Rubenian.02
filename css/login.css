@@ -222,18 +222,3 @@ h4 {
 footer span {
   color: #28c986;
 }
-
-.extra-links {
-  margin-top: 10px;
-  font-size: 14px;
-}
-.extra-links a {
-  text-decoration: none;
-  color: rgb(37, 153, 134);
-  font-weight: bold;
-  transition: 0.3s;
-}
-.extra-links a:hover {
-  text-decoration: underline;
-  color: rgb(37, 153, 134);
-}
