@@ -171,54 +171,9 @@ h4 {
   font-weight: 600;
 }
 
-.form label .input:valid + span {
-  color: green;
-}
-
 .card {
   width: 100%;
   max-width: 800px;
   border-radius: 15px;
   padding: 20px;
-}
-
-/* Prevents card from taking full width on small screens */
-@media (max-width: 1000px) {
-  .card {
-    margin: 30px 30px; /* Adds space on left & right */
-  }
-}
-
-.card .form-container {
-  width: 100%;
-}
-
-.vh-100 {
-  height: 100vh;
-}
-
-.footer {
-  position: relative;
-  color: #fff;
-  width: 100%;
-  padding: 10px 0;
-  font-size: 14px;
-  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
-  background-color: #2a2a2b !important;
-}
-
-.footer-link {
-  text-decoration: none;
-  color: #28c986;
-  font-weight: 500;
-  margin: 0 5px;
-}
-
-.footer-link:hover {
-  text-decoration: underline;
-  color: #28c986;
-}
-
-footer span {
-  color: #28c986;
 }

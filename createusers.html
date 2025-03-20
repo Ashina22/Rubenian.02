@@ -53,15 +53,19 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a
-                href="#"
-                class="sidebar-link collapsed"
-                data-bs-target="#posts"
-                data-bs-toggle="collapse"
-                aria-expanded="false"
-              >
-                <i class="fa-solid fa-list pe-2"></i> Chapters
-              </a>
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="chapters.html" class="sidebar-link">
+                  <i class="fa-solid fa-list pe-2"></i> Chapters
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#posts"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
               <ul
                 id="posts"
                 class="sidebar-dropdown list-unstyled collapse"
@@ -73,26 +77,35 @@
                   >
                 </li>
                 <li class="sidebar-item">
+                  <a href="provinces.html" class="sidebar-link"
+                    >Province Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
                   <a href="municipalities.html" class="sidebar-link"
                     >Municipal Chapter</a
                   >
                 </li>
                 <li class="sidebar-item">
-                  <a href="#" class="sidebar-link">Barangay Chapter</a>
+                  <a href="barangay.html" class="sidebar-link"
+                    >Barangay Chapter</a
+                  >
                 </li>
               </ul>
             </li>
             <li class="sidebar-item">
-              <div class="d-flex align-items-center">
-                <a href="createusers.html" class="sidebar-link flex-grow-1">
-                  <i class="fa-solid fa-users pe-2"></i> Users
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="viewusers.html" class="sidebar-link">
+                  <i class="fa-solid fa-users pe-2"></i>Users
                 </a>
-                <button
-                  class="btn btn-sm dropdown-toggle"
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
-                ></button>
+                >
+                </a>
               </div>
               <ul
                 id="users"
@@ -100,7 +113,7 @@
                 data-bs-parent="#sidebar"
               >
                 <li class="sidebar-item">
-                  <a href="registration.html" class="sidebar-link"
+                  <a href="createusers.html" class="sidebar-link"
                     >Create User</a
                   >
                 </li>

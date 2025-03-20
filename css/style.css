@@ -25,24 +25,18 @@ body {
 a {
   cursor: pointer;
   text-decoration: none;
-  font-family: "Poppins", sans-serif;
 }
 
 li {
   list-style: none;
 }
 
+h5,
 h4,
 h2 {
-  font-family: "Poppins", sans-serif;
   font-weight: 800;
   color: var(--bs-emphasis-color);
   text-align: center;
-}
-
-h5 {
-  font-weight: 600;
-  font-size: 25px;
 }
 
 /*halo */
@@ -99,7 +93,7 @@ h5 {
 
 a.sidebar-link {
   padding: 0.625rem 1.625rem;
-  color: #e9ecef;
+  color: #ffffff;
   position: relative;
   display: block;
   font-size: 0.875rem;
@@ -107,13 +101,13 @@ a.sidebar-link {
 
 .sidebar-link[data-bs-toggle="collapse"]::after {
   border: solid;
-  border-width: 0 0.075rem 0.075rem 0;
+  border-width: 0 0.175rem 0.175rem 0;
   content: "";
   display: inline-block;
-  padding: 2px;
+  padding: 3px;
   position: absolute;
-  right: 1.5rem;
-  top: 1.4rem;
+  right: 2.5rem;
+  top: 1rem;
   transform: rotate(-135deg);
   transition: all 0.2s ease-out;
 }
@@ -182,16 +176,6 @@ a.sidebar-link {
   margin-bottom: 24px;
 }
 
-.illustration {
-  background-color: var(--bs-primary-bg-subtle);
-  color: var(--bs-emphasis-color);
-}
-
-.illustration-img {
-  max-width: 150px;
-  width: 100%;
-}
-
 /* Sidebar Toggle and General Responsiveness */
 
 #sidebar.collapsed {
@@ -250,7 +234,7 @@ html[data-bs-theme="light"] .theme-toggle .fa-moon {
   padding: 5px;
   display: block;
   font-size: 1.25rem;
-  color: #fff;
+  color: #ffffff;
 }
 
 html[data-bs-theme="dark"] .theme-toggle .fa-moon {
@@ -275,7 +259,7 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
 }
 
 .search-btn {
-  background-color: rgb(37, 153, 134);
+  background-color: #259986;
   color: #f1f1f1;
 }
 
@@ -302,11 +286,9 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
   }
 }
 
-/*asasd*/
-
-.parent-container {
-  overflow: visible; /* Allow the image to expand beyond its container */
-}
+/* .parent-container {
+  overflow: visible;
+} */
 
 .swiper {
   padding: 50px;
@@ -329,7 +311,7 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
 
 .carousel-inner {
   justify-content: center;
-  max-height: 400px; /* Adjust this height as needed */
+  max-height: auto; /* Adjust this height as needed */
   margin: 20px;
 }
 
@@ -361,18 +343,11 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
   margin-bottom: 15px;
   background-color: rgb(37, 153, 134);
   color: #ffffff;
-  font-family: "Poppins";
   letter-spacing: 1px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
   border: none;
   font-size: 13px;
-}
-
-.btn-edit:hover {
-  background-color: rgb(40, 204, 177);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  color: aliceblue;
 }
 
 #editPhotoSection,
@@ -381,18 +356,18 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
   flex-direction: column;
   align-items: center;
 }
+
 .cancel {
   padding: 10px 10px;
   border-radius: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   background-color: rgb(108, 117, 125);
   color: #ffffff;
-  font-family: "Poppins";
   letter-spacing: 1px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
   border: none;
-  font-size: 13px;
+  font-size: 12px;
   margin-left: 10px;
 }
 
@@ -417,16 +392,17 @@ input[type="file"]#photoInput {
   margin-bottom: 10px;
   background-color: rgb(37, 153, 134);
   color: #ffffff;
-  font-family: "Poppins";
   letter-spacing: 1px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
   border: none;
-  font-size: 13px;
+  font-size: 12px;
 }
 
+.btn-edit:hover,
 .btn-add:hover,
-.create-button:hover {
+.create-button:hover,
+.btn-custom:hover {
   background-color: rgb(40, 204, 177);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   color: aliceblue;
@@ -533,10 +509,6 @@ th {
   gap: 15px;
   padding: 20px;
 }
-h5 {
-  font-size: 20px;
-  font-weight: 500;
-}
 
 .btn-region {
   flex: 1 1 120px; /* Adjusts button width dynamically */
@@ -548,7 +520,7 @@ h5 {
   color: #212121;
   letter-spacing: 1px;
   transition: all 0.3s ease;
-  min-width: 100px; /* Minimum button width */
+  min-width: 150px; /* Minimum button width */
   max-width: 150px; /* Maximum button width */
 }
 
@@ -581,21 +553,13 @@ h5 {
 .btn-custom {
   padding: 10px 10px;
   border-radius: 10px;
-  margin-bottom: 15px;
   background-color: rgb(37, 153, 134);
   color: #ffffff;
-  font-family: "Poppins";
   letter-spacing: 1px;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
   border: none;
-  font-size: 13px;
-}
-
-.btn-custom:hover {
-  background-color: rgb(40, 204, 177);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  color: aliceblue;
+  font-size: 12px;
 }
 
 .list-group-item {
