@@ -101,13 +101,13 @@ a.sidebar-link {
 
 .sidebar-link[data-bs-toggle="collapse"]::after {
   border: solid;
-  border-width: 0 0.175rem 0.175rem 0;
+  border-width: 0 0.105rem 0.105rem 0;
   content: "";
   display: inline-block;
   padding: 3px;
   position: absolute;
   right: 2.5rem;
-  top: 1rem;
+  bottom: 9px;
   transform: rotate(-135deg);
   transition: all 0.2s ease-out;
 }
@@ -311,7 +311,7 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
 
 .carousel-inner {
   justify-content: center;
-  max-height: auto; /* Adjust this height as needed */
+  max-height: 400px; /* Adjust this height as needed */
   margin: 20px;
 }
 
@@ -585,13 +585,9 @@ th {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #f01c1c;
-  font-size: 16px;
+  font-size: 12px;
+  color: #474747;
   transition: color 0.2s ease-in-out;
-}
-
-.delete-btn:hover {
-  color: #be1e2e;
 }
 
 .user-image-preview {
