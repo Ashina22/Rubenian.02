@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+.required-field::after {
+  content: " *";
+  color: red;
+}
+
 span {
   color: #28c986;
 }
