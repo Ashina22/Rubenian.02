@@ -177,7 +177,7 @@
             <div class="text-center p-4 mb-4">
               <img
                 id="profileImage"
-                src="image/default-profile.jpg"
+                src="image/profile.jpg"
                 alt="Profile Image"
                 class="rounded-circle mb-3"
                 width="150"
@@ -301,7 +301,7 @@
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>Civil Status</label>
+                  <label class="required-field">Civil Status</label>
                   <select class="form-select">
                     <option value="" selected disabled>
                       Select civil status
@@ -336,6 +336,22 @@
                     type="text"
                     class="form-control"
                     placeholder="Enter mother's name"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Spouse Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter spouse name"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Occupation</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter occupation"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
@@ -379,20 +395,33 @@
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>Spouse Name</label>
+                  <label>Number of Children</label>
                   <input
-                    type="text"
+                    type="number"
+                    id="childrenCount"
                     class="form-control"
-                    placeholder="Enter spouse name"
+                    placeholder="Enter number of children"
+                    min="0"
                   />
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label>Occupation</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter occupation"
-                  />
+              </div>
+
+              <!-- Children Names Button and Container -->
+              <div class="row mb-4">
+                <div class="col-12">
+                  <button type="button" id="addChildrenNamesBtn" class="btn btn-add">
+                    <i class="fas fa-plus me-2"></i>Add Children Names
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Children Names Container - Initially Hidden -->
+              <div id="childrenNamesContainer" class="row mb-3" style="display: none;">
+                <div class="col-12 mb-2">
+                  <h6>Children Names</h6>
+                </div>
+                <div id="childrenInputsContainer">
+                  <!-- Dynamically added children input fields will appear here -->
                 </div>
               </div>
 
@@ -430,7 +459,7 @@
               <h5 class="mt-4 mb-3">Payment Details</h5>
               <div class="row">
                 <div class="col-md-3 mb-3">
-                  <label>OR No.</label>
+                  <label class="required-field">OR No.</label>
                   <input
                     type="text"
                     class="form-control"
@@ -438,7 +467,7 @@
                   />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label>Issued at</label>
+                  <label class="required-field">Issued at</label>
                   <input
                     type="text"
                     class="form-control"
@@ -446,11 +475,11 @@
                   />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label>Issued on</label>
+                  <label class="required-field">Issued on</label>
                   <input type="date" class="form-control" />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label>Issued by</label>
+                  <label class="required-field">Issued by</label>
                   <input
                     type="text"
                     class="form-control"
@@ -509,6 +538,34 @@
             reader.readAsDataURL(file);
           }
         });
+
+      // Children Names Functionality
+      document.getElementById('addChildrenNamesBtn').addEventListener('click', function() {
+        const childrenCount = parseInt(document.getElementById('childrenCount').value) || 0;
+        const container = document.getElementById('childrenInputsContainer');
+        const childrenContainer = document.getElementById('childrenNamesContainer');
+        
+        // Clear previous inputs
+        container.innerHTML = '';
+        
+        if (childrenCount > 0) {
+          childrenContainer.style.display = 'block';
+          
+          // Create input fields based on the number of children
+          for (let i = 1; i <= childrenCount; i++) {
+            const childDiv = document.createElement('div');
+            childDiv.className = 'col-md-4 mb-3';
+            childDiv.innerHTML = `
+              <label>Child ${i} Name</label>
+              <input type="text" name="childName_${i}" class="form-control" placeholder="Enter child's name">
+            `;
+            container.appendChild(childDiv);
+          }
+        } else {
+          childrenContainer.style.display = 'none';
+          alert('Please enter the number of children first');
+        }
+      });
 
       // Form submission handler
       document
