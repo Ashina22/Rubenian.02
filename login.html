@@ -15,9 +15,11 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script type="module" src="js/auth/login.js"></script>
   </head>
 
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
     <div class="d-flex justify-content-center align-items-center vh-100">
       <div class="form-container text-center">
         <img
@@ -28,16 +30,16 @@
         />
         <h1 class="form-title">Membership Portal</h1>
         <p>This is for Authorized Personnel Only.</p>
-        <form class="form">
+        <form class="form" id="login_form">
           <label>
-            <input required type="text" class="input" placeholder="" />
+            <input required type="text" name="username" class="input" placeholder="" />
             <span>Username</span>
           </label>
           <label>
-            <input required type="password" class="input" placeholder="" />
+            <input required type="password" name="password" class="input" placeholder="" />
             <span>Password</span>
           </label>
-          <button class="submit"><a href="index.html">Login</a></button>
+          <button class="submit"type="submit">Login</button>
         </form>
       </div>
     </div>
@@ -55,5 +57,6 @@
       </div>
     </footer>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
+    </script>
   </body>
 </html>

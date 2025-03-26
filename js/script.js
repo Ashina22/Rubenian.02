@@ -41,7 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const formFields = document.querySelectorAll("#profileForm input");
 
   // Store the original image src to revert if cancelled
+  const path = window.location.pathname;
+
+  console.log(path)
+
+  if(path !== '/createusers.html'){
   const originalImageSrc = profileImage.src;
+
 
   editBtn.addEventListener("click", function () {
     formFields.forEach((field) => (field.disabled = false));
@@ -50,6 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
     editBtn.classList.add("d-none");
     editPhotoSection.classList.remove("d-none");
   });
+
+
 
   cancelBtn.addEventListener("click", function () {
     formFields.forEach((field) => (field.disabled = true));
@@ -60,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     profileImage.src = originalImageSrc; // Revert image preview
     photoInput.value = ""; // Clear file input
   });
+
 
   // Optional: Preview selected image immediately
   photoInput.addEventListener("change", function () {
@@ -87,6 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
       editPhotoSection.classList.add("d-none");
       // Note: You would need backend code to actually upload the photo
     });
+
+  }
+
 });
 
 
