@@ -125,24 +125,12 @@
 
       <div class="main">
         <nav class="navbar navbar-expand-lg px-3 border-bottom">
-          <button class="btn" id="sidebar-toggle" type="button">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div
             class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
           >
-            <!-- Search Form -->
-            <form class="d-flex mx-auto w-50" role="search">
-              <input
-                class="form-control me-2 custom-search-input"
-                type="search"
-                placeholder="Search Member"
-                aria-label="Search"
-              />
-              <button class="btn search-btn" type="submit">
-                <i class="fa-solid fa-search"></i>
-              </button>
-            </form>
+            <button class="btn" id="sidebar-toggle" type="button">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <!-- Profile Dropdown -->
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
@@ -407,19 +395,25 @@
               </div>
 
               <!-- Children Names Button and Container -->
-              <div class="row mb-4">
+              <div class="row">
                 <div class="col-12">
-                  <button type="button" id="addChildrenNamesBtn" class="btn btn-add">
+                  <button
+                    type="button"
+                    id="addChildrenNamesBtn"
+                    class="btn btn-add"
+                  >
                     <i class="fas fa-plus me-2"></i>Add Children Names
                   </button>
                 </div>
               </div>
-              
+
               <!-- Children Names Container - Initially Hidden -->
-              <div id="childrenNamesContainer" class="row mb-3" style="display: none;">
-                <div class="col-12 mb-2">
-                  <h6>Children Names</h6>
-                </div>
+              <div
+                id="childrenNamesContainer"
+                class="row mb-3"
+                style="display: none"
+              >
+                <div class="col-12 mb-2"></div>
                 <div id="childrenInputsContainer">
                   <!-- Dynamically added children input fields will appear here -->
                 </div>
@@ -539,42 +533,39 @@
           }
         });
 
-      // Children Names Functionality
-      document.getElementById('addChildrenNamesBtn').addEventListener('click', function() {
-        const childrenCount = parseInt(document.getElementById('childrenCount').value) || 0;
-        const container = document.getElementById('childrenInputsContainer');
-        const childrenContainer = document.getElementById('childrenNamesContainer');
-        
-        // Clear previous inputs
-        container.innerHTML = '';
-        
-        if (childrenCount > 0) {
-          childrenContainer.style.display = 'block';
-          
-          // Create input fields based on the number of children
-          for (let i = 1; i <= childrenCount; i++) {
-            const childDiv = document.createElement('div');
-            childDiv.className = 'col-md-4 mb-3';
-            childDiv.innerHTML = `
-              <label>Child ${i} Name</label>
-              <input type="text" name="childName_${i}" class="form-control" placeholder="Enter child's name">
-            `;
-            container.appendChild(childDiv);
-          }
-        } else {
-          childrenContainer.style.display = 'none';
-          alert('Please enter the number of children first');
-        }
-      });
-
-      // Form submission handler
       document
-        .getElementById("addMemberForm")
-        .addEventListener("submit", function (event) {
-          event.preventDefault();
-          // Add your form submission logic here
-          alert("Member added successfully!");
-          window.location.href = "masterlist.html";
+        .getElementById("addChildrenNamesBtn")
+        .addEventListener("click", function () {
+          const childrenCount =
+            parseInt(document.getElementById("childrenCount").value) || 0;
+          const container = document.getElementById("childrenInputsContainer");
+          const childrenContainer = document.getElementById(
+            "childrenNamesContainer"
+          );
+
+          // Clear previous inputs
+          container.innerHTML = "";
+
+          if (childrenCount > 0) {
+            childrenContainer.style.display = "block";
+
+            const rowDiv = document.createElement("div");
+            rowDiv.className = "row"; // Ensure inputs are in a row
+
+            for (let i = 1; i <= childrenCount; i++) {
+              const childDiv = document.createElement("div");
+              childDiv.className = "col-md-3 mb-2"; // Adjust width as needed
+              childDiv.innerHTML = `
+        <label>Child ${i} Name</label>
+        <input type="text" name="child${i}" class="form-control" placeholder="Enter child's name">
+      `;
+              rowDiv.appendChild(childDiv);
+            }
+
+            container.appendChild(rowDiv);
+          } else {
+            childrenContainer.style.display = "none";
+          }
         });
     </script>
   </body>

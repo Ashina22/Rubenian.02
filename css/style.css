@@ -44,7 +44,6 @@ h2 {
   text-align: center;
 }
 
-/*halo */
 /* Layout for admin dashboard skeleton */
 
 .wrapper {
@@ -291,10 +290,6 @@ html[data-bs-theme="light"] .theme-toggle .fa-sun {
   }
 }
 
-/* .parent-container {
-  overflow: visible;
-} */
-
 .swiper {
   padding: 50px;
   width: 80%;
@@ -406,8 +401,7 @@ input[type="file"]#photoInput {
 
 .btn-edit:hover,
 .btn-add:hover,
-.create-button:hover,
-.btn-custom:hover {
+.create-button:hover {
   background-color: rgb(40, 204, 177);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   color: aliceblue;
@@ -435,11 +429,6 @@ th {
   .table img {
     width: 40px;
     height: 40px;
-  }
-
-  .btn-custom {
-    padding: 8px 8px;
-    font-size: 12px;
   }
 
   .btn-danger.btn-sm {
@@ -555,18 +544,6 @@ th {
   justify-content: center; /* Centers buttons */
 }
 
-.btn-custom {
-  padding: 10px 10px;
-  border-radius: 10px;
-  background-color: rgb(37, 153, 134);
-  color: #ffffff;
-  letter-spacing: 1px;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
-  border: none;
-  font-size: 12px;
-}
-
 .list-group-item {
   margin: 5px 0;
   font-size: 14px;
@@ -607,5 +584,44 @@ th {
   .user-image-preview {
     width: 120px;
     height: 120px;
+  }
+}
+
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  z-index: 1050;
+}
+
+.dots {
+  width: 100px;
+  height: 25.4px;
+  background: radial-gradient(circle closest-side, rgb(37, 153, 134) 90%, #0000)
+      0% 50%,
+    radial-gradient(circle closest-side, rgb(37, 153, 134) 90%, #0000) 50% 50%,
+    radial-gradient(circle closest-side, rgb(37, 153, 134) 90%, #0000) 100% 50%;
+  background-size: calc(100% / 3) 100%;
+  background-repeat: no-repeat;
+  animation: dots-zcf63l 1s infinite linear;
+}
+
+@keyframes dots-zcf63l {
+  33% {
+    background-size: calc(100% / 3) 0%, calc(100% / 3) 100%, calc(100% / 3) 100%;
+  }
+
+  50% {
+    background-size: calc(100% / 3) 100%, calc(100% / 3) 0%, calc(100% / 3) 100%;
+  }
+
+  66% {
+    background-size: calc(100% / 3) 100%, calc(100% / 3) 100%, calc(100% / 3) 0%;
   }
 }
