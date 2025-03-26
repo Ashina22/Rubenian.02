@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create User</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <aside id="sidebar" class="js-sidebar">
+        <!-- Content For Sidebar -->
+        <div class="h-100">
+          <div
+            class="sidebar-logo d-flex flex-column align-items-center text-center"
+          >
+            <img
+              src="image/Rubenian-Logo-344.png"
+              alt="Logo"
+              style="
+                width: 50px;
+                height: 50px;
+                margin-bottom: 5px;
+                margin-top: 5px;
+              "
+            />
+            <a href="#">Rubenian</a>
+          </div>
+          <ul class="sidebar-nav">
+            <li class="sidebar-item">
+              <a href="index.html" class="sidebar-link">
+                <i class="fa-solid fa-home pe-2"></i> Home
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="masterlist.html"
+                class="sidebar-link"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-file-lines pe-2"></i> Master List
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="chapters.html" class="sidebar-link">
+                  <i class="fa-solid fa-list pe-2"></i> Chapters
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#posts"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="posts"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="regionalchapter.html" class="sidebar-link"
+                    >Regional Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="provinces.html" class="sidebar-link"
+                    >Province Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="municipalities.html" class="sidebar-link"
+                    >Municipal Chapter</a
+                  >
+                </li>
+                <li class="sidebar-item">
+                  <a href="barangay.html" class="sidebar-link"
+                    >Barangay Chapter</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="sidebar-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="viewusers.html" class="sidebar-link">
+                  <i class="fa-solid fa-users pe-2"></i>Users
+                </a>
+                <a
+                  href="#"
+                  class="sidebar-link collapsed"
+                  data-bs-target="#users"
+                  data-bs-toggle="collapse"
+                  aria-expanded="false"
+                >
+                </a>
+              </div>
+              <ul
+                id="users"
+                class="sidebar-dropdown list-unstyled collapse"
+                data-bs-parent="#sidebar"
+              >
+                <li class="sidebar-item">
+                  <a href="createusers.html" class="sidebar-link"
+                    >Create User</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="main">
+        <nav class="navbar navbar-expand-lg px-3 border-bottom">
+          <button class="btn" id="sidebar-toggle" type="button">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
+          >
+            <!-- Search Form -->
+            <form class="d-flex mx-auto w-50" role="search">
+              <input
+                class="form-control me-2 custom-search-input"
+                type="search"
+                placeholder="Search Member"
+                aria-label="Search"
+              />
+              <button class="btn search-btn" type="submit">
+                <i class="fa-solid fa-search"></i>
+              </button>
+            </form>
+            <!-- Profile Dropdown -->
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                  <img
+                    src="image/profile.jpg"
+                    class="avatar img-fluid rounded"
+                    alt=""
+                  />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a href="#" class="dropdown-item">Profile</a>
+                  <a href="#" class="dropdown-item">Setting</a>
+                  <a href="login.html" class="dropdown-item">Logout</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!--main content-->
+
+        <main class="content px-lg-3 py-2">
+          <div class="container">
+            <div class="form-container w-100">
+              <form id="createUserForm" class="needs-validation" novalidate>
+                <!-- Image Upload -->
+                <div class="row mb-4 justify-content-center">
+                  <div class="col-12 text-center">
+                    <div class="img-upload-container">
+                      <img
+                        src="image/profile.jpg"
+                        class="user-image-preview"
+                        id="imagePreview"
+                        alt="Profile Preview"
+                      />
+                      <div class="mt-2">
+                        <label
+                          for="userImage"
+                          class="btn btn-outline-secondary"
+                        >
+                          <i class="fa-solid fa-upload me-2"></i>Upload Image
+                        </label>
+                        <input
+                          type="file"
+                          id="userImage"
+                          accept="image/*"
+                          style="display: none"
+                          onchange="previewImage(this);"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- User Details -->
+                <div class="row g-3">
+                  <!-- First Name -->
+                  <div class="col-md-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstName"
+                      placeholder="Enter first name"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a first name.
+                    </div>
+                  </div>
+
+                  <!-- Middle Name -->
+                  <div class="col-md-3">
+                    <label for="middleName" class="form-label"
+                      >Middle Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="middleName"
+                      placeholder="Enter middle name"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a middle name.
+                    </div>
+                  </div>
+
+                  <!-- Last Name -->
+                  <div class="col-md-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastName"
+                      placeholder="Enter first name"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a last name.
+                    </div>
+                  </div>
+
+                  <!-- Department -->
+                  <div class="col-md-3">
+                    <label for="department" class="form-label"
+                      >Department</label
+                    >
+                    <select class="form-select" id="department" required>
+                      <option value="" selected disabled>
+                        Select Department
+                      </option>
+                      <option value="IT">IT</option>
+                      <option value="HR">HR</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Marketing">Marketing</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please select a department.
+                    </div>
+                  </div>
+
+                  <!-- Username -->
+                  <div class="col-md-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="username"
+                      placeholder="Enter username"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a username.
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="email"
+                      placeholder="Enter email address"
+                      required
+                    />
+                    <div class="invalid-feedback">Please provide an email.</div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="col-md-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      placeholder="Enter password"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a password.
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="col-md-3">
+                    <label for="confirmPassword" class="form-label"
+                      >Confirm Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="confirmPassword"
+                      placeholder="Confirm password"
+                      required
+                    />
+                    <div class="invalid-feedback">Passwords do not match.</div>
+                  </div>
+
+                  <!-- Position -->
+                  <div class="col-md-3">
+                    <label for="position" class="form-label">Position</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="position"
+                      placeholder="Enter position"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a position.
+                    </div>
+                  </div>
+
+                  <!-- Location -->
+                  <div class="col-md-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="location"
+                      placeholder="Enter location"
+                      required
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a location.
+                    </div>
+                  </div>
+
+                  <!-- Role -->
+                  <div class="col-md-3">
+                    <label for="role" class="form-label">Role</label>
+                    <select class="form-select" id="role" required>
+                      <option value="" selected disabled>Select Role</option>
+                      <option value="Admin">Admin</option>
+                      <option value="Staff">Staff</option>
+                    </select>
+                    <div class="invalid-feedback">Please select a role.</div>
+                  </div>
+
+                  <!-- Form Buttons -->
+                  <div class="col-12 d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn me-2 btn-add">
+                      Update User
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </main>
+        <a href="#" class="theme-toggle">
+          <i class="fa-regular fa-moon"></i>
+          <i class="fa-regular fa-sun"></i>
+        </a>
+        <footer class="text-center text-lg-start">
+          <div class="container pb-2">
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-6 text-md-left text-center">
+                <p class="mb-0">
+                  &copy; 2024 Rubenian Membership Portal. Made with
+                  <span><i class="fa-solid fa-heart"></i></span> by
+                  <span>BehindWeb</span>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+      // Image preview functionality
+      function previewImage(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            document.getElementById("imagePreview").src = e.target.result;
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    </script>
+  </body>
+</html>
