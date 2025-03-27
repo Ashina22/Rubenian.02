@@ -334,43 +334,6 @@
         </footer>
       </div>
     </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const pageItems = document.querySelectorAll(".pagination .page-item");
-        const prevBtn = document.getElementById("prevBtn");
-        const nextBtn = document.getElementById("nextBtn");
-        let activeIndex = 0;
-    
-        function updatePagination(newIndex) {
-          pageItems[activeIndex + 1].classList.remove("active");
-          pageItems[newIndex + 1].classList.add("active");
-          activeIndex = newIndex;
-    
-          prevBtn.classList.toggle("disabled", activeIndex === 0);
-          nextBtn.classList.toggle("disabled", activeIndex === pageItems.length - 3);
-        }
-    
-        pageItems.forEach((item, index) => {
-          if (index > 0 && index < pageItems.length - 1) {
-            item.addEventListener("click", function () {
-              updatePagination(index - 1);
-            });
-          }
-        });
-    
-        prevBtn.addEventListener("click", function () {
-          if (activeIndex > 0) {
-            updatePagination(activeIndex - 1);
-          }
-        });
-    
-        nextBtn.addEventListener("click", function () {
-          if (activeIndex < pageItems.length - 3) {
-            updatePagination(activeIndex + 1);
-          }
-        });
-      });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
