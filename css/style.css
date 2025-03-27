@@ -507,7 +507,7 @@ th {
 .btn-region {
   flex: 1 1 120px; /* Adjusts button width dynamically */
   text-align: center;
-  padding: 10px 0; /* Reduced vertical padding */
+  padding: 10px 7px; /* Reduced vertical padding */
   font-size: 14px; /* Decreased font size */
   border-radius: 8px;
   background-color: #e9e9e9;
@@ -515,7 +515,6 @@ th {
   letter-spacing: 1px;
   transition: all 0.3s ease;
   min-width: 150px; /* Minimum button width */
-  max-width: 150px; /* Maximum button width */
 }
 
 .btn-region a {

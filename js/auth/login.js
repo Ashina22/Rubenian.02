@@ -7,14 +7,11 @@ const headers = {
   Authorization: "Bearer " + localStorage.getItem("token"),
 };
 
-
 login_form.onsubmit = async (e) => {
   e.preventDefault();
-  document.querySelector(".loader-container").classList.remove("d-none"); 
 
   const loginButton = document.querySelector("#login_form button");
   loginButton.disabled = true;
- 
 
   const formData = new FormData(login_form);
 
@@ -31,25 +28,41 @@ login_form.onsubmit = async (e) => {
     document.querySelector(".loader-container").classList.add("d-none");
     loginButton.disabled = false;
     loginButton.innerHTML = `Login`;
-    alert(loginData.message)
+    alert(loginData.message);
     throw new Error(await loginResponse.text());
   }
 
+  document.querySelector(".loader-container").classList.remove("d-none");
 
   if (loginResponse.ok) {
     localStorage.setItem("token", loginData.token);
-    localStorage.setItem("type", loginData.role);
+    localStorage.setItem("type", loginData.type);
 
-    const profileId = loginData.id;
-    const timestamp = new Date().toISOString(); 
-    
-    localStorage.setItem("id", `${profileId}?+./${timestamp}rii`);
-    
-    window.location.href = "/index.html";
+    const profileResponse = await fetch(backendURL + "/api/show/profile", {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    const profileData = await profileResponse.json();
+
+    console.log(profileData);
+
+    const profileId = profileData.id;
+    const timestamp = new Date().toISOString();
+
+    localStorage.setItem("id", `${profileId}.${timestamp.split("T")[1]}rii`);
+
+    const id = localStorage.getItem("id");
+
+    console.log(id.split(".")[0]);
+
+    // window.location.href = "/index.html";
 
     login_form.reset();
   } else {
-    alert(loginData);
+    alert(loginData.message);
   }
 
   loginButton.disabled = false;
