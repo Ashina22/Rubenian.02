@@ -17,6 +17,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script type="module" src="js/system/manage-users.js"></script>
   </head>
 
   <style>
@@ -59,6 +60,10 @@
         width: 100% !important;
       }
     }
+
+    table tbody tr td {
+      vertical-align: middle !important;
+    }
   </style>
 
   <body>
@@ -89,7 +94,7 @@
             </li>
             <li class="sidebar-item">
               <a
-                href="masterlist.html"
+                href="masterlist.html?view-master-list"
                 class="sidebar-link"
                 aria-expanded="false"
               >
@@ -170,24 +175,12 @@
 
       <div class="main">
         <nav class="navbar navbar-expand-lg px-3 border-bottom">
-          <button class="btn" id="sidebar-toggle" type="button">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div
             class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
           >
-            <!-- Search Form -->
-            <form class="d-flex mx-auto w-50" role="search">
-              <input
-                class="form-control me-2 custom-search-input"
-                type="search"
-                placeholder="Search Member"
-                aria-label="Search"
-              />
-              <button class="btn search-btn" type="submit">
-                <i class="fa-solid fa-search"></i>
-              </button>
-            </form>
+            <button class="btn" id="sidebar-toggle" type="button">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <!-- Profile Dropdown -->
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
@@ -223,8 +216,8 @@
                   <input
                     type="text"
                     id="roleFilter"
-                    class="form-control"
-                    placeholder="Search"
+                    class="form-control search-users"
+                    placeholder="Search users"
                   />
                 </div>
               </div>
@@ -293,91 +286,16 @@
                     <th colspan="8" class="text-center"><h5>Admin</h5></th>
                   </tr>
                   <tr id="usertables">
-                    <th>Profile</th>
-                    <th>Full Name</th>
-                    <th>Username</th>
-                    <th>Department</th>
-                    <th>Position</th>
-                    <th>Location</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <th class="text-center">Profile</th>
+                    <th class="text-center">Full Name</th>
+                    <th class="text-center">Username</th>
+                    <th class="text-center">Department</th>
+                    <th class="text-center">Position</th>
+                    <th class="text-center">Role</th>
+                    <th class="text-center" id="admin-actions">Actions</th>
                   </tr>
                 </thead>
-                <tbody id="adminTable">
-                  <tr data-role="admin" data-department="IT">
-                    <td>
-                      <a href="members-profile.html"
-                        ><img src="image/profile.jpg" alt="Profile"
-                      /></a>
-                    </td>
-                    <td>
-                      <a href="members-profile.html"
-                        >Erlinda Consilba Abarquez</a
-                      >
-                    </td>
-                    <td>johndoe</td>
-                    <td>IT</td>
-                    <td>Manager</td>
-                    <td>New York</td>
-                    <td>Admin</td>
-                    <td>
-                      <a href="edituser.html"><button class="btn edit">
-                        <i class="fa-solid fa-edit"></i>
-                      </button></a>
-                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody id="adminTable">
-                  <tr data-role="admin" data-department="IT">
-                    <td>
-                      <a href="members-profile.html"
-                        ><img src="image/profile.jpg" alt="Profile"
-                      /></a>
-                    </td>
-                    <td>
-                      <a href="members-profile.html"
-                        >Erlinda Consilba Abarquez</a
-                      >
-                    </td>
-                    <td>johndoe</td>
-                    <td>IT</td>
-                    <td>Manager</td>
-                    <td>New York</td>
-                    <td>Admin</td>
-                    <td>
-                      <a href="edituser.html"><button class="btn edit">
-                        <i class="fa-solid fa-edit"></i>
-                      </button></a>
-                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody id="adminTable">
-                  <tr data-role="admin" data-department="IT">
-                    <td>
-                      <a href="members-profile.html"
-                        ><img src="image/profile.jpg" alt="Profile"
-                      /></a>
-                    </td>
-                    <td>
-                      <a href="members-profile.html"
-                        >Erlinda Consilba Abarquez</a
-                      >
-                    </td>
-                    <td>johndoe</td>
-                    <td>IT</td>
-                    <td>Manager</td>
-                    <td>New York</td>
-                    <td>Admin</td>
-                    <td>
-                      <a href="edituser.html"><button class="btn edit">
-                        <i class="fa-solid fa-edit"></i>
-                      </button></a>
-                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
+                <tbody id="adminTable"></tbody>
               </table>
             </div>
 
@@ -388,87 +306,16 @@
                     <th colspan="8" class="text-center"><h5>Staff</h5></th>
                   </tr>
                   <tr id="usertables">
-                    <th>Profile</th>
-                    <th>Full Name</th>
-                    <th>Username</th>
-                    <th>Department</th>
-                    <th>Position</th>
-                    <th>Location</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <th class="text-center">Profile</th>
+                    <th class="text-center">Full Name</th>
+                    <th class="text-center">Username</th>
+                    <th class="text-center">Department</th>
+                    <th class="text-center">Position</th>
+                    <th class="text-center">Role</th>
+                    <th class="text-center" id="admin-actions">Actions</th>
                   </tr>
                 </thead>
-                <tbody id="staffTable">
-                  <tr data-role="staff" data-department="HR">
-                    <td>
-                      <a href="members-profile.html"
-                        ><img src="image/profile.jpg" alt="Profile"
-                      /></a>
-                    </td>
-                    <td>
-                      <a href="members-profile.html">Argie Lorenzana Abejuro</a>
-                    </td>
-                    <td>janesmith</td>
-                    <td>HR</td>
-                    <td>Assistant</td>
-                    <td>California</td>
-                    <td>Staff</td>
-                    <td>
-                      <a href="edituser.html"><button class="btn edit">
-                        <i class="fa-solid fa-edit"></i>
-                      </button></a>
-                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody id="staffTable">
-                  <tr data-role="staff" data-department="HR">
-                    <td>
-                      <a href="members-profile.html"
-                        ><img src="image/profile.jpg" alt="Profile"
-                      /></a>
-                    </td>
-                    <td>
-                      <a href="members-profile.html">Argie Lorenzana Abejuro</a>
-                    </td>
-                    <td>janesmith</td>
-                    <td>HR</td>
-                    <td>Assistant</td>
-                    <td>California</td>
-                    <td>Staff</td>
-                    <td>
-                      <a href="edituser.html"><button class="btn edit">
-                        <i class="fa-solid fa-edit"></i>
-                      </button></a>
-                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody id="staffTable">
-                  <tr data-role="staff" data-department="HR">
-                    <td>
-                      <a href="members-profile.html"
-                        ><img src="image/profile.jpg" alt="Profile"
-                      /></a>
-                    </td>
-                    <td>
-                      <a href="members-profile.html"
-                        >Argie Lorenzana Abejuro
-                      </a>
-                    </td>
-                    <td>janesmith</td>
-                    <td>HR</td>
-                    <td>Assistant</td>
-                    <td>California</td>
-                    <td>Staff</td>
-                    <td>
-                      <a href="edituser.html"><button class="btn edit">
-                        <i class="fa-solid fa-edit"></i>
-                      </button></a>
-                      <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
+                <tbody id="staffTable"></tbody>
               </table>
             </div>
           </div>
@@ -501,7 +348,7 @@
         >
           <div
             class="modal-dialog modal-dialog-centered"
-            style="max-width: 300px;"
+            style="max-width: 300px"
           >
             <div class="modal-content">
               <div class="modal-header justify-content-center">

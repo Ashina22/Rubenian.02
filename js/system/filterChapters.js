@@ -34,7 +34,7 @@ async function fetchAndDisplay(type) {
 
     if (item[label] !== "None") {
       htmlContent += `
-                <a href="viewmembers.html?list=${chapterIdList}">
+                <a href="viewmembers.html?list=${chapterIdList}&label=${item[label]}">
                     <button class="btn btn-region">${item[label]}</button>
                 </a>`;
     }

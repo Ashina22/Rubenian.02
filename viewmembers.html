@@ -17,6 +17,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script type="module" src="js/system/viewmembers.js"></script>
   </head>
 
   <body>
@@ -51,7 +52,7 @@
             </li>
             <li class="sidebar-item">
               <a
-                href="masterlist.html"
+                href="masterlist.html?view-master-list"
                 class="sidebar-link"
                 aria-expanded="false"
               >
@@ -135,21 +136,21 @@
           <div
             class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
           >
-          <button class="btn" id="sidebar-toggle" type="button">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+            <button class="btn" id="sidebar-toggle" type="button">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <!-- Search Form -->
-            <form class="d-flex mx-auto w-50" role="search">
+            <div class="d-flex mx-auto w-50" role="search">
               <input
-                class="form-control me-2 custom-search-input"
+                class="form-control me-2 search-members"
                 type="search"
-                placeholder="Search Member"
+                placeholder="Search Members"
                 aria-label="Search"
               />
               <button class="btn search-btn" type="submit">
                 <i class="fa-solid fa-search"></i>
               </button>
-            </form>
+            </div>
             <!-- Profile Dropdown -->
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
@@ -175,7 +176,7 @@
         <main class="content px-lg-3 py-2">
           <div class="container-fluid">
             <div class="container">
-              <h2 class="text-center my-4">NCR-Members</h2>
+              <h2 class="text-center my-4" id="chapter-label">NCR-Members</h2>
               <div class="d-flex justify-content-end">
                 <a href="addmembers.html"
                   ><button class="btn btn-add">
@@ -183,13 +184,6 @@
                   </button></a
                 >
               </div>
-
-              <input
-                type="text"
-                id="searchInput"
-                class="form-control mb-3"
-                placeholder="Search members..."
-              />
 
               <!-- Responsive wrapper -->
               <div class="table-responsive">
@@ -204,141 +198,55 @@
                       <!-- Action column -->
                     </tr>
                   </thead>
-                  <tbody id="memberTable">
-                    <tr>
-                      <td>
-                        <a href="members-profile.html"
-                          ><img src="image/profile.jpg" alt="Profile"
-                        /></a>
-                      </td>
-                      <td>
-                        <a href="members-profile.html"
-                          >Erlinda Consilba Abarquez</a
-                        >
-                      </td>
-                      <td>Libjo, Dinagat Islands</td>
-                      <td>14258</td>
-                      <td>
-                        <button
-                          class="btn btn-danger btn-sm"
-                          onclick="deleteRow(this)"
-                          data-bs-toggle="modal" data-bs-target="#deleteModal"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <a href="members-profile.html"
-                          ><img src="image/profile.jpg" alt="Profile"
-                        /></a>
-                      </td>
-                      <td>
-                        <a href="members-profile.html"
-                          >Argie Lorenzana Abejuro</a
-                        >
-                      </td>
-                      <td>Cuyoayao, Pio Duran, Albay</td>
-                      <td>23137</td>
-                      <td>
-                        <button
-                          class="btn btn-danger btn-sm"
-                          onclick="deleteRow(this)"
-                          data-bs-toggle="modal" data-bs-target="#deleteModal"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <a href="members-profile.html"
-                          ><img src="image/profile.jpg" alt="Profile"
-                        /></a>
-                      </td>
-                      <td>
-                        <a href="members-profile.html"
-                          >Aiza Baricuatro Abacajan</a
-                        >
-                      </td>
-                      <td>P-2 Sta. Cruz, San Jose, Dinagat Islands</td>
-                      <td>12260</td>
-                      <td>
-                        <button
-                          class="btn btn-danger btn-sm"
-                          onclick="deleteRow(this)"
-                          data-bs-toggle="modal" data-bs-target="#deleteModal"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <a href="members-profile.html"
-                          ><img src="image/profile.jpg" alt="Profile"
-                        /></a>
-                      </td>
-                      <td>
-                        <a href="members-profile.html">Sherwin Cruz Aguilar</a>
-                      </td>
-                      <td>P-2 Batucan, Talacogon, Agusan del Sur</td>
-                      <td>18180</td>
-                      <td>
-                        <button
-                          class="btn btn-danger btn-sm"
-                          onclick="deleteRow(this)"
-                          data-bs-toggle="modal" data-bs-target="#deleteModal"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
+                  <tbody id="membersTable"></tbody>
                 </table>
               </div>
             </div>
-            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
-              <ul class="pagination">
-                <li class="page-item disabled" id="prevBtn">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true"><</span> <!-- Left arrow -->
-                  </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item" id="nextBtn">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">></span> <!-- Right arrow -->
-                  </a>
-                </li>
-              </ul>
-            </nav> 
+            <nav
+              aria-label="Page navigation example"
+              class="d-flex justify-content-center"
+            >
+              <ul class="pagination"></ul>
+            </nav>
           </div>
         </main>
 
-   <!-- Delete Confirmation Modal -->
-   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 300px;">
-      <div class="modal-content">
-        <div class="modal-header justify-content-center text-white">
-          <h5 class="modal-title text-white" id="deleteModalLabel">Confirm Deletion</h5>
+        <!-- Delete Confirmation Modal -->
+        <div
+          class="modal fade"
+          id="deleteModal"
+          tabindex="-1"
+          aria-labelledby="deleteModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered"
+            style="max-width: 300px"
+          >
+            <div class="modal-content">
+              <div class="modal-header justify-content-center text-white">
+                <h5 class="modal-title text-white" id="deleteModalLabel">
+                  Confirm Deletion
+                </h5>
+              </div>
+              <div class="modal-body text-center">
+                Are you sure you want to delete this member?
+              </div>
+              <div class="modal-footer justify-content-center">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-sm">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="modal-body text-center">
-          Are you sure you want to delete this member?
-        </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger btn-sm">Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
         <a href="#" class="theme-toggle">
           <i class="fa-regular fa-moon"></i>
@@ -359,35 +267,7 @@
         </footer>
       </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script>
-      /* table sorting */
-
-      document
-        .getElementById("searchInput")
-        .addEventListener("keyup", function () {
-          let filter = this.value.toLowerCase();
-          let rows = document.querySelectorAll("#memberTable tr");
-
-          rows.forEach((row) => {
-            let text = row.innerText.toLowerCase();
-            row.style.display = text.includes(filter) ? "" : "none";
-          });
-        });
-
-      function sortTable(columnIndex) {
-        let table = document.querySelector(".table tbody");
-        let rows = Array.from(table.rows);
-        let sortedRows = rows.sort((a, b) => {
-          let aText = a.cells[columnIndex].innerText.trim().toLowerCase();
-          let bText = b.cells[columnIndex].innerText.trim().toLowerCase();
-          return aText.localeCompare(bText);
-        });
-
-        sortedRows.forEach((row) => table.appendChild(row));
-      }
-    </script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
   </body>

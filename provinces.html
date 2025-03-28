@@ -48,7 +48,7 @@
             </li>
             <li class="sidebar-item">
               <a
-                href="masterlist.html"
+                href="masterlist.html?view-master-list"
                 class="sidebar-link"
                 aria-expanded="false"
               >
@@ -129,13 +129,12 @@
 
       <div class="main">
         <nav class="navbar navbar-expand-lg px-3 border-bottom">
-          <button class="btn" id="sidebar-toggle" type="button">
-            <span class="navbar-toggler-icon"></span>
-          </button>
           <div
             class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100"
           >
-            <!-- Search Form -->
+            <button class="btn" id="sidebar-toggle" type="button">
+              <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="d-flex mx-auto w-50" role="search">
               <input
                 class="form-control me-2 search-province"
@@ -183,28 +182,7 @@
             </div>
           </div>
           <div class="container">
-            <div class="btn-container" id="provinceContainer">
-              <a href="viewmembers.html"
-                ><button class="btn btn-region">NCR</button></a
-              >
-              <button class="btn btn-region">CAR</button>
-              <button class="btn btn-region">Region I</button>
-              <button class="btn btn-region">Region II</button>
-              <button class="btn btn-region">Region III</button>
-              <button class="btn btn-region">Region IV</button>
-              <button class="btn btn-region">Region V</button>
-              <button class="btn btn-region">Region VI</button>
-              <button class="btn btn-region">Region VII</button>
-              <button class="btn btn-region">Region VIII</button>
-              <button class="btn btn-region">Region XV</button>
-              <button class="btn btn-region">Region IX</button>
-              <button class="btn btn-region">Region X</button>
-              <button class="btn btn-region">Region XI</button>
-              <button class="btn btn-region">Region XII</button>
-              <button class="btn btn-region">Region XIII</button>
-              <button class="btn btn-region">ARMM</button>
-              <button class="btn btn-region">international</button>
-            </div>
+            <div class="btn-container" id="provinceContainer"></div>
           </div>
         </main>
 
