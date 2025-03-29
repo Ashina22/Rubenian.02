@@ -120,4 +120,4 @@ if (token !== null) {
   cacheAPIData();
 }
 
-export { backendURL, removeURLParams, showToast, getCachedData };
+export { backendURL, removeURLParams, showToast, getCachedData, userId };

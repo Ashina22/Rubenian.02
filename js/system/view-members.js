@@ -6,21 +6,31 @@ const paginationContainer = document.querySelector(".pagination");
 const chapterLabel = document.getElementById("chapter-label");
 
 const params = new URLSearchParams(window.location.search);
-const list = params.get("list");
-localStorage.setItem("chapter-list", list);
+let list = params.get("list");
+
+// Restore list if missing when navigating back
+if (!list) {
+  list = localStorage.getItem("chapter-list");
+  if (list) {
+    params.set("list", list); // Re-add to URL
+    window.history.replaceState(
+      {},
+      document.title,
+      `${window.location.pathname}?${params.toString()}`
+    );
+  }
+} else {
+  localStorage.setItem("chapter-list", list); // Store latest list
+  params.delete("list"); // Hide from URL
+  window.history.replaceState(
+    {},
+    document.title,
+    `${window.location.pathname}?${params.toString()}`
+  );
+}
+
 const chapterList = localStorage.getItem("chapter-list");
-
-// erase list params from URL
-
-params.delete("list");
-window.history.replaceState(
-  {},
-  document.title,
-  `${window.location.pathname}?${params.toString()}`
-);
-
 const masterList = params.get("view-master-list");
-
 const label = params.get("label");
 
 const userType = localStorage.getItem("type");
@@ -31,7 +41,7 @@ if (label) {
 
 let currentPage = 1;
 let totalPages = 1;
-const perPage = 20;
+const perPage = 10;
 let searchQuery = "";
 
 // Fetch Members with Pagination
@@ -124,12 +134,12 @@ function displayMembers(members) {
       const row = document.createElement("tr");
       row.innerHTML = `
       <td>
-        <a href="members-profile.html?member-id=${member.id}?${timestamp}">
+        <a href="member-profile.html?member-id=${member.id}?${timestamp}">
           <img src="${imagePath}" alt="Profile" class="member-img"  />
         </a>
       </td>
       <td>
-        <a href="members-profile.html?member-id=${member.id}?${timestamp}">
+        <a href="member-profile.html?member-id=${member.id}?${timestamp}">
           ${member.first_name} ${
         member.middle_name ? member.middle_name : ``
       } ${member.last_name}  
@@ -156,7 +166,7 @@ function setupPagination(data) {
   currentPage = data.current_page;
   paginationContainer.innerHTML = "";
 
-  const maxVisiblePages = 5;
+  const maxVisiblePages = 3;
   let startPage = Math.max(1, currentPage - 2); // Ensure at least two pages before current page
   let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
@@ -169,15 +179,43 @@ function setupPagination(data) {
     <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
       <a class="page-link" href="#" onclick="changePage(${
         currentPage - 1
-      })">«</a>
+      })">Previous</a>
     </li>
   `;
 
-  // Page Numbers (Dynamic 5-Page Range)
+  // First Page
+  if (startPage > 1) {
+    paginationContainer.innerHTML += `
+      <li class="page-item">
+        <a class="page-link" href="#" onclick="changePage(1)">1</a>
+      </li>
+    `;
+    if (startPage > 2) {
+      paginationContainer.innerHTML += `
+        <li class="page-item disabled"><span class="page-link">...</span></li>
+      `;
+    }
+  }
+
+  // Page Numbers (Dynamic Range)
   for (let i = startPage; i <= endPage; i++) {
     paginationContainer.innerHTML += `
       <li class="page-item ${i === currentPage ? "active" : ""}">
         <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+      </li>
+    `;
+  }
+
+  // Last Page
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      paginationContainer.innerHTML += `
+        <li class="page-item disabled"><span class="page-link">...</span></li>
+      `;
+    }
+    paginationContainer.innerHTML += `
+      <li class="page-item">
+        <a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a>
       </li>
     `;
   }
@@ -187,7 +225,7 @@ function setupPagination(data) {
     <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
       <a class="page-link" href="#" onclick="changePage(${
         currentPage + 1
-      })">»</a>
+      })">Next</a>
     </li>
   `;
 }

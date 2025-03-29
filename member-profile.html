@@ -17,6 +17,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script type="module" src="js/system/manage-member-profile.js"></script>
   </head>
 
   <body>
@@ -155,242 +156,343 @@
         </nav>
 
         <!--main content-->
-
         <main class="content px-lg-3 py-2" style="margin-bottom: 30px">
           <div class="container-fluid">
-            <div class="text-center p-4 mb-4">
-              <img
-                id="profileImage"
-                src="image/profile.jpg"
-                alt="Profile Image"
-                class="rounded-circle mb-3"
-                width="150"
-                height="150"
-              />
-
-              <!-- Edit Photo Section (Hidden by Default) -->
-              <div id="editPhotoSection" class="d-none mb-2">
-                <input
-                  type="file"
-                  id="photoInput"
-                  accept="image/*"
-                  class="form-control mb-2"
+            <form id="member_form">
+              <div class="text-center p-4 mb-4">
+                <img
+                  id="profileImage"
+                  src="image/profile.jpg"
+                  alt="Profile Image"
+                  class="rounded-circle mb-3"
+                  width="150"
+                  height="150"
                 />
+
+                <!-- Edit Photo Section (Hidden by Default) -->
+                <div id="editPhotoSection" class="d-none mb-2">
+                  <input
+                    type="file"
+                    id="photoInput"
+                    accept="image/*"
+                    name="id_pic"
+                    class="form-control mb-2"
+                  />
+                </div>
+
+                <h5><li id="fullname"></li></h5>
+                <span
+                  ><li>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span id="residence">Cuyaoyao, Pio Duran, Albay</span>
+                  </li></span
+                >
+                <li id="reg_no">RICN : 23137</li>
+                <button id="editBtn" type="button" class="btn btn-edit mt-3">
+                  Edit Profile
+                </button>
+                <button
+                  id="cancelBtn"
+                  type="button"
+                  class="btn btn-danger d-none"
+                >
+                  Cancel
+                </button>
               </div>
 
-              <h5><li>Abejuro, Argie Lorenzana</li></h5>
-              <span
-                ><li>
-                  <i class="fa-solid fa-location-dot"></i> Cuyaoyao, Pio Duran,
-                  Albay
-                </li></span
-              >
-              <li>RICN : 23137</li>
-              <button id="editBtn" class="btn btn-edit mt-3">
-                Edit Profile
-              </button>
-              <button id="cancelBtn" class="btn btn-danger d-none">
-                Cancel
-              </button>
-            </div>
-
-            <form id="profileForm">
               <h5 class="mb-3">About Candidate</h5>
-              <div class="row">
+              <div class="row" id="form-container">
                 <div class="col-md-4 mb-3">
                   <label>First Name</label>
                   <input
+                    id="first_name"
+                    name="first_name"
                     type="text"
                     class="form-control"
-                    value="Argie"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Last Name</label>
                   <input
+                    id="last_name"
+                    name="last_name"
                     type="text"
                     class="form-control"
-                    value="Abejuro"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Middle Name</label>
                   <input
+                    id="middle_name"
+                    name="middle_name"
                     type="text"
                     class="form-control"
-                    value="Lorenzana"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Extension Name</label>
+                  <input
+                    id="ext_name"
+                    name="ext_name"
+                    type="text"
+                    class="form-control"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Email Address</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    class="form-control"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Registered No.</label>
                   <input
+                    id="reg_no"
+                    name="reg_no"
                     type="text"
                     class="form-control"
-                    value="23137"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Volume No.</label>
-                  <input type="text" class="form-control" value="78" disabled />
+                  <input
+                    id="vol_no"
+                    name="vol_no"
+                    type="text"
+                    class="form-control"
+                    disabled
+                  />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Page No.</label>
-                  <input type="text" class="form-control" value="1" disabled />
+                  <input
+                    id="page_no"
+                    name="page_no"
+                    type="text"
+                    class="form-control"
+                    disabled
+                  />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Birth Date</label>
                   <input
+                    id="birth_date"
+                    name="birth_date"
                     type="date"
                     class="form-control"
-                    value="1982-10-06"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Birth Place</label>
                   <input
+                    id="birth_place"
+                    name="birth_place"
                     type="text"
                     class="form-control"
-                    value="Agol, Pioduran, Albay"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Nationality</label>
                   <input
+                    id="nationality"
+                    name="nationality"
                     type="text"
                     class="form-control"
-                    value="Filipino"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>Gender</label>
-                  <input
+                  <label>Sex</label>
+                  <select
+                    id="sex"
+                    name="sex"
                     type="text"
                     class="form-control"
-                    value="Female"
                     disabled
-                  />
+                  >
+                    <option value="">Select Sex</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Religion</label>
                   <input
+                    id="religion"
+                    name="religion"
                     type="text"
                     class="form-control"
-                    value="Catholic"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Occupation</label>
                   <input
+                    id="occupation"
+                    name="occupation"
                     type="text"
                     class="form-control"
-                    value="Sewer"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Contact No.</label>
                   <input
+                    id="contact_no"
+                    name="contact_no"
                     type="text"
                     class="form-control"
-                    value="09153968548"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Civil Status</label>
-                  <input
+                  <select
+                    id="civil_status"
+                    name="civil_status"
                     type="text"
                     class="form-control"
-                    value="Married"
                     disabled
-                  />
+                  >
+                    <option value="">Select Civil Status</option>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Annulled">Annulled</option>
+                  </select>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Residence</label>
                   <input
+                    id="residence"
+                    name="residence"
                     type="text"
                     class="form-control"
-                    value="Cuyaoyao, Pio Duran, Albay"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>Spouse Name</label>
-                  <input
+                  <label>Chapter</label>
+                  <select
+                    id="chapter_id"
+                    name="chapter_id"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
+                    disabled
+                  >
+                    <option value="">Select Chapter</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Spouse Name</label>
+                  <input
+                    id="spouse_name"
+                    name="spouse_name"
+                    type="text"
+                    class="form-control"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Father's Name</label>
                   <input
+                    id="father_name"
+                    name="father_name"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Mother's Name</label>
                   <input
+                    id="mother_name"
+                    name="mother_name"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>SSS No.</label>
                   <input
+                    id="sss_no"
+                    name="sss_no"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>GSIS No.</label>
                   <input
+                    id="gsis_no"
+                    name="gsis_no"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Tax Identification No.</label>
                   <input
+                    id="tax_no"
+                    name="tax_no"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Tax Issued at</label>
+                  <input
+                    id="tax_issue"
+                    name="tax_issue"
+                    type="text"
+                    class="form-control"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Tax Date</label>
+                  <input
+                    id="tax_date"
+                    name="tax_date"
+                    type="text"
+                    class="form-control"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>PhilHealth No.</label>
                   <input
+                    id="philhealth_no"
+                    name="philhealth_no"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>HDMF No.</label>
                   <input
+                    id="hdmf_no"
+                    name="hdmf_no"
                     type="text"
                     class="form-control"
-                    value="Reynate Abejuro"
                     disabled
                   />
                 </div>
@@ -400,33 +502,34 @@
                     type="number"
                     id="childrenCount"
                     class="form-control"
-                    value="1"
                     disabled
                   />
                 </div>
-
-                <!-- Children Names Button and Container -->
-                <div class="row">
-                  <div class="col-12">
-                    <button
-                      type="button"
-                      id="addChildrenNamesBtn"
-                      class="btn btn-add d-none"
-                    >
-                      <i class="fas fa-plus me-2"></i>Add Children Names
-                    </button>
-                  </div>
+              </div>
+              <!-- Children Names Button and Container -->
+              <div id="childrenContainer" class="row"></div>
+              <div class="row">
+                <div class="col-12">
+                  <button
+                    type="button"
+                    id="addChildrenNamesBtn"
+                    class="btn btn-add d-none"
+                  >
+                    <i class="fas fa-plus me-2"></i>Add Child Input
+                  </button>
                 </div>
+              </div>
 
-                <div class="col-md-4 mb-3">
-                  <label>Child 1</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="bongbong marcos"
-                    placeholder="Child Name"
-                    disabled
-                  />
+              <div id="beneficiariesContainer" class="row"></div>
+              <div class="row">
+                <div class="col-12">
+                  <button
+                    type="button"
+                    id="addBeneficiariesNamesBtn"
+                    class="btn btn-add d-none"
+                  >
+                    <i class="fas fa-plus me-2"></i>Add Beneficiary Input
+                  </button>
                 </div>
               </div>
 
@@ -435,22 +538,30 @@
                 <div class="col-md-4 mb-3">
                   <label>Name</label>
                   <input
+                    id="emergency_name"
+                    name="emergency_name"
                     type="text"
                     class="form-control"
-                    value="Reynate M. Abejuro"
                     disabled
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Contact No.</label>
-                  <input type="text" class="form-control" value="0" disabled />
+                  <input
+                    type="text"
+                    id="emergency_contact"
+                    name="emergency_contact"
+                    class="form-control"
+                    disabled
+                  />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Address</label>
                   <input
+                    id="emergency_address"
+                    name="emergency_address"
                     type="text"
                     class="form-control"
-                    value="La Medalla, Pio Duran"
                     disabled
                   />
                 </div>
@@ -460,34 +571,44 @@
               <div class="row">
                 <div class="col-md-3 mb-3">
                   <label>OR No.</label>
+
                   <input
+                    id="or_no"
+                    name="or_no"
                     type="text"
                     class="form-control"
-                    value="30155"
                     disabled
                   />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label>Issued at</label>
                   <input
+                    id="or_issue"
+                    name="or_issue"
                     type="text"
                     class="form-control"
-                    value="National Office"
                     disabled
                   />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label>Issued on</label>
                   <input
+                    id="or_date"
+                    name="or_date"
                     type="date"
                     class="form-control"
-                    value="2017-12-25"
                     disabled
                   />
                 </div>
                 <div class="col-md-3 mb-3">
                   <label>Issued by</label>
-                  <input type="text" class="form-control" value="" disabled />
+                  <input
+                    id="teller_name"
+                    name="teller_name"
+                    type="text"
+                    class="form-control"
+                    disabled
+                  />
                 </div>
               </div>
 
