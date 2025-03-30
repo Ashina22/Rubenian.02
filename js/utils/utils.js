@@ -59,8 +59,6 @@ const CACHE_NAME = "api-cache";
 
 // Function to fetch and store API responses **only once**
 async function cacheAPIData() {
-  const token = localStorage.getItem("token");
-
   if (!token) {
     console.warn("No token found. Skipping cache update.");
     return;
@@ -120,4 +118,109 @@ if (token !== null) {
   cacheAPIData();
 }
 
-export { backendURL, removeURLParams, showToast, getCachedData, userId };
+async function getData(endpoint) {
+  const url = backendURL + endpoint;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      return await response.json();
+    } else {
+      console.warn(`Failed to fetch: ${endpoint} - Status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(`Error fetching ${endpoint}:`, error);
+  }
+}
+
+async function postData(endpoint, data, formElement) {
+  const url = backendURL + endpoint;
+
+  data.forEach((value, key) => console.log(key, value));
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: data,
+    });
+
+    if (!response.ok) {
+      showToast("Failed to create. try again.", "danger");
+      formElement.reset();
+      throw new Error(`POST request failed: ${await response.text()}`);
+    }
+
+    const cachedData = await getData(endpoint);
+
+    // Update cache with new data
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(url, new Response(JSON.stringify(cachedData)));
+
+    console.log(cachedData);
+
+    showToast("Successfully created a new chapter.");
+    formElement.reset();
+  } catch (error) {
+    console.error("Error in postData:", error);
+    return null;
+  }
+}
+
+async function putData(endpoint, data) {
+  const url = backendURL + endpoint;
+
+  data.forEach((value, key) => console.log(key, value));
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`PUT request failed: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    // Update cache with new data
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(url, new Response(JSON.stringify(responseData)));
+
+    return responseData;
+  } catch (error) {
+    console.error("Error in putData:", error);
+    return null;
+  }
+}
+
+document.querySelectorAll(".closeModal").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.getElementById("addChapterModal").style.display = "none";
+  });
+});
+
+export {
+  backendURL,
+  removeURLParams,
+  showToast,
+  getCachedData,
+  userId,
+  postData,
+  putData,
+};

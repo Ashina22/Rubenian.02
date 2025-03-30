@@ -46,10 +46,22 @@ let searchQuery = "";
 
 // Fetch Members with Pagination
 async function fetchMembers() {
-  let endpoint =
-    masterList === null
-      ? `/api/members?list=${chapterList}&page=${currentPage}&per_page=${perPage}`
-      : `/api/members?view-master-list&page=${currentPage}&per_page=${perPage}`;
+  let endpoint = "/api/members";
+
+  if (
+    label !== null &&
+    (masterList === null || masterList === "") &&
+    (chapterList === null || chapterList === "")
+  ) {
+    membersList.innerHTML = `<tr class="text-center"><td colspan="5">No members found.</td></tr>`;
+    return;
+  }
+
+  if (masterList === null) {
+    endpoint += `?list=${chapterList}&page=${currentPage}&per_page=${perPage}`;
+  } else if (masterList !== null && label === null) {
+    endpoint += `?view-master-list&page=${currentPage}&per_page=${perPage}`;
+  }
 
   if (searchQuery.trim() !== "") {
     endpoint += `&search=${encodeURIComponent(searchQuery)}`;

@@ -313,12 +313,12 @@ update_member_form.addEventListener("submit", async (e) => {
   cancelBtn.classList.add("d-none");
 });
 
-const data = await getCachedData("/api/chapter");
-console.log(data);
+const chapterData = await getCachedData("/api/chapter");
+console.log(chapterData);
 
-let chapterOptions = data
+let chapterOptions = chapterData
   .map((chapter) => {
-    let location = [
+    let chapters = [
       chapter.region?.region,
       chapter.municipality?.municipality,
       chapter.province?.province,
@@ -328,7 +328,7 @@ let chapterOptions = data
       .filter((value) => value && value !== "None")
       .join(", ");
 
-    return `<option value="${chapter.id}">${location}</option>`;
+    return `<option value="${chapter.id}">${chapters}</option>`;
   })
   .join("");
 

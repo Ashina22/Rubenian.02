@@ -96,20 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-//chapters.html//
-document.addEventListener("DOMContentLoaded", function () {
-  // Add event listener to the "Add Chapter" button
-  const addChapterBtn = document.querySelector(".btn-add");
-  if (addChapterBtn) {
-    addChapterBtn.addEventListener("click", function () {
-      const addChapterModal = new bootstrap.Modal(
-        document.getElementById("addChapterModal")
-      );
-      addChapterModal.show();
-    });
-  }
-});
-
 //profile.html//
 /// Function to add a new child name input field
 function addChildNameField() {

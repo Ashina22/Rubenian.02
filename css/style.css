@@ -555,10 +555,9 @@ th {
 }
 
 .list-group-item:hover {
-  background: #d1d1d1;
+  background: #e3e3e3;
   transform: translateY(-2px);
   color: rgb(35, 35, 35);
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Delete Button */
@@ -655,4 +654,74 @@ th {
   66% {
     background-size: calc(100% / 3) 100%, calc(100% / 3) 100%, calc(100% / 3) 0%;
   }
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 60px;
+  height: 30px;
+  background-color: #e5e7eb;
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.3s;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.toggle-container.active {
+  background-color: lightblue; /* Filament primary blue */
+}
+
+.toggle-container.active .toggle-slider {
+  transform: translateX(30px);
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease;
+  font-size: 16px;
+}
+
+.icon-off {
+  left: 8px;
+  color: #6b7280;
+}
+
+.icon-on {
+  right: 8px;
+  color: white;
+  opacity: 0;
+}
+
+.toggle-container.active .icon-off {
+  opacity: 0;
+}
+
+.toggle-container.active .icon-on {
+  opacity: 1;
+}
+
+.btn-add-chapter {
+  padding: 6px 10px;
+  border-radius: 10px;
+  background-color: rgb(37, 153, 134);
+  color: #ffffff;
+  letter-spacing: 1px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+  border: none;
+  font-size: 12px;
 }
