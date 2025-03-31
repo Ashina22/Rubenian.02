@@ -1,4 +1,13 @@
-import { getCachedData } from "../utils/utils.js";
+import {
+  backendURL,
+  getCachedData,
+  getData,
+  showToast,
+} from "../utils/utils.js";
+
+const deleteModal = document.getElementById("deleteModal");
+
+let endpoint_url = "";
 
 // Define endpoints and containers
 const endpoints = {
@@ -21,7 +30,7 @@ const endpoints = {
 };
 
 // Function to fetch, sort, and display data dynamically
-async function fetchAndDisplay(type) {
+async function fetchAndDisplay(type, displayStyle = "none") {
   const { url, container, label } = endpoints[type];
   const data = await getCachedData(url);
 
@@ -38,10 +47,10 @@ async function fetchAndDisplay(type) {
         <a href="viewmembers.html?list=${chapterIdList}&label=${item[label]}">
             <button class="btn btn-region">${item[label]}</button>
         </a>
-        <button class="border-0 deleteButton" 
+        <button class="border-0 deleteChapter" data-id="${item.id}"
             style="position: absolute; top: -6px; right: -6px; width: 24px; height: 24px; 
                    background-color: white; border-radius: 50%; display: flex; 
-                   align-items: center; justify-content: center; cursor: pointer; display: none"
+                   align-items: center; justify-content: center; cursor: pointer; display: ${displayStyle}"
         >
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -64,6 +73,10 @@ async function fetchAndDisplay(type) {
 
   if (data.length === 0) {
     htmlContent = "<p>No results found.</p>";
+  }
+
+  if ((document.getElementById(container).innerHTML = htmlContent)) {
+    endpoint_url = url;
   }
 
   document.getElementById(container).innerHTML = htmlContent;
@@ -90,12 +103,34 @@ function enableSearch(inputSelector, type) {
 
     for (let item of filteredData) {
       let chapterIdList = item.chapters.map((ch) => ch.id).join(",");
+      console.log(label);
 
       if (item[label] !== "None") {
-        htmlContent += `
-                    <a href="viewmembers.html?list=${chapterIdList}">
-                        <button class="btn btn-region">${item[label]}</button>
-                    </a>`;
+        htmlContent += ` <div style="position: relative; display: inline-block;">
+        <a href="viewmembers.html?list=${chapterIdList}&label=${item[label]}">
+            <button class="btn btn-region">${item[label]}</button>
+        </a>
+        <button class="border-0 deleteChapter" data-id="${item.id}" data-label="${label}"
+            style="position: absolute; top: -6px; right: -6px; width: 24px; height: 24px; 
+                   background-color: white; border-radius: 50%; display: flex; 
+                   align-items: center; justify-content: center; cursor: pointer; display: "
+        >
+            <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke-width="2" 
+                stroke="currentColor" 
+                style="width: 14px; height: 14px; color: red;"
+            >
+                <path 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m5 0h-18m2 0l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14"
+                />
+            </svg>
+        </button>
+    </div>`;
       }
     }
 
@@ -106,7 +141,7 @@ function enableSearch(inputSelector, type) {
 document.getElementById("toggleDelete").addEventListener("click", function () {
   this.classList.toggle("active");
 
-  let deleteBtn = document.querySelectorAll(".deleteButton");
+  let deleteBtn = document.querySelectorAll(".deleteChapter");
 
   if (this.classList.contains("active")) {
     console.log("Toggle ON");
@@ -128,3 +163,58 @@ enableSearch(".search-region", "region");
 enableSearch(".search-province", "province");
 enableSearch(".search-municipality", "municipality");
 enableSearch(".search-barangay", "barangay");
+
+// Ensure this runs AFTER the dynamic content is inserted
+document.addEventListener("click", function (event) {
+  if (event.target.closest(".deleteChapter")) {
+    const button = event.target.closest(".deleteChapter");
+    const id = button.getAttribute("data-id");
+
+    // Set the delete button's data-id
+    document.getElementById("deleteButton").dataset.id = id;
+
+    // Open the delete modal
+    const deleteModal = new bootstrap.Modal(
+      document.getElementById("deleteModal")
+    );
+    deleteModal.show();
+  }
+});
+
+document
+  .getElementById("deleteButton")
+  .addEventListener("click", async function () {
+    const id = this.dataset.id;
+    console.log("Deleting Chapter ID:", id);
+
+    try {
+      const response = await fetch(`${backendURL}${endpoint_url}/${id}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to delete chapter");
+        // showToast
+        showToast(
+          `Failed to delete a ${endpoint_url.split(" / ")[2]}.`,
+          "danger"
+        );
+        return;
+      }
+      await getData(endpoint_url);
+      fetchAndDisplay(endpoint_url.split("/")[2], "inline-block");
+      showToast(`Successfully deleted a ${endpoint_url.split("/")[2]}.`);
+
+      // Close the modal
+      const deleteModal = bootstrap.Modal.getInstance(
+        document.getElementById("deleteModal")
+      );
+      deleteModal.hide();
+    } catch (error) {
+      console.error("Error deleting chapter:", error);
+    }
+  });

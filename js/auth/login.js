@@ -58,7 +58,7 @@ login_form.onsubmit = async (e) => {
 
     console.log(id.split(".")[0]);
 
-    // window.location.href = "/index.html";
+    window.location.href = "/index.html";
 
     login_form.reset();
   } else {

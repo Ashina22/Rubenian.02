@@ -6,6 +6,18 @@
   box-sizing: border-box;
 }
 
+.font-family {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/poppins/v22/pxiEyp8kv8JHgFVrJJnecmNE.woff2)
+    format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 .required-field::after {
   content: " *";
   color: red;
@@ -20,7 +32,7 @@ span {
 }
 
 body {
-  font-family: "Poppins";
+  font-family: "Poppins" !important;
   font-size: 0.875rem;
   opacity: 1;
   overflow-y: scroll;
@@ -389,7 +401,6 @@ input[type="file"]#photoInput {
 .btn-add {
   padding: 10px 10px;
   border-radius: 10px;
-  margin-bottom: 10px;
   background-color: rgb(37, 153, 134);
   color: #ffffff;
   letter-spacing: 1px;
@@ -586,6 +597,7 @@ th {
   font-weight: bold;
   position: relative;
 }
+
 .pagination .page-item.active .page-link::after {
   content: "";
   display: block;
@@ -680,7 +692,7 @@ th {
 }
 
 .toggle-container.active {
-  background-color: lightblue; /* Filament primary blue */
+  background-color: lightblue;
 }
 
 .toggle-container.active .toggle-slider {
@@ -712,16 +724,4 @@ th {
 
 .toggle-container.active .icon-on {
   opacity: 1;
-}
-
-.btn-add-chapter {
-  padding: 6px 10px;
-  border-radius: 10px;
-  background-color: rgb(37, 153, 134);
-  color: #ffffff;
-  letter-spacing: 1px;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
-  border: none;
-  font-size: 12px;
 }

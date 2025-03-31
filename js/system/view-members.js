@@ -5,6 +5,8 @@ const membersList = document.getElementById("membersTable");
 const paginationContainer = document.querySelector(".pagination");
 const chapterLabel = document.getElementById("chapter-label");
 
+console.log(chapterLabel);
+
 const params = new URLSearchParams(window.location.search);
 let list = params.get("list");
 
@@ -20,7 +22,7 @@ if (!list) {
     );
   }
 } else {
-  localStorage.setItem("chapter-list", list); // Store latest list
+  localStorage.setItem("chapter-list", list);
   params.delete("list"); // Hide from URL
   window.history.replaceState(
     {},
@@ -32,12 +34,12 @@ if (!list) {
 const chapterList = localStorage.getItem("chapter-list");
 const masterList = params.get("view-master-list");
 const label = params.get("label");
-
-const userType = localStorage.getItem("type");
+console.log(label);
 
 if (label) {
   chapterLabel.textContent = `${label} - Members`;
 }
+const userType = localStorage.getItem("type");
 
 let currentPage = 1;
 let totalPages = 1;
@@ -47,15 +49,6 @@ let searchQuery = "";
 // Fetch Members with Pagination
 async function fetchMembers() {
   let endpoint = "/api/members";
-
-  if (
-    label !== null &&
-    (masterList === null || masterList === "") &&
-    (chapterList === null || chapterList === "")
-  ) {
-    membersList.innerHTML = `<tr class="text-center"><td colspan="5">No members found.</td></tr>`;
-    return;
-  }
 
   if (masterList === null) {
     endpoint += `?list=${chapterList}&page=${currentPage}&per_page=${perPage}`;
@@ -112,11 +105,17 @@ async function getValidImagePath(member) {
   if (!member.id_pic) return defaultImage; // No image set
 
   const cleanedName = cleanImageName(member.id_pic);
-  const originalPath = `${backendURL}/storage/images/${member.id_pic}`;
-  const cleanedPath = `${backendURL}/storage/images/${cleanedName}`;
+  const originalPath = `${backendURL}/uploads/members/${member.id_pic}`;
+  const anotherPath = `${backendURL}/${member.id_pic}`;
+  const cleanedPath = `${backendURL}/${cleanedName || member.id_pic}`;
 
   // Check if cleanedPath exists first
   if (await checkImageExists(cleanedPath)) {
+    return cleanedPath;
+  }
+
+  // Check if anotherPath exists first
+  if (await checkImageExists(anotherPath)) {
     return cleanedPath;
   }
 
@@ -145,7 +144,7 @@ function displayMembers(members) {
 
       const row = document.createElement("tr");
       row.innerHTML = `
-      <td>
+      <td class="text-center">
         <a href="member-profile.html?member-id=${member.id}?${timestamp}">
           <img src="${imagePath}" alt="Profile" class="member-img"  />
         </a>
@@ -179,10 +178,11 @@ function setupPagination(data) {
   paginationContainer.innerHTML = "";
 
   const maxVisiblePages = 3;
-  let startPage = Math.max(1, currentPage - 2); // Ensure at least two pages before current page
-  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = startPage + maxVisiblePages - 1;
 
-  if (endPage - startPage < maxVisiblePages - 1) {
+  if (endPage > totalPages) {
+    endPage = totalPages;
     startPage = Math.max(1, endPage - maxVisiblePages + 1);
   }
 
@@ -195,21 +195,21 @@ function setupPagination(data) {
     </li>
   `;
 
-  // First Page
+  // First Page + Ellipsis
   if (startPage > 1) {
     paginationContainer.innerHTML += `
       <li class="page-item">
         <a class="page-link" href="#" onclick="changePage(1)">1</a>
       </li>
     `;
-    if (startPage > 2) {
-      paginationContainer.innerHTML += `
-        <li class="page-item disabled"><span class="page-link">...</span></li>
-      `;
-    }
+    // if (startPage > 2) {
+    //   paginationContainer.innerHTML += `
+    //     <li class="page-item disabled"><span class="page-link">...</span></li>
+    //   `;
+    // }
   }
 
-  // Page Numbers (Dynamic Range)
+  // Page Numbers
   for (let i = startPage; i <= endPage; i++) {
     paginationContainer.innerHTML += `
       <li class="page-item ${i === currentPage ? "active" : ""}">
@@ -218,11 +218,11 @@ function setupPagination(data) {
     `;
   }
 
-  // Last Page
+  // Last Page + Ellipsis
   if (endPage < totalPages) {
     if (endPage < totalPages - 1) {
       paginationContainer.innerHTML += `
-        <li class="page-item disabled"><span class="page-link">...</span></li>
+        <li class="page-item disabled"><span class="page-link" style="margin-left: -20px; margin-right: -20px">...</span></li>
       `;
     }
     paginationContainer.innerHTML += `

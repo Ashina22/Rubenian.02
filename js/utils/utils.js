@@ -1,7 +1,12 @@
-const backendURL = "http://localhost/rii-membership-backend/public";
+const backendURL = "http://rii-portal-backend.test";
 
-const userId = localStorage.getItem("id").split(".")[0];
-const token = localStorage.getItem("token");
+let userId = null;
+let token = null;
+
+if (localStorage.getItem("token") !== null || token !== null) {
+  userId = localStorage.getItem("id").split(".")[0];
+  token = localStorage.getItem("token");
+}
 
 function removeURLParams() {
   const newUrl = window.location.origin + window.location.pathname;
@@ -51,7 +56,7 @@ const API_ENDPOINTS = [
   "/api/municipality",
   "/api/province",
   "/api/log",
-  "/api/member",
+  "/api/members",
 ];
 
 // Cache name
@@ -59,7 +64,7 @@ const CACHE_NAME = "api-cache";
 
 // Function to fetch and store API responses **only once**
 async function cacheAPIData() {
-  if (!token) {
+  if (!localStorage.getItem("token")) {
     console.warn("No token found. Skipping cache update.");
     return;
   }
@@ -114,11 +119,12 @@ async function getCachedData(endpoint) {
   return null;
 }
 
-if (token !== null) {
+if (localStorage.getItem("token") !== null) {
   cacheAPIData();
 }
 
 async function getData(endpoint) {
+  const cache = await caches.open(CACHE_NAME);
   const url = backendURL + endpoint;
 
   try {
@@ -131,7 +137,9 @@ async function getData(endpoint) {
     });
 
     if (response.ok) {
-      return await response.json();
+      const data = await response.json();
+      await cache.put(url, new Response(JSON.stringify(data)));
+      return data;
     } else {
       console.warn(`Failed to fetch: ${endpoint} - Status: ${response.status}`);
     }
@@ -140,7 +148,7 @@ async function getData(endpoint) {
   }
 }
 
-async function postData(endpoint, data, formElement) {
+async function postData(endpoint, data, formElement, refreshUI) {
   const url = backendURL + endpoint;
 
   data.forEach((value, key) => console.log(key, value));
@@ -150,27 +158,26 @@ async function postData(endpoint, data, formElement) {
       method: "POST",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: data,
     });
 
     if (!response.ok) {
-      showToast("Failed to create. try again.", "danger");
+      showToast("Failed to create. Try again.", "danger");
       formElement.reset();
       throw new Error(`POST request failed: ${await response.text()}`);
     }
 
-    const cachedData = await getData(endpoint);
+    // Fetch updated data after posting
+    const updatedData = await getData(endpoint);
 
-    // Update cache with new data
-    const cache = await caches.open(CACHE_NAME);
-    await cache.put(url, new Response(JSON.stringify(cachedData)));
-
-    console.log(cachedData);
-
-    showToast("Successfully created a new chapter.");
+    showToast("Successfully created a new entry.");
     formElement.reset();
+
+    if (typeof refreshUI === "function") {
+      refreshUI(updatedData);
+    }
   } catch (error) {
     console.error("Error in postData:", error);
     return null;
@@ -220,7 +227,7 @@ export {
   removeURLParams,
   showToast,
   getCachedData,
-  userId,
   postData,
   putData,
+  getData,
 };

@@ -16,6 +16,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script type="module" src="js/system/add-new-member.js"></script>
   </head>
 
   <body>
@@ -161,337 +162,468 @@
                 Please fill in all required fields marked with an asterisk (*)
               </p>
             </div>
-
-            <div class="text-center p-4 mb-4">
-              <img
-                id="profileImage"
-                src="image/profile.jpg"
-                alt="Profile Image"
-                class="rounded-circle mb-3"
-                width="150"
-                height="150"
-              />
-
-              <!-- Upload Photo Section -->
-              <div id="uploadPhotoSection" class="mb-3">
-                <label for="photoInput" class="form-label"
-                  >Upload Profile Photo</label
-                >
-                <input
-                  type="file"
-                  id="photoInput"
-                  accept="image/*"
-                  class="form-control"
+            <form id="create_member_form" enctype="multipart/form-data">
+              <div class="text-center">
+                <img
+                  id="profileImage"
+                  src="image/profile.jpg"
+                  alt="Profile Image"
+                  class="rounded-circle mb-3"
+                  width="150"
+                  height="150"
                 />
-              </div>
-            </div>
 
-            <form id="addMemberForm">
-              <h5 class="mb-3">Member Information</h5>
-              <div class="row">
+                <!-- Edit Photo Section (Hidden by Default) -->
+
+                <div id="editPhotoSection" class="mb-2">
+                  <label class="required-field">Profile Picture</label>
+                  <input
+                    type="file"
+                    id="photoInput"
+                    accept="image/*"
+                    name="id_pic"
+                    class="form-control mb-2"
+                  />
+                </div>
+              </div>
+
+              <h5 class="mb-3">About Candidate</h5>
+              <div class="row" id="form-container">
                 <div class="col-md-4 mb-3">
                   <label class="required-field">First Name</label>
                   <input
+                    id="first_name"
+                    name="first_name"
                     type="text"
                     class="form-control"
-                    placeholder="Enter first name"
                     required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Last Name</label>
                   <input
+                    id="last_name"
+                    name="last_name"
                     type="text"
                     class="form-control"
-                    placeholder="Enter last name"
                     required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Middle Name</label>
                   <input
+                    id="middle_name"
+                    name="middle_name"
                     type="text"
                     class="form-control"
-                    placeholder="Enter middle name"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Extension Name</label>
+                  <input
+                    id="ext_name"
+                    name="ext_name"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Email Address</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    class="form-control"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Registered No.</label>
                   <input
-                    type="text"
+                    id="reg_no"
+                    name="reg_no"
+                    type="number"
                     class="form-control"
-                    placeholder="Enter registration number"
                     required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Volume No.</label>
                   <input
-                    type="text"
+                    id="vol_no"
+                    name="vol_no"
+                    type="number"
                     class="form-control"
-                    placeholder="Enter volume number"
+                    required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Page No.</label>
                   <input
-                    type="text"
+                    id="page_no"
+                    name="page_no"
+                    type="number"
                     class="form-control"
-                    placeholder="Enter page number"
+                    required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Birth Date</label>
-                  <input type="date" class="form-control" required />
+                  <input
+                    id="birth_date"
+                    name="birth_date"
+                    type="date"
+                    class="form-control"
+                    required
+                  />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Birth Place</label>
                   <input
+                    id="birth_place"
+                    name="birth_place"
                     type="text"
                     class="form-control"
-                    placeholder="Enter birth place"
                     required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Nationality</label>
                   <input
+                    id="nationality"
+                    name="nationality"
                     type="text"
                     class="form-control"
-                    placeholder="Enter nationality"
                     required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="required-field">Gender</label>
-                  <select class="form-select" required>
-                    <option value="" selected disabled>Select gender</option>
+                  <label class="required-field">Sex</label>
+                  <select
+                    id="sex"
+                    name="sex"
+                    type="text"
+                    class="form-control"
+                    required
+                  >
+                    <option value="">Select Sex</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
-                    <option value="Other">Other</option>
                   </select>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Religion</label>
                   <input
+                    id="religion"
+                    name="religion"
                     type="text"
                     class="form-control"
-                    placeholder="Enter religion"
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="required-field">Contact No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter contact number"
-                    required
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="required-field">Civil Status</label>
-                  <select class="form-select">
-                    <option value="" selected disabled>
-                      Select civil status
-                    </option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Separated">Separated</option>
-                  </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label class="required-field">Residence</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter complete address"
-                    required
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Father's Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter father's name"
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Mother's Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter mother's name"
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Spouse Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter spouse name"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Occupation</label>
                   <input
+                    id="occupation"
+                    name="occupation"
                     type="text"
                     class="form-control"
-                    placeholder="Enter occupation"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="required-field">SSS No.</label>
+                  <label class="required-field">Contact No.</label>
                   <input
+                    id="contact_no"
+                    name="contact_no"
                     type="text"
                     class="form-control"
-                    placeholder="Enter SSS number"
+                    required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="required-field">GSIS No.</label>
-                  <input
+                  <label class="required-field">Civil Status</label>
+                  <select
+                    id="civil_status"
+                    name="civil_status"
                     type="text"
                     class="form-control"
-                    placeholder="Enter GSIS number"
+                    required
+                  >
+                    <option value="">Select Civil Status</option>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Annulled">Annulled</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="required-field">Residence</label>
+                  <input
+                    id="residence"
+                    name="residence"
+                    type="text"
+                    class="form-control"
+                    required
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                    style="margin-top: -10px; margin-bottom: 2px"
+                  >
+                    <label class="required-field">Chapter </label>
+                    <div class="d-flex">
+                      <div id="toggleSearch" class="toggle-container">
+                        <div class="toggle-slider"></div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          class="toggle-icon icon-off"
+                          style="color: #259986"
+                          width="13"
+                          height="13"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          class="toggle-icon icon-on"
+                          style="color: #259986"
+                          width="13"
+                          height="13"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35M16 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    id="chapterSearch"
+                    class="form-control search-input"
+                    placeholder="Search Chapter..."
+                    onkeyup="filterSelect('chapterSearch', 'chapter_id')"
+                  />
+                  <select
+                    id="chapter_id"
+                    name="chapter_id"
+                    type="text"
+                    class="form-control"
+                    required
+                  >
+                    <option value="">Select Chapter</option>
+                  </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Spouse Name</label>
+                  <input
+                    id="spouse_name"
+                    name="spouse_name"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Father's Name</label>
+                  <input
+                    id="father_name"
+                    name="father_name"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Mother's Name</label>
+                  <input
+                    id="mother_name"
+                    name="mother_name"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>SSS No.</label>
+                  <input
+                    id="sss_no"
+                    name="sss_no"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>GSIS No.</label>
+                  <input
+                    id="gsis_no"
+                    name="gsis_no"
+                    type="text"
+                    class="form-control"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Tax Identification No.</label>
                   <input
+                    id="tax_no"
+                    name="tax_no"
                     type="text"
                     class="form-control"
-                    placeholder="Enter TIN"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="required-field">PhilHealth No.</label>
+                  <label>Tax Issued at</label>
                   <input
+                    id="tax_issue"
+                    name="tax_issue"
                     type="text"
                     class="form-control"
-                    placeholder="Enter PhilHealth number"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="required-field">HDMF No.</label>
+                  <label>Tax Date</label>
                   <input
+                    id="tax_date"
+                    name="tax_date"
                     type="text"
                     class="form-control"
-                    placeholder="Enter HDMF number"
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>Number of Children</label>
+                  <label>PhilHealth No.</label>
                   <input
-                    type="number"
-                    id="childrenCount"
+                    id="philhealth_no"
+                    name="philhealth_no"
+                    type="text"
                     class="form-control"
-                    placeholder="Enter number of children"
-                    min="0"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>HDMF No.</label>
+                  <input
+                    id="hdmf_no"
+                    name="hdmf_no"
+                    type="text"
+                    class="form-control"
                   />
                 </div>
               </div>
-
-              <!-- Children Names Button and Container -->
               <div class="row">
-                <div class="col-12">
+                <p class="fw-bold">
+                  <span class="text-danger">Note:</span> Click the button to add
+                  an input field for a child or beneficiary.
+                </p>
+
+                <div class="col-12 d-flex">
                   <button
                     type="button"
                     id="addChildrenNamesBtn"
+                    class="btn btn-add me-2"
+                  >
+                    Add Child Input
+                  </button>
+                  <button
+                    type="button"
+                    id="addBeneficiariesNamesBtn"
                     class="btn btn-add"
                   >
-                    <i class="fas fa-plus me-2"></i>Add Children Names
+                    Add Beneficiary Input
                   </button>
                 </div>
               </div>
+              <div id="childrenContainer" class="row mt-2"></div>
+              <div id="beneficiariesContainer" class="row mt-2"></div>
 
-              <!-- Children Names Container - Initially Hidden -->
-              <div
-                id="childrenNamesContainer"
-                class="row mb-3"
-                style="display: none"
-              >
-                <div class="col-12 mb-2"></div>
-                <div id="childrenInputsContainer">
-                  <!-- Dynamically added children input fields will appear here -->
-                </div>
-              </div>
-
-              <h5 class="mt-4 mb-3">In Case of Emergency</h5>
+              <h6 class="mt-4 mb-3 fw-bold">In Case of Emergency</h6>
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Name</label>
                   <input
+                    id="emergency_name"
+                    name="emergency_name"
                     type="text"
                     class="form-control"
-                    placeholder="Enter emergency contact name"
                     required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Contact No.</label>
                   <input
-                    type="text"
+                    type="number"
+                    id="emergency_contact"
+                    name="emergency_contact"
                     class="form-control"
-                    placeholder="Enter emergency contact number"
                     required
                   />
                 </div>
                 <div class="col-md-4 mb-3">
                   <label class="required-field">Address</label>
                   <input
+                    id="emergency_address"
+                    name="emergency_address"
                     type="text"
                     class="form-control"
-                    placeholder="Enter emergency contact address"
                     required
                   />
                 </div>
               </div>
 
-              <h5 class="mt-4 mb-3">Payment Details</h5>
+              <h6 class="mt-4 mb-3 fw-bold">Paid Under</h6>
               <div class="row">
                 <div class="col-md-3 mb-3">
-                  <label class="required-field">OR No.</label>
+                  <label>OR No.</label>
+
                   <input
+                    id="or_no"
+                    name="or_no"
                     type="text"
                     class="form-control"
-                    placeholder="Enter OR number"
                   />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label class="required-field">Issued at</label>
+                  <label>Issued at</label>
                   <input
+                    id="or_issue"
+                    name="or_issue"
                     type="text"
                     class="form-control"
-                    placeholder="Enter issue location"
                   />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label class="required-field">Issued on</label>
-                  <input type="date" class="form-control" />
+                  <label>Issued on</label>
+                  <input
+                    id="or_date"
+                    name="or_date"
+                    type="date"
+                    class="form-control"
+                  />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label class="required-field">Issued by</label>
+                  <label>Issued by</label>
                   <input
+                    id="teller_name"
+                    name="teller_name"
                     type="text"
                     class="form-control"
-                    placeholder="Enter issuer name"
                   />
                 </div>
               </div>
 
-              <div class="text-center mt-4">
-                <button type="submit" class="btn btn-add">
-                  <i class="fas fa-user-plus me-2"></i>Add Member
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary ms-2 cancel"
-                  onclick="window.location.href='masterlist.html'"
-                >
-                  Cancel
+              <div class="text-center mt-2">
+                <button type="submit" class="btn btn-edit" id="saveBtn">
+                  Create New Member
                 </button>
               </div>
             </form>
@@ -533,40 +665,96 @@
           }
         });
 
+      // add input functionality
       document
         .getElementById("addChildrenNamesBtn")
         .addEventListener("click", function () {
-          const childrenCount =
-            parseInt(document.getElementById("childrenCount").value) || 0;
-          const container = document.getElementById("childrenInputsContainer");
-          const childrenContainer = document.getElementById(
-            "childrenNamesContainer"
+          const childrenContainer =
+            document.getElementById("childrenContainer");
+
+          // Get current count of child inputs
+          const currentChildrenCount = childrenContainer.children.length;
+
+          if (currentChildrenCount >= 20) {
+            alert("You can only add up to 20 children.");
+            return; // Stop adding more inputs
+          }
+
+          // Create a new div for each child input
+          const childDiv = document.createElement("div");
+          childDiv.className = "col-md-3 mb-2"; // Adjust width as needed
+
+          const childIndex = currentChildrenCount + 1;
+
+          childDiv.innerHTML = `
+      <label>Child ${childIndex} Name</label>
+      <input type="text" name="child${childIndex}" class="form-control" placeholder="Enter child's name">
+    `;
+
+          childrenContainer.appendChild(childDiv);
+        });
+
+      document
+        .getElementById("addBeneficiariesNamesBtn")
+        .addEventListener("click", function () {
+          const beneficiariesContainer = document.getElementById(
+            "beneficiariesContainer"
           );
 
-          // Clear previous inputs
-          container.innerHTML = "";
+          // Get current count of beneficiary inputs
+          const currentBeneficiariesCount =
+            beneficiariesContainer.children.length;
 
-          if (childrenCount > 0) {
-            childrenContainer.style.display = "block";
-
-            const rowDiv = document.createElement("div");
-            rowDiv.className = "row"; // Ensure inputs are in a row
-
-            for (let i = 1; i <= childrenCount; i++) {
-              const childDiv = document.createElement("div");
-              childDiv.className = "col-md-3 mb-2"; // Adjust width as needed
-              childDiv.innerHTML = `
-        <label>Child ${i} Name</label>
-        <input type="text" name="child${i}" class="form-control" placeholder="Enter child's name">
-      `;
-              rowDiv.appendChild(childDiv);
-            }
-
-            container.appendChild(rowDiv);
-          } else {
-            childrenContainer.style.display = "none";
+          if (currentBeneficiariesCount >= 5) {
+            alert("You can only add up to 5 beneficiaries.");
+            return; // Stop adding more inputs
           }
+
+          // Create a new div for each beneficiary input
+          const beneficiaryDiv = document.createElement("div");
+          beneficiaryDiv.className = "col-md-3 mb-2"; // Adjust width as needed
+
+          const beneficiaryIndex = currentBeneficiariesCount + 1;
+
+          beneficiaryDiv.innerHTML = `
+      <label>Beneficiary ${beneficiaryIndex} Name</label>
+      <input type="text" name="beneficiary${beneficiaryIndex}" class="form-control" placeholder="Enter beneficiary's name">
+    `;
+
+          beneficiariesContainer.appendChild(beneficiaryDiv);
         });
+
+      function filterSelect(searchId, selectId) {
+        let input = document.getElementById(searchId).value.toLowerCase();
+        let select = document.getElementById(selectId);
+        let options = select.getElementsByTagName("option");
+
+        console.log(options);
+
+        let hasMatch = false;
+        for (let i = 0; i < options.length; i++) {
+          let text = options[i].textContent.toLowerCase();
+          if (text.includes(input)) {
+            options[i].style.display = "";
+            hasMatch = true;
+          } else {
+            options[i].style.display = "none";
+          }
+        }
+
+        // Auto-select first visible option
+        if (hasMatch) {
+          for (let option of options) {
+            if (option.style.display !== "none") {
+              select.value = option.value;
+              break;
+            }
+          }
+        }
+      }
+
+      let searchInputs = document.querySelectorAll(".search-input");
+      searchInputs.forEach((input) => (input.style.display = "none"));
     </script>
   </body>
 </html>

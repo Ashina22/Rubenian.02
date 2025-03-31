@@ -42,7 +42,7 @@ function renderUserByRole() {
   for (let user of users) {
     const profilePicture =
       user.profile_picture !== null
-        ? `${backendURL}/storage/${user.profile_picture}`
+        ? `${backendURL}/${user.profile_picture}`
         : "image/profile.jpg";
 
     const html = `<tr >
