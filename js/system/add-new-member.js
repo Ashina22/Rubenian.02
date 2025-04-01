@@ -1,4 +1,10 @@
-import { backendURL, getCachedData, showToast } from "../utils/utils.js";
+import {
+  backendURL,
+  getCachedData,
+  showToast,
+  storeActivity,
+  userId,
+} from "../utils/utils.js";
 
 const createMemberForm = document.getElementById("create_member_form");
 
@@ -42,6 +48,14 @@ if (createMemberForm) {
 
       showToast("Member created successfully!");
       console.log("Image URL:", data.data.image_url);
+
+      storeActivity(
+        userId,
+        "Create Member",
+        `Created Member: ${formData.get("first_name")} ${formData.get(
+          "last_name"
+        )} - (Registration Number:${formData.get("reg_no")}) `
+      );
       createMemberForm.reset();
     } catch (error) {
       console.error("Upload error:", error);

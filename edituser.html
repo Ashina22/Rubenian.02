@@ -16,6 +16,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script type="module" src="js/system/edit-user.js"></script>
   </head>
   <body>
     <div class="wrapper">
@@ -37,21 +38,27 @@
             />
             <a href="#">Rubenian</a>
           </div>
+
           <ul class="sidebar-nav">
+            <!-- Dashboard Section -->
+            <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
               <a href="index.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
+
+            <!-- Management Section -->
+            <li class="sidebar-header">Management</li>
             <li class="sidebar-item">
               <a
                 href="masterlist.html?view-master-list=all"
                 class="sidebar-link"
-                aria-expanded="false"
               >
                 <i class="fa-solid fa-file-lines pe-2"></i> Master List
               </a>
             </li>
+
             <li class="sidebar-item">
               <div class="d-flex justify-content-between align-items-center">
                 <a href="chapters.html" class="sidebar-link">
@@ -63,8 +70,7 @@
                   data-bs-target="#posts"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
-                >
-                </a>
+                ></a>
               </div>
               <ul
                 id="posts"
@@ -93,10 +99,27 @@
                 </li>
               </ul>
             </li>
+
+            <!-- Records & Reports Section -->
+            <li class="sidebar-header">Records & Reports</li>
+            <li class="sidebar-item">
+              <a href="logs.html" class="sidebar-link">
+                <i class="fa-solid fa-clock pe-2"></i> Logs
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a href="contributions.html" class="sidebar-link">
+                <i class="fa-solid fa-hand-holding-heart pe-2"></i>
+                Contributions
+              </a>
+            </li>
+
+            <!-- User Management Section -->
+            <li class="sidebar-header">User Access</li>
             <li class="sidebar-item">
               <div class="d-flex justify-content-between align-items-center">
                 <a href="viewusers.html" class="sidebar-link">
-                  <i class="fa-solid fa-users pe-2"></i>Users
+                  <i class="fa-solid fa-users pe-2"></i> Users
                 </a>
                 <a
                   href="#"
@@ -104,8 +127,7 @@
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
-                >
-                </a>
+                ></a>
               </div>
               <ul
                 id="users"
@@ -156,7 +178,7 @@
         <main class="content px-lg-3 py-2">
           <div class="container">
             <div class="form-container w-100">
-              <form id="createUserForm" class="needs-validation" novalidate>
+              <form id="update_user_form" class="needs-validation" novalidate>
                 <!-- Image Upload -->
                 <div class="row mb-4 justify-content-center">
                   <div class="col-12 text-center">
@@ -167,16 +189,18 @@
                         id="imagePreview"
                         alt="Profile Preview"
                       />
-                      <div class="mt-2">
+                      <div>
                         <label
                           for="userImage"
                           class="btn btn-outline-secondary"
+                          style="font-size: small"
                         >
                           <i class="fa-solid fa-upload me-2"></i>Upload Image
                         </label>
                         <input
                           type="file"
                           id="userImage"
+                          name="profile_picture"
                           accept="image/*"
                           style="display: none"
                           onchange="previewImage(this);"
@@ -194,9 +218,9 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="firstName"
+                      id="firstname"
+                      name="firstname"
                       placeholder="Enter first name"
-                      required
                     />
                     <div class="invalid-feedback">
                       Please provide a first name.
@@ -211,9 +235,9 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="middleName"
+                      id="middlename"
+                      name="middlename"
                       placeholder="Enter middle name"
-                      required
                     />
                     <div class="invalid-feedback">
                       Please provide a middle name.
@@ -226,13 +250,40 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="lastName"
+                      id="lastname"
+                      name="lastname"
                       placeholder="Enter first name"
-                      required
                     />
                     <div class="invalid-feedback">
                       Please provide a last name.
                     </div>
+                  </div>
+
+                  <!-- Username -->
+                  <div class="col-md-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="username"
+                      name="username"
+                      placeholder="Enter username"
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a username.
+                    </div>
+                  </div>
+                  <!-- email -->
+                  <div class="col-md-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="Enter email address"
+                    />
+                    <div class="invalid-feedback">Please provide an email.</div>
                   </div>
 
                   <!-- Department -->
@@ -240,7 +291,11 @@
                     <label for="department" class="form-label"
                       >Department</label
                     >
-                    <select class="form-select" id="department" required>
+                    <select
+                      class="form-select"
+                      name="department"
+                      id="department"
+                    >
                       <option value="" selected disabled>
                         Select Department
                       </option>
@@ -254,63 +309,6 @@
                     </div>
                   </div>
 
-                  <!-- Username -->
-                  <div class="col-md-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="username"
-                      placeholder="Enter username"
-                      required
-                    />
-                    <div class="invalid-feedback">
-                      Please provide a username.
-                    </div>
-                  </div>
-
-                  <div class="col-md-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="email"
-                      placeholder="Enter email address"
-                      required
-                    />
-                    <div class="invalid-feedback">Please provide an email.</div>
-                  </div>
-
-                  <!-- Password -->
-                  <div class="col-md-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="password"
-                      placeholder="Enter password"
-                      required
-                    />
-                    <div class="invalid-feedback">
-                      Please provide a password.
-                    </div>
-                  </div>
-
-                  <!-- Confirm Password -->
-                  <div class="col-md-3">
-                    <label for="confirmPassword" class="form-label"
-                      >Confirm Password</label
-                    >
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="confirmPassword"
-                      placeholder="Confirm password"
-                      required
-                    />
-                    <div class="invalid-feedback">Passwords do not match.</div>
-                  </div>
-
                   <!-- Position -->
                   <div class="col-md-3">
                     <label for="position" class="form-label">Position</label>
@@ -318,33 +316,18 @@
                       type="text"
                       class="form-control"
                       id="position"
+                      name="position"
                       placeholder="Enter position"
-                      required
                     />
                     <div class="invalid-feedback">
                       Please provide a position.
                     </div>
                   </div>
 
-                  <!-- Location -->
-                  <div class="col-md-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="location"
-                      placeholder="Enter location"
-                      required
-                    />
-                    <div class="invalid-feedback">
-                      Please provide a location.
-                    </div>
-                  </div>
-
                   <!-- Role -->
                   <div class="col-md-3">
                     <label for="role" class="form-label">Role</label>
-                    <select class="form-select" id="role" required>
+                    <select class="form-select" id="role" name="role">
                       <option value="" selected disabled>Select Role</option>
                       <option value="Admin">Admin</option>
                       <option value="Staff">Staff</option>
@@ -354,6 +337,11 @@
 
                   <!-- Form Buttons -->
                   <div class="col-12 d-flex justify-content-center mt-4">
+                    <a
+                      href="viewusers.html"
+                      class="text-center align-items-center btn-sm rounded-3 me-2 d-flex btn bg-secondary text-white"
+                      >Go Back</a
+                    >
                     <button type="submit" class="btn me-2 btn-add">
                       Update User
                     </button>

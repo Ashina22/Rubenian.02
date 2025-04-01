@@ -3,9 +3,9 @@ import {
   getCachedData,
   getData,
   showToast,
+  storeActivity,
+  userId,
 } from "../utils/utils.js";
-
-const deleteModal = document.getElementById("deleteModal");
 
 let endpoint_url = "";
 
@@ -39,15 +39,18 @@ async function fetchAndDisplay(type, displayStyle = "none") {
   let htmlContent = "";
 
   for (let item of data) {
-    let chapterIdList = item.chapters.map((ch) => ch.id).join(",");
+    if (document.getElementById(container) !== null) {
+      let chapterIdList = item.chapters.map((ch) => ch.id).join(",");
 
-    if (item[label] !== "None") {
-      htmlContent += `
+      console.log(item);
+
+      if (item[label] !== "None") {
+        htmlContent += `
     <div style="position: relative; display: inline-block;">
         <a href="viewmembers.html?list=${chapterIdList}&label=${item[label]}">
             <button class="btn btn-region">${item[label]}</button>
         </a>
-        <button class="border-0 deleteChapter" data-id="${item.id}"
+        <button class="border-0 deleteChapter" data-id="${item.id}" data-label-name="${item[label]}"
             style="position: absolute; top: -6px; right: -6px; width: 24px; height: 24px; 
                    background-color: white; border-radius: 50%; display: flex; 
                    align-items: center; justify-content: center; cursor: pointer; display: ${displayStyle}"
@@ -68,6 +71,7 @@ async function fetchAndDisplay(type, displayStyle = "none") {
             </svg>
         </button>
     </div>`;
+      }
     }
   }
 
@@ -102,35 +106,37 @@ function enableSearch(inputSelector, type) {
     let htmlContent = "";
 
     for (let item of filteredData) {
-      let chapterIdList = item.chapters.map((ch) => ch.id).join(",");
-      console.log(label);
+      if (document.getElementById(container) !== null) {
+        let chapterIdList = item.chapters.map((ch) => ch.id).join(",");
+        console.log(label);
 
-      if (item[label] !== "None") {
-        htmlContent += ` <div style="position: relative; display: inline-block;">
-        <a href="viewmembers.html?list=${chapterIdList}&label=${item[label]}">
-            <button class="btn btn-region">${item[label]}</button>
-        </a>
-        <button class="border-0 deleteChapter" data-id="${item.id}" data-label="${label}"
-            style="position: absolute; top: -6px; right: -6px; width: 24px; height: 24px; 
-                   background-color: white; border-radius: 50%; display: flex; 
-                   align-items: center; justify-content: center; cursor: pointer; display: "
+        if (item[label] !== "None") {
+          htmlContent += ` <div style="position: relative; display: inline-block;">
+    <a href="viewmembers.html?list=${chapterIdList}&label=${item[label]}">
+        <button class="btn btn-region">${item[label]}</button>
+    </a>
+    <button class="border-0 deleteChapter" data-id="${item.id}" data-label-name="${item[label]}"
+        style="position: absolute; top: -6px; right: -6px; width: 24px; height: 24px; 
+               background-color: white; border-radius: 50%; display: flex; 
+               align-items: center; justify-content: center; cursor: pointer; display: none"
+    >
+        <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="2" 
+            stroke="currentColor" 
+            style="width: 14px; height: 14px; color: red;"
         >
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke-width="2" 
-                stroke="currentColor" 
-                style="width: 14px; height: 14px; color: red;"
-            >
-                <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m5 0h-18m2 0l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14"
-                />
-            </svg>
-        </button>
-    </div>`;
+            <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m5 0h-18m2 0l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14"
+            />
+        </svg>
+    </button>
+</div>`;
+        }
       }
     }
 
@@ -169,9 +175,11 @@ document.addEventListener("click", function (event) {
   if (event.target.closest(".deleteChapter")) {
     const button = event.target.closest(".deleteChapter");
     const id = button.getAttribute("data-id");
+    const labelName = button.getAttribute("data-label-name");
 
-    // Set the delete button's data-id
+    // Set the delete button's data attributes
     document.getElementById("deleteButton").dataset.id = id;
+    document.getElementById("deleteButton").dataset.label = labelName;
 
     // Open the delete modal
     const deleteModal = new bootstrap.Modal(
@@ -185,7 +193,9 @@ document
   .getElementById("deleteButton")
   .addEventListener("click", async function () {
     const id = this.dataset.id;
-    console.log("Deleting Chapter ID:", id);
+    const labelName = this.dataset.label;
+
+    console.log("Deleting Chapter ID:", id, labelName);
 
     try {
       const response = await fetch(`${backendURL}${endpoint_url}/${id}`, {
@@ -208,6 +218,18 @@ document
       await getData(endpoint_url);
       fetchAndDisplay(endpoint_url.split("/")[2], "inline-block");
       showToast(`Successfully deleted a ${endpoint_url.split("/")[2]}.`);
+
+      storeActivity(
+        userId,
+        `Delete ${
+          endpoint_url.split("/")[2].charAt(0).toUpperCase() +
+          endpoint_url.split("/")[2].slice(1)
+        }`,
+        `Deleted ${
+          endpoint_url.split("/")[2].charAt(0).toUpperCase() +
+          endpoint_url.split("/")[2].slice(1)
+        }: ${labelName}`
+      );
 
       // Close the modal
       const deleteModal = bootstrap.Modal.getInstance(

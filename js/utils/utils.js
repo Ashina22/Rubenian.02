@@ -8,6 +8,12 @@ if (localStorage.getItem("token") !== null || token !== null) {
   token = localStorage.getItem("token");
 }
 
+if (userId !== "Admin") {
+  document.getElementById("admin-access").style.display = "none";
+} else {
+  document.getElementById("admin-access").style.display = "block";
+}
+
 function removeURLParams() {
   const newUrl = window.location.origin + window.location.pathname;
   window.history.replaceState({}, document.title, newUrl);
@@ -45,6 +51,31 @@ function showToast(message, type = "primary", duration = 3000) {
     bootstrapToast.hide();
     setTimeout(() => toast.remove(), 500);
   }, duration);
+}
+
+async function storeActivity(userId, action, details) {
+  const url = backendURL + "/api/log";
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        action: action,
+        details: details,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(`POST request failed: ${await response.text()}`);
+    }
+  } catch (error) {
+    console.error("Error in storeActivity:", error);
+  }
 }
 
 // API Endpoints
@@ -169,6 +200,18 @@ async function postData(endpoint, data, formElement, refreshUI) {
       throw new Error(`POST request failed: ${await response.text()}`);
     }
 
+    storeActivity(
+      userId,
+      `Create ${
+        endpoint.split("/")[2].charAt(0).toUpperCase() +
+        endpoint.split("/")[2].slice(1)
+      }`,
+      `Created New ${
+        endpoint.split("/")[2].charAt(0).toUpperCase() +
+        endpoint.split("/")[2].slice(1)
+      }: ${data.get(`${endpoint.split("/")[2]}`)}`
+    );
+
     // Fetch updated data after posting
     const updatedData = await getData(endpoint);
 
@@ -184,37 +227,37 @@ async function postData(endpoint, data, formElement, refreshUI) {
   }
 }
 
-async function putData(endpoint, data) {
-  const url = backendURL + endpoint;
+// async function putData(endpoint, data) {
+//   const url = backendURL + endpoint;
 
-  data.forEach((value, key) => console.log(key, value));
+//   data.forEach((value, key) => console.log(key, value));
 
-  try {
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+//   try {
+//     const response = await fetch(url, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${token}`,
+//       },
+//       body: JSON.stringify(data),
+//     });
 
-    if (!response.ok) {
-      throw new Error(`PUT request failed: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       throw new Error(`PUT request failed: ${response.status}`);
+//     }
 
-    const responseData = await response.json();
+//     const responseData = await response.json();
 
-    // Update cache with new data
-    const cache = await caches.open(CACHE_NAME);
-    await cache.put(url, new Response(JSON.stringify(responseData)));
+//     // Update cache with new data
+//     const cache = await caches.open(CACHE_NAME);
+//     await cache.put(url, new Response(JSON.stringify(responseData)));
 
-    return responseData;
-  } catch (error) {
-    console.error("Error in putData:", error);
-    return null;
-  }
-}
+//     return responseData;
+//   } catch (error) {
+//     console.error("Error in putData:", error);
+//     return null;
+//   }
+// }
 
 document.querySelectorAll(".closeModal").forEach((button) => {
   button.addEventListener("click", () => {
@@ -228,6 +271,7 @@ export {
   showToast,
   getCachedData,
   postData,
-  putData,
   getData,
+  storeActivity,
+  userId,
 };

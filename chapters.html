@@ -41,21 +41,27 @@
             />
             <a href="#">Rubenian</a>
           </div>
+
           <ul class="sidebar-nav">
+            <!-- Dashboard Section -->
+            <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
               <a href="index.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
+
+            <!-- Management Section -->
+            <li class="sidebar-header">Management</li>
             <li class="sidebar-item">
               <a
                 href="masterlist.html?view-master-list=all"
                 class="sidebar-link"
-                aria-expanded="false"
               >
                 <i class="fa-solid fa-file-lines pe-2"></i> Master List
               </a>
             </li>
+
             <li class="sidebar-item">
               <div class="d-flex justify-content-between align-items-center">
                 <a href="chapters.html" class="sidebar-link">
@@ -67,8 +73,7 @@
                   data-bs-target="#posts"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
-                >
-                </a>
+                ></a>
               </div>
               <ul
                 id="posts"
@@ -98,10 +103,26 @@
               </ul>
             </li>
 
+            <!-- Records & Reports Section -->
+            <li class="sidebar-header">Records & Reports</li>
+            <li class="sidebar-item">
+              <a href="logs.html" class="sidebar-link">
+                <i class="fa-solid fa-clock pe-2"></i> Logs
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a href="contributions.html" class="sidebar-link">
+                <i class="fa-solid fa-hand-holding-heart pe-2"></i>
+                Contributions
+              </a>
+            </li>
+
+            <!-- User Management Section -->
+            <li class="sidebar-header">User Access</li>
             <li class="sidebar-item">
               <div class="d-flex justify-content-between align-items-center">
                 <a href="viewusers.html" class="sidebar-link">
-                  <i class="fa-solid fa-users pe-2"></i>Users
+                  <i class="fa-solid fa-users pe-2"></i> Users
                 </a>
                 <a
                   href="#"
@@ -109,8 +130,7 @@
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
-                >
-                </a>
+                ></a>
               </div>
               <ul
                 id="users"
@@ -136,7 +156,7 @@
             <button class="btn" id="sidebar-toggle" type="button">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="d-flex mx-auto w-50" role="search">
+            <form id="search_form" class="d-flex mx-auto w-50" role="search">
               <input
                 class="form-control me-2 search-chapters"
                 type="search"
@@ -146,7 +166,7 @@
               <button class="btn search-btn" type="submit">
                 <i class="fa-solid fa-search"></i>
               </button>
-            </div>
+            </form>
             <!-- Profile Dropdown -->
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
@@ -174,13 +194,13 @@
             <h2 class="text-center">Chapters</h2>
 
             <div class="row mb-3 d-flex justify-content-between">
-              <div
-                class="d-flex justify-content-end"
-                data-bs-toggle="modal"
-                data-bs-target="#addChapterModal"
-              >
-                <button class="btn btn-add">
-                  <i class="fas fa-add"></i> Add Chapter
+              <div class="d-flex justify-content-end">
+                <button
+                  class="btn btn-add"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addChapterModal"
+                >
+                  Create New Chapter
                 </button>
               </div>
             </div>
@@ -204,7 +224,7 @@
                       class="modal-title text-white"
                       id="addChapterModalLabel"
                     >
-                      Add New Chapter
+                      Create New Chapter
                     </h5>
                     <div class="d-flex align-items-center">
                       <div id="toggleSearch" class="toggle-container">
@@ -368,7 +388,7 @@
                         class="btn btn-add-chapter"
                         id="saveChapter"
                       >
-                        Add
+                        Create
                       </button>
                     </div>
                   </form>
@@ -383,10 +403,7 @@
               aria-labelledby="deleteModalLabel"
               aria-hidden="true"
             >
-              <div
-                class="modal-dialog modal-dialog-centered"
-                style="max-width: 300px"
-              >
+              <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header justify-content-center">
                     <h5 class="modal-title text-white" id="deleteModalLabel">
@@ -407,7 +424,7 @@
                     <button
                       type="button"
                       class="btn btn-danger btn-sm"
-                      id="confirmDelete"
+                      id="deleteButton"
                     >
                       Delete
                     </button>

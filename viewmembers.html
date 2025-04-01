@@ -22,11 +22,7 @@
 
   <body>
     <div class="wrapper">
-      <aside
-        id="sidebar"
-        class="js-sidebar"
-        style="background-color: rgb(43, 155, 136)"
-      >
+      <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
         <div class="h-100">
           <div
@@ -44,21 +40,27 @@
             />
             <a href="#">Rubenian</a>
           </div>
+
           <ul class="sidebar-nav">
+            <!-- Dashboard Section -->
+            <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
               <a href="index.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
+
+            <!-- Management Section -->
+            <li class="sidebar-header">Management</li>
             <li class="sidebar-item">
               <a
                 href="masterlist.html?view-master-list=all"
                 class="sidebar-link"
-                aria-expanded="false"
               >
                 <i class="fa-solid fa-file-lines pe-2"></i> Master List
               </a>
             </li>
+
             <li class="sidebar-item">
               <div class="d-flex justify-content-between align-items-center">
                 <a href="chapters.html" class="sidebar-link">
@@ -70,8 +72,7 @@
                   data-bs-target="#posts"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
-                >
-                </a>
+                ></a>
               </div>
               <ul
                 id="posts"
@@ -101,10 +102,26 @@
               </ul>
             </li>
 
+            <!-- Records & Reports Section -->
+            <li class="sidebar-header">Records & Reports</li>
+            <li class="sidebar-item">
+              <a href="logs.html" class="sidebar-link">
+                <i class="fa-solid fa-clock pe-2"></i> Logs
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a href="contributions.html" class="sidebar-link">
+                <i class="fa-solid fa-hand-holding-heart pe-2"></i>
+                Contributions
+              </a>
+            </li>
+
+            <!-- User Management Section -->
+            <li class="sidebar-header">User Access</li>
             <li class="sidebar-item">
               <div class="d-flex justify-content-between align-items-center">
                 <a href="viewusers.html" class="sidebar-link">
-                  <i class="fa-solid fa-users pe-2"></i>Users
+                  <i class="fa-solid fa-users pe-2"></i> Users
                 </a>
                 <a
                   href="#"
@@ -112,8 +129,7 @@
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
-                >
-                </a>
+                ></a>
               </div>
               <ul
                 id="users"
@@ -140,17 +156,18 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Search Form -->
-            <div class="d-flex mx-auto w-50" role="search">
+            <form id="search_form" class="d-flex mx-auto w-50" role="search">
               <input
                 class="form-control me-2 search-members"
                 type="search"
-                placeholder="Search Members"
+                placeholder="Search Member"
+                name="search"
                 aria-label="Search"
               />
               <button class="btn search-btn" type="submit">
                 <i class="fa-solid fa-search"></i>
               </button>
-            </div>
+            </form>
             <!-- Profile Dropdown -->
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
@@ -221,10 +238,7 @@
           aria-labelledby="deleteModalLabel"
           aria-hidden="true"
         >
-          <div
-            class="modal-dialog modal-dialog-centered"
-            style="max-width: 300px"
-          >
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header justify-content-center text-white">
                 <h5 class="modal-title text-white" id="deleteModalLabel">
@@ -242,7 +256,11 @@
                 >
                   Cancel
                 </button>
-                <button type="button" class="btn btn-danger btn-sm">
+                <button
+                  type="button"
+                  id="deleteButton"
+                  class="btn btn-danger btn-sm"
+                >
                   Delete
                 </button>
               </div>

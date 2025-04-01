@@ -1,4 +1,9 @@
-import { backendURL, getCachedData } from "../utils/utils.js";
+import {
+  backendURL,
+  getCachedData,
+  storeActivity,
+  userId,
+} from "../utils/utils.js";
 
 const editBtn = document.getElementById("editBtn");
 const saveBtn = document.getElementById("saveBtn");
@@ -62,7 +67,7 @@ async function fetchMember() {
   }
   const data = await response.json();
 
-  localStorage.setItem("member-data", JSON.stringify(data.data));
+  // localStorage.setItem("member-data", JSON.stringify(data.data));
   console.log(data.data);
   renderMember(data.data);
 }
@@ -285,6 +290,14 @@ update_member_form.addEventListener("submit", async (e) => {
   if (!response.ok) {
     throw new Error(await response.text());
   }
+
+  storeActivity(
+    userId,
+    "Update Member Details",
+    `Updated Member: ${formData.get("first_name")} ${formData.get(
+      "last_name"
+    )} - (Regisration Number:${formData.get("reg_no")})`
+  );
 
   // Update member details in the DOM
   const updatedMember = await response.json();

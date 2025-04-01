@@ -1,4 +1,10 @@
-import { backendURL, getCachedData } from "../utils/utils.js";
+import {
+  backendURL,
+  getCachedData,
+  showToast,
+  storeActivity,
+  userId,
+} from "../utils/utils.js";
 
 const regionSelect = document.getElementById("regionSelect");
 const provinceSelect = document.getElementById("provinceSelect");
@@ -17,7 +23,7 @@ const barangay_endpoint = "/api/barangay";
 async function fetchChapters(search = "") {
   try {
     const response = await fetch(
-      backendURL + `/api/chapter?search=${encodeURIComponent(search)}`,
+      backendURL + `${chapter_endpoint}?search=${encodeURIComponent(search)}`,
       {
         headers: {
           Accept: "application/json",
@@ -52,9 +58,10 @@ function displayChapters(chapterData) {
       return ` <li class="list-group-item">
                   ${chapters} Chapter
                   <button
-                    class="delete-btn"
-                    data-bs-toggle="modal"
-                    data-bs-target="#deleteModal"
+                    class="delete-btn deleteChapter"
+                    data-id="${chapter.id}"
+                    data-chapter-name="${chapters}"
+
                   >
                     <i class="fa-solid fa-trash"></i>
                   </button>
@@ -113,12 +120,74 @@ document.getElementById("toggleSearch").addEventListener("click", function () {
     searchInputs.forEach((input) => (input.style.display = "none"));
   }
 });
-document.querySelector(".search-chapters").addEventListener("input", (e) => {
+document.getElementById("search_form").addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(e.target.value);
+  let searchInputs = document.querySelector(".search-chapters").value;
 
-  fetchChapters(e.target.value);
+  fetchChapters(searchInputs);
 });
 
 loadSelectOptions();
 fetchChapters();
+
+document.addEventListener("click", function (e) {
+  if (e.target.closest(".deleteChapter")) {
+    const button = e.target.closest(".deleteChapter");
+    const id = button.getAttribute("data-id");
+    const chapterName = button.getAttribute("data-chapter-name");
+
+    // Set the delete button's data-id
+    document.getElementById("deleteButton").dataset.id = id;
+    document.getElementById("deleteButton").dataset.chapterName = chapterName;
+
+    // Open the delete modal
+    const deleteModal = new bootstrap.Modal(
+      document.getElementById("deleteModal")
+    );
+    deleteModal.show();
+  }
+});
+
+document
+  .getElementById("deleteButton")
+  .addEventListener("click", async function () {
+    const id = this.dataset.id;
+    const chapterName = this.dataset.chapterName;
+    console.log("Deleting Chapter ID:", id);
+
+    try {
+      const response = await fetch(`${backendURL}/api/chapter/${id}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to delete chapter");
+        // showToast
+        showToast(`Failed to delete a chapter.`, "danger");
+        return;
+      }
+
+      const data = await response.json();
+
+      fetchChapters();
+      showToast(`Successfully deleted a chapter.`);
+
+      storeActivity(
+        userId,
+        "Delete Chapter",
+        `Deleted Chapter: ${chapterName}`
+      );
+
+      // Close the modal
+      const deleteModal = bootstrap.Modal.getInstance(
+        document.getElementById("deleteModal")
+      );
+      deleteModal.hide();
+    } catch (error) {
+      console.error("Error deleting chapter:", error);
+    }
+  });

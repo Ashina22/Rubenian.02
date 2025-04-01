@@ -1,4 +1,9 @@
-import { backendURL } from "../utils/utils.js";
+import {
+  backendURL,
+  showToast,
+  storeActivity,
+  userId,
+} from "../utils/utils.js";
 
 const search = document.querySelector(".search-members");
 const membersList = document.getElementById("membersTable");
@@ -34,7 +39,7 @@ if (!list) {
 const chapterList = localStorage.getItem("chapter-list");
 const masterList = params.get("view-master-list");
 const label = params.get("label");
-console.log(label);
+console.log(chapterList);
 
 if (label) {
   chapterLabel.textContent = `${label} - Members`;
@@ -108,15 +113,23 @@ async function getValidImagePath(member) {
   const originalPath = `${backendURL}/uploads/members/${member.id_pic}`;
   const anotherPath = `${backendURL}/${member.id_pic}`;
   const cleanedPath = `${backendURL}/${cleanedName || member.id_pic}`;
+  const anotherCleanedPath = `${backendURL}/uploads/members/${
+    cleanedName || member.id_pic
+  }`;
 
   // Check if cleanedPath exists first
   if (await checkImageExists(cleanedPath)) {
     return cleanedPath;
   }
 
+  // Check if cleanedPath exists first
+  if (await checkImageExists(anotherCleanedPath)) {
+    return anotherCleanedPath;
+  }
+
   // Check if anotherPath exists first
   if (await checkImageExists(anotherPath)) {
-    return cleanedPath;
+    return anotherPath;
   }
 
   // Check if originalPath exists next
@@ -160,7 +173,9 @@ function displayMembers(members) {
       <td>${member.residence}</td>
       <td>${member.reg_no}</td>
       <td>
-        <button class="btn btn-danger btn-sm" onclick="deleteRow(this)" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        <button class="btn btn-danger btn-sm deleteMember" data-id=${
+          member.id
+        } >
           Delete
         </button>
       </td>
@@ -250,11 +265,116 @@ window.changePage = function (page) {
 };
 
 // Search Event Listener
-search.addEventListener("input", () => {
-  searchQuery = search.value;
-  currentPage = 1; // Reset to page 1 when searching
-  fetchMembers();
-});
+
+// Get DOM elements
+const searchForm = document.getElementById("search_form");
+const searchInput = document.querySelector(".search-members"); // Make sure this matches your input ID
+
+// Debounce function to limit rapid API calls
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+};
+
+// Unified search handler
+const handleSearch = () => {
+  searchQuery = searchInput.value.trim();
+  console.log(searchQuery);
+  currentPage = 1; // Reset to first page
+
+  // Only search if query length is 0 or > 10 characters
+  if (searchQuery.length === 0 || searchQuery.length > 10) {
+    fetchMembers();
+  }
+};
+
+// Debounced version (300ms delay)
+const debouncedSearch = debounce(handleSearch, 300);
+
+// Event listeners
+if (searchForm) {
+  searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    searchQuery = searchInput.value.trim();
+    fetchMembers();
+  });
+}
+
+if (searchInput) {
+  // Trigger search while typing (debounced)
+  searchInput.addEventListener("input", debouncedSearch);
+
+  // Optional: Clear search when empty
+  searchInput.addEventListener("input", () => {
+    if (searchInput.value.trim() === "") {
+      searchQuery = "";
+      currentPage = 1;
+      fetchMembers();
+    }
+  });
+}
 
 // Initial Fetch
 fetchMembers();
+
+document.addEventListener("click", function (e) {
+  if (e.target.closest(".deleteMember")) {
+    const button = e.target.closest(".deleteMember");
+    const id = button.getAttribute("data-id");
+
+    // Set the delete button's data-id
+    document.getElementById("deleteButton").dataset.id = id;
+
+    // Open the delete modal
+    const deleteModal = new bootstrap.Modal(
+      document.getElementById("deleteModal")
+    );
+    deleteModal.show();
+  }
+});
+
+document
+  .getElementById("deleteButton")
+  .addEventListener("click", async function () {
+    const id = this.dataset.id;
+    console.log("Deleting ID:", id);
+
+    try {
+      const response = await fetch(`${backendURL}/api/member/${id}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      if (!response.ok) {
+        console.error("Failed to delete member");
+        // showToast
+        showToast(`Failed to delete a member.`, "danger");
+        return;
+      }
+
+      const data = await response.json();
+
+      fetchMembers();
+      showToast(`Successfully deleted a member.`);
+
+      storeActivity(
+        userId,
+        "Delete Member",
+        `Deleted Member: ${data.data.first_name} ${data.data.last_name} - ${data.data.sex} - (Registration Number: ${data.data.reg_no})`
+      );
+
+      // Close the modal
+      const deleteModal = bootstrap.Modal.getInstance(
+        document.getElementById("deleteModal")
+      );
+      deleteModal.hide();
+    } catch (error) {
+      console.error("Error deleting chapter:", error);
+    }
+  });
