@@ -7,7 +7,6 @@ import {
 
 const params = new URLSearchParams(window.location.search);
 const id = params.get("user-id").split(".")[0];
-console.log(id);
 
 async function fetchUser() {
   const response = await fetch(backendURL + "/api/user/" + id, {
@@ -23,7 +22,6 @@ async function fetchUser() {
   }
   const data = await response.json();
 
-  console.log(data);
   renderUserData(data);
 }
 
@@ -40,6 +38,8 @@ function renderUserData(data) {
   document.getElementById("username").value = formatValue(data.username);
   document.getElementById("email").value = formatValue(data.email);
   document.getElementById("role").value = formatValue(data.role);
+  document.getElementById("imagePreview").src =
+    backendURL + "/" + data.profile_picture;
 }
 
 document
@@ -53,10 +53,10 @@ document
     // Simulate a PUT request
     formData.append("_method", "PUT");
 
-    // Log formData for debugging
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+    // // Log formData for debugging
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
 
     try {
       const response = await fetch(url, {
@@ -73,7 +73,7 @@ document
       }
 
       const data = await response.json();
-      console.log(data);
+
       showToast("User updated successfully!");
 
       await storeActivity(

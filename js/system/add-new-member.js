@@ -47,7 +47,6 @@ if (createMemberForm) {
       }
 
       showToast("Member created successfully!");
-      console.log("Image URL:", data.data.image_url);
 
       storeActivity(
         userId,
@@ -63,48 +62,8 @@ if (createMemberForm) {
     }
   });
 }
-// // Verify the file is included in FormData
-// const fileInput = createMemberForm.querySelector(
-//   'input[type="file"][name="id_pic"]'
-// );
-// if (fileInput && fileInput.files.length > 0) {
-//   console.log("File found:", fileInput.files[0].name);
-// } else {
-//   console.warn("No file selected for id_pic");
-//   // Either show an error or continue without file
-//   // return showToast("ID picture is required", "danger");
-// }
-
-// try {
-//   const response = await fetch(url, {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//     },
-//     body: formData,
-//   });
-
-//   const responseData = await response.json(); // Always parse JSON
-
-//   if (!response.ok) {
-//     showToast(
-//       responseData.message || "Failed to create. Try again.",
-//       "danger"
-//     );
-//     throw new Error(`POST request failed: ${JSON.stringify(responseData)}`);
-//   }
-
-//   showToast("Successfully created a new entry.");
-//   createMemberForm.reset();
-//   return responseData;
-// } catch (error) {
-//   console.error("Error:", error);
-//   return null;
-// }
 
 const chapterData = await getCachedData("/api/chapter");
-console.log(chapterData);
 
 let chapterOptions = chapterData
   .map((chapter) => {
@@ -129,10 +88,8 @@ document.getElementById("toggleSearch").addEventListener("click", function () {
   this.classList.toggle("active");
 
   if (this.classList.contains("active")) {
-    console.log("Toggle ON");
     searchInputs.forEach((input) => (input.style.display = "block"));
   } else {
-    console.log("Toggle OFF");
     searchInputs.forEach((input) => (input.style.display = "none"));
   }
 });

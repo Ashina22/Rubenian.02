@@ -1,17 +1,17 @@
+import { setRouter } from "../router/router.js";
+
 const backendURL = "http://rii-portal-backend.test";
+
+setRouter();
 
 let userId = null;
 let token = null;
+let userType = null;
 
 if (localStorage.getItem("token") !== null || token !== null) {
   userId = localStorage.getItem("id").split(".")[0];
   token = localStorage.getItem("token");
-}
-
-if (userId !== "Admin") {
-  document.getElementById("admin-access").style.display = "none";
-} else {
-  document.getElementById("admin-access").style.display = "block";
+  userType = localStorage.getItem("type");
 }
 
 function removeURLParams() {
@@ -78,6 +78,37 @@ async function storeActivity(userId, action, details) {
   }
 }
 
+if (userId !== null) {
+  logoutBtn.addEventListener("click", async () => {
+    document.querySelector(".loader-container").classList.remove("d-none");
+
+    try {
+      const response = await fetch(backendURL + "/api/logout", {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      if (!response.ok) {
+        document.querySelector(".loader-container").classList.add("d-none");
+        throw new Error("Failed to log out");
+      }
+
+      const cacheNames = await caches.keys();
+      for (const cacheName of cacheNames) {
+        await caches.delete(cacheName);
+      }
+
+      localStorage.clear();
+
+      window.location.href = "/index.html";
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+}
+
 // API Endpoints
 const API_ENDPOINTS = [
   "/api/region",
@@ -108,7 +139,7 @@ async function cacheAPIData() {
     // Check if data is already cached
     const cachedResponse = await cache.match(url);
     if (cachedResponse) {
-      console.log(`Skipped (Already Cached): ${endpoint}`);
+      // console.log(`Skipped (Already Cached): ${endpoint}`);
       continue; // Skip if already cached
     }
 
@@ -123,7 +154,7 @@ async function cacheAPIData() {
 
       if (response.ok) {
         await cache.put(url, response.clone());
-        console.log(`Cached (First Load): ${endpoint}`);
+        // console.log(`Cached (First Load): ${endpoint}`);
       } else {
         console.warn(
           `Failed to fetch: ${endpoint} - Status: ${response.status}`
@@ -142,7 +173,7 @@ async function getCachedData(endpoint) {
 
   const cachedResponse = await cache.match(url);
   if (cachedResponse) {
-    console.log(`Serving from cache storage: ${endpoint}`);
+    // console.log(`Serving from cache storage: ${endpoint}`);
     return cachedResponse.json();
   }
 
@@ -182,7 +213,7 @@ async function getData(endpoint) {
 async function postData(endpoint, data, formElement, refreshUI) {
   const url = backendURL + endpoint;
 
-  data.forEach((value, key) => console.log(key, value));
+  // data.forEach((value, key) => console.log(key, value));
 
   try {
     const response = await fetch(url, {
@@ -274,4 +305,6 @@ export {
   getData,
   storeActivity,
   userId,
+  userType,
+  token,
 };

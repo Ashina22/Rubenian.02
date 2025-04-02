@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,9 +17,79 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script type="module" src="js/system/profile.js"></script>
   </head>
+  <style>
+    .skeleton-pulse {
+      animation: pulse 1.5s infinite;
+      background-color: rgba(37, 153, 134, 0.1);
+      border-radius: 4px;
+    }
 
+    .skeleton-text {
+      display: inline-block;
+      background-color: rgba(37, 153, 134, 0.1);
+      border-radius: 4px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .skeleton-image {
+      background-color: rgba(37, 153, 134, 0.1);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.4;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .avatar-container {
+      position: relative;
+      margin: 0 auto;
+      width: 120px;
+    }
+
+    .user-details {
+      background-color: rgba(37, 153, 134, 0.05);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .detail-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(37, 153, 134, 0.1);
+    }
+
+    .detail-item:last-child {
+      border-bottom: none;
+    }
+
+    .table-container {
+      overflow: hidden;
+    }
+
+    #logsTable tbody tr {
+      transition: background-color 0.2s;
+    }
+
+    #logsTable tbody tr:hover {
+      background-color: rgba(37, 153, 134, 0.03);
+    }
+
+    .form-control:focus {
+      border-color: #259986;
+      box-shadow: 0 0 0 3px rgba(37, 153, 134, 0.1);
+    }
+  </style>
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -44,7 +114,7 @@
             <!-- Dashboard Section -->
             <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <a href="dashboard.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
@@ -124,7 +194,7 @@
                 </a>
                 <a
                   href="#"
-                  class="sidebar-link collapsed"
+                  class="sidebar-link collapsed admin-access"
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
@@ -132,7 +202,7 @@
               </div>
               <ul
                 id="users"
-                class="sidebar-dropdown list-unstyled collapse"
+                class="sidebar-dropdown list-unstyled collapse admin-access"
                 data-bs-parent="#sidebar"
               >
                 <li class="sidebar-item">
@@ -165,365 +235,98 @@
                   />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a href="#" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Setting</a>
-                  <a href="login.html" class="dropdown-item">Logout</a>
+                  <a href="profile.html" class="dropdown-item">Profile</a>
+                  <button class="dropdown-item" id="logoutBtn">Logout</button>
                 </div>
               </li>
             </ul>
           </div>
         </nav>
-
+        <div id="placeholder"></div>
         <!--main content-->
-
-        <main class="content px-lg-3 py-2" style="margin-bottom: 30px">
+        <main class="content px-lg-3 py-2" style="margin-bottom: 10px">
+          <!-- Inside the <main class="content px-lg-3 py-2"> section -->
           <div class="container-fluid">
-            <div class="text-center p-4 mb-4">
-              <img
-                id="profileImage"
-                src="image/profile.jpg"
-                alt="Profile Image"
-                class="rounded-circle mb-3"
-                width="150"
-                height="150"
-              />
+            <div class="row g-2">
+              <!-- Profile Section -->
+              <div class="col-lg-4 userDetails d-none">
+                <div class="card border-0">
+                  <div class="card-body text-center">
+                    <div class="avatar-container mb-3">
+                      <img
+                        src=""
+                        class="rounded-circle"
+                        alt="Profile"
+                        id="profilePicture"
+                        src="image/profile.jpg"
+                        style="width: 120px; height: 120px; object-fit: cover"
+                      />
+                    </div>
+                    <h3 class="mb-2 fw-normal" id="fullName"></h3>
+                    <p class="mb-3" id="position" style="color: #259986"></p>
 
-              <!-- Edit Photo Section (Hidden by Default) -->
-              <div id="editPhotoSection" class="d-none mb-2">
-                <input
-                  type="file"
-                  id="photoInput"
-                  accept="image/*"
-                  class="form-control mb-2"
-                />
-              </div>
-
-              <h5><li>Abejuro, Argie Lorenzana</li></h5>
-              <span
-                ><li>
-                  <i class="fa-solid fa-location-dot"></i> Cuyaoyao, Pio Duran,
-                  Albay
-                </li></span
-              >
-              <li>RICN : 23137</li>
-              <button id="editBtn" class="btn btn-edit mt-3">
-                Edit Profile
-              </button>
-              <button id="cancelBtn" class="btn btn-danger d-none">
-                Cancel
-              </button>
-            </div>
-
-            <form id="profileForm">
-              <h5 class="mb-3">About Candidate</h5>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label>First Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Argie"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Last Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Middle Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Lorenzana"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Registered No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="23137"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Volume No.</label>
-                  <input type="text" class="form-control" value="78" disabled />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Page No.</label>
-                  <input type="text" class="form-control" value="1" disabled />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Birth Date</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    value="1982-10-06"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Birth Place</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Agol, Pioduran, Albay"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Nationality</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Filipino"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Gender</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Female"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Religion</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Catholic"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Occupation</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Sewer"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Contact No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="09153968548"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Civil Status</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Married"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Residence</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Cuyaoyao, Pio Duran, Albay"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Spouse Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Father's Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Mother's Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>SSS No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>GSIS No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Tax Identification No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>PhilHealth No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>HDMF No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Number of Children</label>
-                  <input
-                    type="number"
-                    id="childrenCount"
-                    class="form-control"
-                    value="1"
-                    disabled
-                  />
-                </div>
-
-                <!-- Children Names Button and Container -->
-                <div class="row">
-                  <div class="col-12">
-                    <button
-                      type="button"
-                      id="addChildrenNamesBtn"
-                      class="btn btn-add d-none"
-                    >
-                      <i class="fas fa-plus me-2"></i>Add Children Names
-                    </button>
+                    <div class="user-details text-start">
+                      <div class="detail-item mb-3">
+                        <span class="text-secondary small">Username</span>
+                        <div class="fw-medium" id="username"></div>
+                      </div>
+                      <div class="detail-item mb-3">
+                        <span class="text-secondary small">Email</span>
+                        <div class="fw-medium" id="email"></div>
+                      </div>
+                      <div class="detail-item">
+                        <span class="text-secondary small">Department</span>
+                        <div class="fw-medium" id="department"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <div class="col-md-4 mb-3">
-                  <label>Child 1</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="bongbong marcos"
-                    placeholder="Child Name"
-                    disabled
-                  />
-                </div>
               </div>
 
-              <h5 class="mt-4 mb-3">In Case of Emergency</h5>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="Reynate M. Abejuro"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Contact No.</label>
-                  <input type="text" class="form-control" value="0" disabled />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label>Address</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="La Medalla, Pio Duran"
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <h5 class="mt-4 mb-3">Paid Under</h5>
-              <div class="row">
-                <div class="col-md-3 mb-3">
-                  <label>OR No.</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="30155"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label>Issued at</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value="National Office"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label>Issued on</label>
-                  <input
-                    type="date"
-                    class="form-control"
-                    value="2017-12-25"
-                    disabled
-                  />
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label>Issued by</label>
-                  <input type="text" class="form-control" value="" disabled />
+              <!-- Logs Section -->
+              <div class="col-lg-8 logsDetails d-none">
+                <div class="card border-0 p-3">
+                  <div
+                    class="card-header border-bottom d-flex justify-content-between align-items-center"
+                  >
+                    <h6
+                      class="align-items-center mt-2 fw-bold"
+                      style="color: #259986"
+                    >
+                      Activity Logs
+                    </h6>
+                    <div class="search-container">
+                      <!-- search input -->
+                      <input
+                        type="text"
+                        id="searchInput"
+                        class="form-control me-1"
+                        placeholder="Search logs..."
+                      />
+                    </div>
+                  </div>
+                  <div class="card-body px-0">
+                    <div class="table-container">
+                      <table class="table table-borderless" id="logsTable">
+                        <thead>
+                          <tr>
+                            <th style="color: #259986">Timestamp</th>
+                            <th style="color: #259986">Action</th>
+                            <th style="color: #259986">Details</th>
+                          </tr>
+                        </thead>
+                        <tbody id="logsBody" class="text-secondary">
+                          <!-- Log rows -->
+                        </tbody>
+                      </table>
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center"></ul>
+                      </nav>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div class="text-center">
-                <button type="submit" class="btn d-none btn-edit" id="saveBtn">
-                  Save Changes
-                </button>
-                <button
-                  type="button"
-                  class="btn d-none btn-secondary cancel"
-                  id="cancelBtn"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
         </main>
         <a href="#" class="theme-toggle">
@@ -545,6 +348,17 @@
         </footer>
       </div>
     </div>
+    <script>
+      document.querySelectorAll(".admin-access").forEach((element) => {
+        const userType = localStorage.getItem("type");
+        if (userType !== "Admin") {
+          element.classList.add("d-none");
+          element.classList.remove("d-flex");
+        } else {
+          element.classList.remove("d-none");
+        }
+      });
+    </script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
   </body>

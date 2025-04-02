@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -21,6 +21,7 @@
   </head>
 
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -45,7 +46,7 @@
             <!-- Dashboard Section -->
             <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <a href="dashboard.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
@@ -166,9 +167,8 @@
                   />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a href="#" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Setting</a>
-                  <a href="login.html" class="dropdown-item">Logout</a>
+                  <a href="profile.html" class="dropdown-item">Profile</a>
+                  <button class="dropdown-item" id="logoutBtn">Logout</button>
                 </div>
               </li>
             </ul>
@@ -405,7 +405,58 @@
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>Chapter</label>
+                  <div
+                    class="d-flex align-items-center justify-content-between"
+                    style="margin-top: -10px; margin-bottom: 2px"
+                  >
+                    <label>Chapter </label>
+                    <div class="d-flex">
+                      <div id="toggleSearch" class="toggle-container d-none">
+                        <div class="toggle-slider"></div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          class="toggle-icon icon-on"
+                          style="color: #259986"
+                          width="13"
+                          height="13"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="2"
+                          stroke="currentColor"
+                          class="toggle-icon icon-off"
+                          style="color: #259986"
+                          width="13"
+                          height="13"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35M16 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    id="chapterSearch"
+                    class="form-control search-input d-none"
+                    placeholder="Search Chapter..."
+                    onkeyup="filterSelect('chapterSearch', 'chapter_id')"
+                  />
                   <select
                     id="chapter_id"
                     name="chapter_id"
@@ -526,10 +577,13 @@
                   />
                 </div>
               </div>
-              <!-- Children Names Button and Container -->
-              <div id="childrenContainer" class="row"></div>
-              <div class="row">
-                <div class="col-12">
+
+              <div class="row mb-2">
+                <p class="fw-bold d-none" id="note">
+                  <span class="text-danger">Note:</span> Click the button to add
+                  an input field for a child or beneficiary.
+                </p>
+                <div class="mb-4">
                   <button
                     type="button"
                     id="addChildrenNamesBtn"
@@ -537,12 +591,7 @@
                   >
                     <i class="fas fa-plus me-2"></i>Add Child Input
                   </button>
-                </div>
-              </div>
 
-              <div id="beneficiariesContainer" class="row"></div>
-              <div class="row">
-                <div class="col-12">
                   <button
                     type="button"
                     id="addBeneficiariesNamesBtn"
@@ -551,7 +600,29 @@
                     <i class="fas fa-plus me-2"></i>Add Beneficiary Input
                   </button>
                 </div>
+                <div id="childrenContainer" class="row"></div>
+                <div id="beneficiariesContainer" class="row"></div>
               </div>
+
+              <!-- <div class="col-12 d-flex">
+                  <button
+                    type="button"
+                    id="addChildrenNamesBtn"
+                    class="btn btn-add me-2"
+                  >
+                    Add Child Input
+                  </button>
+                  <button
+                    type="button"
+                    id="addBeneficiariesNamesBtn"
+                    class="btn btn-add"
+                  >
+                    Add Beneficiary Input
+                  </button>
+                </div>
+              </div>
+              <div id="childrenContainer" class="row mt-2"></div>
+              <div id="beneficiariesContainer" class="row mt-2"></div> -->
 
               <h5 class="mt-4 mb-3">In Case of Emergency</h5>
               <div class="row">
@@ -633,15 +704,15 @@
               </div>
 
               <div class="text-center">
-                <button type="submit" class="btn d-none btn-edit" id="saveBtn">
-                  Save Changes
-                </button>
                 <button
                   type="button"
                   class="btn d-none btn-secondary cancel"
                   id="cancelBtn"
                 >
                   Cancel
+                </button>
+                <button type="submit" class="btn d-none btn-edit" id="saveBtn">
+                  Save Changes
                 </button>
               </div>
             </form>
@@ -666,6 +737,39 @@
         </footer>
       </div>
     </div>
+    <script>
+      function filterSelect(searchId, selectId) {
+        let input = document.getElementById(searchId).value.toLowerCase();
+        let select = document.getElementById(selectId);
+        let options = select.getElementsByTagName("option");
+
+        console.log(options);
+
+        let hasMatch = false;
+        for (let i = 0; i < options.length; i++) {
+          let text = options[i].textContent.toLowerCase();
+          if (text.includes(input)) {
+            options[i].style.display = "";
+            hasMatch = true;
+          } else {
+            options[i].style.display = "none";
+          }
+        }
+
+        // Auto-select first visible option
+        if (hasMatch) {
+          for (let option of options) {
+            if (option.style.display !== "none") {
+              select.value = option.value;
+              break;
+            }
+          }
+        }
+      }
+
+      let searchInputs = document.querySelectorAll(".search-input");
+      searchInputs.forEach((input) => (input.style.display = "none"));
+    </script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
   </body>

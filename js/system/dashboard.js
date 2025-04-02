@@ -52,8 +52,6 @@ async function loadChapterContributions(page = 1, search = "", sort = "desc") {
 
     const { data, pagination, totals } = await response.json();
 
-    console.log(data);
-
     // document.getElementById("total_members").innerHTML = totals.members;
     // document.getElementById("total_contributions").innerHTML =
     //   totals.contributions;

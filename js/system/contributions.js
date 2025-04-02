@@ -43,8 +43,6 @@ async function fetchContributions() {
     const response = await fetch(backendURL + `/api/contributions?${params}`);
     const { data, meta } = await response.json();
 
-    console.log(data, meta);
-
     if (data.length === 0) {
       tableBody.innerHTML = `<td colspan="6" class="text-center">No Contributions Found.</td>`;
       return;
@@ -64,7 +62,6 @@ function renderTable(contributions) {
     .map((contribution) => {
       // Build chapter location string for each contribution
       const chapter = contribution.chapt;
-      console.log(chapter);
       const chapters = [
         chapter?.region?.region,
         chapter?.municipality?.municipality,
@@ -276,8 +273,6 @@ if (chapterSearch) {
           if (select) {
             let optionsHTML = "";
 
-            console.log(data);
-
             if (data) {
               optionsHTML += data
                 .filter((chapter) => chapter && chapter.id)
@@ -325,10 +320,10 @@ if (contributionForm) {
     const formData = new FormData(contributionForm);
     const data = Object.fromEntries(formData.entries());
 
-    // loop through entries console logging
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    // // loop through entries console logging
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
 
     const response = await fetch(backendURL + "/api/contributions", {
       method: "POST",
@@ -340,8 +335,6 @@ if (contributionForm) {
     });
 
     const responseData = await response.json();
-
-    console.log(responseData);
 
     if (!response.ok) {
       throw new Error(await response.text());
@@ -400,10 +393,8 @@ document.getElementById("toggleSearch").addEventListener("click", function () {
   searchInputs.forEach((input) => (input.style.display = "none"));
 
   if (this.classList.contains("active")) {
-    console.log("Toggle ON");
     searchInputs.forEach((input) => (input.style.display = "block"));
   } else {
-    console.log("Toggle OFF");
     searchInputs.forEach((input) => (input.style.display = "none"));
   }
 });

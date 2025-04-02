@@ -15,7 +15,6 @@ const addBeneficiariesNamesBtn = document.getElementById(
 
 const params = new URLSearchParams(window.location.search);
 const memberId = params.get("member-id").split("?")[0];
-console.log(memberId);
 
 function cleanImageName(str) {
   return str.replace(/^[\d\s;.'/-]+/, "").trim(); // Removes leading symbols/numbers
@@ -68,7 +67,6 @@ async function fetchMember() {
   const data = await response.json();
 
   // localStorage.setItem("member-data", JSON.stringify(data.data));
-  console.log(data.data);
   renderMember(data.data);
 }
 
@@ -195,8 +193,6 @@ async function renderMember(member) {
         member[childKey] &&
         member[childKey].trim() !== ""
       ) {
-        // console.log(`Adding child: ${childKey} - ${member[childKey]}`); // Debugging
-
         childCount++;
 
         const childDiv = document.createElement("div");
@@ -235,10 +231,6 @@ async function renderMember(member) {
         member[beneficiaryKey] &&
         member[beneficiaryKey].trim() !== ""
       ) {
-        console.log(
-          `Adding beneficiary: ${beneficiaryKey} - ${member[beneficiaryKey]}`
-        ); // Debugging
-
         beneficiaryCount++;
 
         const beneficiaryDiv = document.createElement("div");
@@ -274,7 +266,7 @@ update_member_form.addEventListener("submit", async (e) => {
 
   const formData = new FormData(update_member_form);
 
-  formData.forEach((value, key) => console.log(key, value));
+  // formData.forEach((value, key) => console.log(key, value));
 
   formData.append("_method", "PUT");
 
@@ -301,12 +293,10 @@ update_member_form.addEventListener("submit", async (e) => {
 
   // Update member details in the DOM
   const updatedMember = await response.json();
-  console.log(updatedMember);
   renderMember(updatedMember);
 
   // Disable all input fields
   const inputs = document.querySelectorAll('input:not([type="file"])');
-  console.log(inputs);
   inputs.forEach((input) => {
     input.disabled = true;
   });
@@ -327,7 +317,6 @@ update_member_form.addEventListener("submit", async (e) => {
 });
 
 const chapterData = await getCachedData("/api/chapter");
-console.log(chapterData);
 
 let chapterOptions = chapterData
   .map((chapter) => {
@@ -345,6 +334,17 @@ let chapterOptions = chapterData
   })
   .join("");
 
-document.getElementById("chapter_id").innerHTML = chapterOptions;
+document.getElementById("chapter_id").innerHTML =
+  `<option value="">Select Chapter</option>` + chapterOptions;
+
+document.getElementById("toggleSearch").addEventListener("click", function () {
+  this.classList.toggle("active");
+
+  if (this.classList.contains("active")) {
+    searchInputs.forEach((input) => (input.style.display = "block"));
+  } else {
+    searchInputs.forEach((input) => (input.style.display = "none"));
+  }
+});
 
 fetchMember();

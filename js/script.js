@@ -14,11 +14,25 @@ function toggleRootClass() {
   document.documentElement.setAttribute("data-bs-theme", inverted);
 }
 
+if (localStorage.getItem("light") === null) {
+  document.querySelectorAll(".text-light").forEach((element) => {
+    element.classList.remove("text-light");
+    element.classList.add("text-dark");
+  });
+}
 function toggleLocalStorage() {
   if (isLight()) {
     localStorage.removeItem("light");
+    document.querySelectorAll(".text-light").forEach((element) => {
+      element.classList.remove("text-light");
+      element.classList.add("text-dark");
+    });
   } else {
     localStorage.setItem("light", "set");
+    document.querySelectorAll(".text-dark").forEach((element) => {
+      element.classList.remove("text-dark");
+      element.classList.add("text-light");
+    });
   }
 }
 
@@ -45,8 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Store the original image src to revert if cancelled
   const path = window.location.pathname;
 
-  console.log(path);
-
   if (path !== "/createusers.html") {
     // const originalImageSrc = profileImage.src;
 
@@ -55,6 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
       saveBtn.classList.remove("d-none");
       cancelBtn.classList.remove("d-none");
       editBtn.classList.add("d-none");
+      const noteElement = document.getElementById("note");
+      if (noteElement) {
+        noteElement.classList.remove("d-none");
+      }
       editPhotoSection.classList.remove("d-none");
     });
 
@@ -64,6 +80,10 @@ document.addEventListener("DOMContentLoaded", function () {
       cancelBtn.classList.add("d-none");
       editBtn.classList.remove("d-none");
       editPhotoSection.classList.add("d-none");
+      const noteElement = document.getElementById("note");
+      if (noteElement) {
+        noteElement.classList.add("d-none");
+      }
       photoInput.value = ""; // Clear file input
     });
 
@@ -223,7 +243,19 @@ editBtn.addEventListener("click", function () {
   // Show add children names button
   addChildrenNamesBtn.classList.remove("d-none");
   addBeneficiariesNamesBtn.classList.remove("d-none");
+  const noteElement = document.getElementById("note");
+  if (noteElement) {
+    noteElement.classList.remove("d-none");
+  }
+  const searchElement = document.getElementById("chapterSearch");
+  if (searchElement) {
+    searchElement.classList.remove("d-none");
+  }
 
+  const toggleElement = document.getElementById("toggleSearch");
+  if (toggleElement) {
+    toggleElement.classList.remove("d-none");
+  }
   // Toggle buttons
   editBtn.classList.add("d-none");
   saveBtn.classList.remove("d-none");
@@ -259,7 +291,20 @@ cancelBtn.addEventListener("click", function () {
   // Hide add children names button
   addChildrenNamesBtn.classList.add("d-none");
   addBeneficiariesNamesBtn.classList.add("d-none");
+  const noteElement = document.getElementById("note");
+  if (noteElement) {
+    noteElement.classList.add("d-none");
+  }
 
+  const searchElement = document.getElementById("chapterSearch");
+  if (searchElement) {
+    searchElement.classList.add("d-none");
+  }
+
+  const toggleElement = document.getElementById("toggleSearch");
+  if (toggleElement) {
+    toggleElement.classList.add("d-none");
+  }
   // Toggle buttons back
   editBtn.classList.remove("d-none");
   saveBtn.classList.add("d-none");

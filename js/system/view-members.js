@@ -10,8 +10,6 @@ const membersList = document.getElementById("membersTable");
 const paginationContainer = document.querySelector(".pagination");
 const chapterLabel = document.getElementById("chapter-label");
 
-console.log(chapterLabel);
-
 const params = new URLSearchParams(window.location.search);
 let list = params.get("list");
 
@@ -39,7 +37,6 @@ if (!list) {
 const chapterList = localStorage.getItem("chapter-list");
 const masterList = params.get("view-master-list");
 const label = params.get("label");
-console.log(chapterList);
 
 if (label) {
   chapterLabel.textContent = `${label} - Members`;
@@ -79,14 +76,11 @@ async function fetchMembers() {
 
   const data = await response.json();
 
-  console.log(data);
-
   if (data.data.length === 0) {
     membersList.innerHTML = `<tr class="text-center"><td colspan="5">No members found.</td></tr>`;
     return;
   }
 
-  console.log(data);
   displayMembers(data.data);
   setupPagination(data);
 }
@@ -149,15 +143,10 @@ function displayMembers(members) {
 
   members.forEach((member) => {
     getValidImagePath(member).then((imagePath) => {
-      console.log("Final Image Path:", imagePath);
-
-      //   console.log("New Name:", cleanedName, "Old Name:", member.id_pic);
-
       const timestamp = new Date().toISOString();
 
       const row = document.createElement("tr");
-      row.innerHTML = `
-      <td class="text-center">
+      row.innerHTML = `<td class="text-center">
         <a href="member-profile.html?member-id=${member.id}?${timestamp}">
           <img src="${imagePath}" alt="Profile" class="member-img"  />
         </a>
@@ -170,15 +159,18 @@ function displayMembers(members) {
           ${member.ext_name ? member.ext_name : ``}
         </a>
       </td>
+
       <td>${member.residence}</td>
       <td>${member.reg_no}</td>
-      <td>
-        <button class="btn btn-danger btn-sm deleteMember" data-id=${
-          member.id
-        } >
+      ${
+        userType !== "Admin"
+          ? ``
+          : `<td>
+        <button class="btn btn-danger btn-sm deleteMember" data-id=${member.id} >
           Delete
         </button>
-      </td>
+      </td>`
+      }
     `;
 
       // Append row to members list
@@ -282,7 +274,6 @@ const debounce = (func, delay) => {
 // Unified search handler
 const handleSearch = () => {
   searchQuery = searchInput.value.trim();
-  console.log(searchQuery);
   currentPage = 1; // Reset to first page
 
   // Only search if query length is 0 or > 10 characters
@@ -340,7 +331,6 @@ document
   .getElementById("deleteButton")
   .addEventListener("click", async function () {
     const id = this.dataset.id;
-    console.log("Deleting ID:", id);
 
     try {
       const response = await fetch(`${backendURL}/api/member/${id}`, {

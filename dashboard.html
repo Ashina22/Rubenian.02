@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <script
       src="https://kit.fontawesome.com/ae360af17e.js"
@@ -38,7 +38,7 @@
       transform: translateY(-2px);
     }
     .metric-card {
-      background: white;
+      /* background: white; */
       border-left: 3px solid var(--primary-color);
     }
     .metric-value {
@@ -58,6 +58,8 @@
     }
   </style>
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
+
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -82,7 +84,7 @@
             <!-- Dashboard Section -->
             <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <a href="dashboard.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
@@ -162,7 +164,7 @@
                 </a>
                 <a
                   href="#"
-                  class="sidebar-link collapsed"
+                  class="sidebar-link collapsed admin-access"
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
@@ -170,7 +172,7 @@
               </div>
               <ul
                 id="users"
-                class="sidebar-dropdown list-unstyled collapse"
+                class="sidebar-dropdown list-unstyled collapse admin-access"
                 data-bs-parent="#sidebar"
               >
                 <li class="sidebar-item">
@@ -203,9 +205,8 @@
                   />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a href="#" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Setting</a>
-                  <a href="login.html" class="dropdown-item">Logout</a>
+                  <a href="profile.html" class="dropdown-item">Profile</a>
+                  <button class="dropdown-item" id="logoutBtn">Logout</button>
                 </div>
               </li>
             </ul>
@@ -214,16 +215,16 @@
 
         <main class="content px-lg-3py-2">
           <div class="container-fluid">
-            <div class="mb-3 mt-5">
+            <div class="mb-3 my-3">
               <h2>Welcome to RII Membership Portal</h2>
             </div>
 
             <!-- Dashboard Summary Cards -->
-            <div class="row g-2 mt-2">
+            <div class="row g-2 mt-3 mx-3">
               <div class="col-md-3">
                 <div class="card metric-card h-60 p-2">
                   <div class="card-body">
-                    <h6 class="text-muted mb-3">TOTAL MEMBERS</h6>
+                    <h6 class="text-light mb-3">TOTAL MEMBERS</h6>
                     <h5 class="metric-value" id="total_members">0</h5>
                   </div>
                 </div>
@@ -231,7 +232,7 @@
               <div class="col-md-3">
                 <div class="card metric-card h-60 p-2">
                   <div class="card-body">
-                    <h6 class="text-muted mb-3">TOTAL CONTRIBUTIONS</h6>
+                    <h6 class="text-light mb-3">TOTAL CONTRIBUTIONS</h6>
                     <h5 class="metric-value" id="total_contributions">₱0</h5>
                   </div>
                 </div>
@@ -239,7 +240,7 @@
               <div class="col-md-3">
                 <div class="card metric-card h-60 p-2">
                   <div class="card-body">
-                    <h6 class="text-muted mb-3">TOTAL CHAPTERS</h6>
+                    <h6 class="text-light mb-3">TOTAL CHAPTERS</h6>
                     <h5 class="metric-value" id="total_chapters">0</h5>
                   </div>
                 </div>
@@ -247,7 +248,7 @@
               <div class="col-md-3">
                 <div class="card metric-card h-60 p-2">
                   <div class="card-body">
-                    <h6 class="text-muted mb-3">ACTIVITY LOGS</h6>
+                    <h6 class="text-light mb-3">ACTIVITY LOGS</h6>
                     <h5 class="metric-value" id="total_logs">0</h5>
                   </div>
                 </div>
@@ -255,9 +256,9 @@
             </div>
 
             <!-- Chapter Filter -->
-            <div class="row mt-4">
+            <div class="row mt-3">
               <div class="col-md-12">
-                <div class="py-2 px-3">
+                <div class="py-1 px-3">
                   <div
                     class="d-flex justify-content-between align-items-center"
                   >
@@ -433,6 +434,16 @@
           768: { slidesPerView: 3 },
           1024: { slidesPerView: 6 },
         },
+      });
+
+      document.querySelectorAll(".admin-access").forEach((element) => {
+        const userType = localStorage.getItem("type");
+        if (userType !== "Admin") {
+          element.classList.add("d-none");
+          element.classList.remove("d-flex");
+        } else {
+          element.classList.remove("d-none");
+        }
       });
     </script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>

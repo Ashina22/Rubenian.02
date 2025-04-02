@@ -5,6 +5,7 @@ import {
   showToast,
   storeActivity,
   userId,
+  userType,
 } from "../utils/utils.js";
 
 let endpoint_url = "";
@@ -41,8 +42,6 @@ async function fetchAndDisplay(type, displayStyle = "none") {
   for (let item of data) {
     if (document.getElementById(container) !== null) {
       let chapterIdList = item.chapters.map((ch) => ch.id).join(",");
-
-      console.log(item);
 
       if (item[label] !== "None") {
         htmlContent += `
@@ -108,7 +107,6 @@ function enableSearch(inputSelector, type) {
     for (let item of filteredData) {
       if (document.getElementById(container) !== null) {
         let chapterIdList = item.chapters.map((ch) => ch.id).join(",");
-        console.log(label);
 
         if (item[label] !== "None") {
           htmlContent += ` <div style="position: relative; display: inline-block;">
@@ -144,19 +142,70 @@ function enableSearch(inputSelector, type) {
   });
 }
 
-document.getElementById("toggleDelete").addEventListener("click", function () {
-  this.classList.toggle("active");
+if (userType === "Admin") {
+  document.getElementById(
+    "managementActionsContainer"
+  ).innerHTML = `      <div id="toggleDelete" class="toggle-container me-2">
+                <div class="toggle-slider"></div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  class="toggle-icon icon-on"
+                  style="color: #259986"
+                  width="13"
+                  height="13"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  class="toggle-icon icon-trash icon-off"
+                  style="color: #259986"
+                  width="13"
+                  height="13"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m5 0h-18m2 0l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14"
+                  />
+                </svg>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button
+                  class="btn btn-add"
+                  data-bs-toggle="modal"
+                  data-bs-target="#addChapterModal"
+                >
+                  Create New Province
+                </button>
+              </div>`;
 
-  let deleteBtn = document.querySelectorAll(".deleteChapter");
+  document
+    .getElementById("toggleDelete")
+    .addEventListener("click", function () {
+      this.classList.toggle("active");
 
-  if (this.classList.contains("active")) {
-    console.log("Toggle ON");
-    deleteBtn.forEach((input) => (input.style.display = "block"));
-  } else {
-    console.log("Toggle OFF");
-    deleteBtn.forEach((input) => (input.style.display = "none"));
-  }
-});
+      let deleteBtn = document.querySelectorAll(".deleteChapter");
+
+      if (this.classList.contains("active")) {
+        deleteBtn.forEach((input) => (input.style.display = "block"));
+      } else {
+        deleteBtn.forEach((input) => (input.style.display = "none"));
+      }
+    });
+}
 
 // Fetch and display all types
 fetchAndDisplay("region");
@@ -194,8 +243,6 @@ document
   .addEventListener("click", async function () {
     const id = this.dataset.id;
     const labelName = this.dataset.label;
-
-    console.log("Deleting Chapter ID:", id, labelName);
 
     try {
       const response = await fetch(`${backendURL}${endpoint_url}/${id}`, {

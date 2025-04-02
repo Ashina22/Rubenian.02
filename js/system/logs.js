@@ -58,6 +58,13 @@ function prependNewLogs(logs) {
     idCell.style.verticalAlign = "middle";
     row.appendChild(idCell);
 
+    // Timestamp column
+    const timestampCell = document.createElement("td");
+    timestampCell.textContent = new Date(log.created_at).toLocaleString();
+    timestampCell.style.textAlign = "center";
+    timestampCell.style.verticalAlign = "middle";
+    row.appendChild(timestampCell);
+
     // User column
     const userCell = document.createElement("td");
     const middleName = log.user?.middlename ? ` ${log.user.middlename}` : "";
@@ -132,6 +139,13 @@ async function loadLogs(page = 1) {
         idCell.style.textAlign = "center";
         idCell.style.verticalAlign = "middle";
         row.appendChild(idCell);
+
+        // Timestamp column
+        const timestampCell = document.createElement("td");
+        timestampCell.textContent = new Date(log.created_at).toLocaleString();
+        timestampCell.style.textAlign = "center";
+        timestampCell.style.verticalAlign = "middle";
+        row.appendChild(timestampCell);
 
         // User column
         const userCell = document.createElement("td");

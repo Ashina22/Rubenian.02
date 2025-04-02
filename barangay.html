@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -22,6 +22,7 @@
   </head>
 
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -46,7 +47,7 @@
             <!-- Dashboard Section -->
             <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <a href="dashboard.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
@@ -126,7 +127,7 @@
                 </a>
                 <a
                   href="#"
-                  class="sidebar-link collapsed"
+                  class="sidebar-link collapsed admin-access"
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
@@ -134,7 +135,7 @@
               </div>
               <ul
                 id="users"
-                class="sidebar-dropdown list-unstyled collapse"
+                class="sidebar-dropdown list-unstyled collapse admin-access"
                 data-bs-parent="#sidebar"
               >
                 <li class="sidebar-item">
@@ -179,9 +180,8 @@
                   />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a href="#" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Setting</a>
-                  <a href="login.html" class="dropdown-item">Logout</a>
+                  <a href="profile.html" class="dropdown-item">Profile</a>
+                  <button class="dropdown-item" id="logoutBtn">Logout</button>
                 </div>
               </li>
             </ul>
@@ -197,55 +197,9 @@
           <div class="container">
             <div
               class="d-flex align-items-center justify-content-end mx-4"
+              id="managementActionsContainer"
               style="margin-bottom: -10px"
-            >
-              <div id="toggleDelete" class="toggle-container me-2">
-                <div class="toggle-slider"></div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  class="toggle-icon icon-on"
-                  style="color: #259986"
-                  width="13"
-                  height="13"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  class="toggle-icon icon-trash icon-off"
-                  style="color: #259986"
-                  width="13"
-                  height="13"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m5 0h-18m2 0l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14"
-                  />
-                </svg>
-              </div>
-              <div class="d-flex justify-content-end">
-                <button
-                  class="btn btn-add"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addChapterModal"
-                >
-                  Create New Barangay
-                </button>
-              </div>
-            </div>
+            ></div>
             <div class="btn-container" id="barangayContainer"></div>
           </div>
         </main>
@@ -358,7 +312,17 @@
         </footer>
       </div>
     </div>
-
+    <script>
+      document.querySelectorAll(".admin-access").forEach((element) => {
+        const userType = localStorage.getItem("type");
+        if (userType !== "Admin") {
+          element.classList.add("d-none");
+          element.classList.remove("d-flex");
+        } else {
+          element.classList.remove("d-none");
+        }
+      });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>

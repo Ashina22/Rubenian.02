@@ -36,7 +36,7 @@ form_register.onsubmit = async (e) => {
 
   if (response.ok) {
     form_register.reset();
-    showToast("Successfully created an account.", "success");
+    showToast("Successfully created an account.");
   }
 
   document.querySelector("#createUserForm button").disabled = false;

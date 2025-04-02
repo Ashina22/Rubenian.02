@@ -590,7 +590,7 @@ th {
   border: none;
   background: transparent;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
 }
 .pagination .page-item.active .page-link {
   color: inherit;

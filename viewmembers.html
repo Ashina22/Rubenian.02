@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -21,6 +21,7 @@
   </head>
 
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -45,7 +46,7 @@
             <!-- Dashboard Section -->
             <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <a href="dashboard.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
@@ -160,7 +161,7 @@
               <input
                 class="form-control me-2 search-members"
                 type="search"
-                placeholder="Search Member"
+                placeholder="Search Members"
                 name="search"
                 aria-label="Search"
               />
@@ -179,9 +180,8 @@
                   />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a href="#" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Setting</a>
-                  <a href="login.html" class="dropdown-item">Logout</a>
+                  <a href="profile.html" class="dropdown-item">Profile</a>
+                  <button class="dropdown-item" id="logoutBtn">Logout</button>
                 </div>
               </li>
             </ul>
@@ -196,7 +196,7 @@
               <h2 class="text-center my-4" id="chapter-label">Members</h2>
               <div class="d-flex justify-content-end mb-2">
                 <a href="addmembers.html"
-                  ><button class="btn btn-add">
+                  ><button class="btn btn-add admin-accesss">
                     <i class="fas fa-user-plus"></i> Add Members
                   </button></a
                 >
@@ -213,7 +213,7 @@
                       <th onclick="sortTable(1)">Name</th>
                       <th onclick="sortTable(2)">Location</th>
                       <th onclick="sortTable(3)">Reg. No.</th>
-                      <th>Action</th>
+                      <th class="admin-access">Action</th>
                       <!-- Action column -->
                     </tr>
                   </thead>
@@ -287,6 +287,17 @@
         </footer>
       </div>
     </div>
+    <script>
+      document.querySelectorAll(".admin-access").forEach((element) => {
+        const userType = localStorage.getItem("type");
+        if (userType !== "Admin") {
+          element.classList.add("d-none");
+          element.classList.remove("d-flex");
+        } else {
+          element.classList.remove("d-none");
+        }
+      });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>

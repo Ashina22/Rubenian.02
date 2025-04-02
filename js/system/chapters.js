@@ -4,6 +4,7 @@ import {
   showToast,
   storeActivity,
   userId,
+  userType,
 } from "../utils/utils.js";
 
 const regionSelect = document.getElementById("regionSelect");
@@ -57,14 +58,18 @@ function displayChapters(chapterData) {
 
       return ` <li class="list-group-item">
                   ${chapters} Chapter
-                  <button
+                  ${
+                    userType === "Admin"
+                      ? `<button
                     class="delete-btn deleteChapter"
                     data-id="${chapter.id}"
                     data-chapter-name="${chapters}"
 
                   >
                     <i class="fa-solid fa-trash"></i>
-                  </button>
+                  </button>`
+                      : ``
+                  }
                 </li>`;
     })
     .join("");
@@ -113,10 +118,8 @@ document.getElementById("toggleSearch").addEventListener("click", function () {
   searchInputs.forEach((input) => (input.style.display = "none"));
 
   if (this.classList.contains("active")) {
-    console.log("Toggle ON");
     searchInputs.forEach((input) => (input.style.display = "block"));
   } else {
-    console.log("Toggle OFF");
     searchInputs.forEach((input) => (input.style.display = "none"));
   }
 });
@@ -153,7 +156,6 @@ document
   .addEventListener("click", async function () {
     const id = this.dataset.id;
     const chapterName = this.dataset.chapterName;
-    console.log("Deleting Chapter ID:", id);
 
     try {
       const response = await fetch(`${backendURL}/api/chapter/${id}`, {

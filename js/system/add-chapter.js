@@ -71,7 +71,6 @@ async function updateChapterList() {
 }
 
 function renderList(containerId, data, label) {
-  console.log(data);
   const container = document.getElementById(containerId);
   if (!container) return;
 

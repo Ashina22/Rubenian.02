@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -19,6 +19,8 @@
     <script type="module" src="js/system/edit-user.js"></script>
   </head>
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
+
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -43,7 +45,7 @@
             <!-- Dashboard Section -->
             <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <a href="dashboard.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
@@ -164,9 +166,8 @@
                   />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a href="#" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Setting</a>
-                  <a href="login.html" class="dropdown-item">Logout</a>
+                  <a href="profile.html" class="dropdown-item">Profile</a>
+                  <button class="dropdown-item" id="logoutBtn">Logout</button>
                 </div>
               </li>
             </ul>
@@ -340,7 +341,8 @@
                     <a
                       href="viewusers.html"
                       class="text-center align-items-center btn-sm rounded-3 me-2 d-flex btn bg-secondary text-white"
-                      >Go Back</a
+                    >
+                      Cancel</a
                     >
                     <button type="submit" class="btn me-2 btn-add">
                       Update User

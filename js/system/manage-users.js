@@ -3,6 +3,7 @@ import {
   showToast,
   storeActivity,
   userId,
+  userType,
 } from "../utils/utils.js";
 
 const searchInput = document.querySelector(".search-users");
@@ -51,6 +52,14 @@ function renderUserByRole() {
         ? `${backendURL}/${user.profile_picture}`
         : "image/profile.jpg";
 
+    if (parseInt(user.id) === parseInt(userId) && userType === "Admin") {
+      document.querySelectorAll(".admin-access")[2].classList.remove("d-none");
+      document.querySelectorAll(".admin-access")[2].classList.add("d-flex");
+    } else {
+      document.querySelectorAll(".admin-access")[3].classList.remove("d-none");
+      document.querySelectorAll(".admin-access")[3].classList.add("d-flex");
+    }
+
     const html = `<tr >
                     <td class="text-center">
                       <span>
@@ -68,19 +77,32 @@ function renderUserByRole() {
                     <td class="text-center">${user.department}</td>
                     <td class="text-center">${user.position}</td>
                     <td class="text-center"><small class="bg-secondary text-white py-1 px-2 rounded-3">${user.role.toLowerCase()}</small></td>
-                    <td class="text-center">
-                      <a href="edituser.html?user-id=${user.id}.${timestamp}">
-                        <button class="btn btn-sm edit text-white" style="background-color: rgb(37, 153, 134)">
-                          Edit
-                        </button>
-                      </a>
-                      <button
-                        class="btn btn-danger btn-sm deleteUser" data-id="${
-                          user.id
-                        }">
-                        Delete
-                      </button>
-                    </td>
+          ${
+            userType === "Admin"
+              ? `<td class="text-center">
+        <a href="edituser.html?user-id=${user.id}">
+          <button class="btn btn-sm edit text-white" style="background-color: rgb(37, 153, 134)">
+            Edit
+          </button>
+        </a>
+        ${
+          parseInt(user.id) === parseInt(userId) || user.role === "Admin"
+            ? ``
+            : `<button class="btn btn-danger btn-sm deleteUser" data-id="${user.id}">
+                Delete
+              </button>`
+        }
+      </td>`
+              : userType === "Staff" && parseInt(user.id) === parseInt(userId)
+              ? `<td class="text-center">
+        <a href="edituser.html?user-id=${user.id}">
+          <button class="btn btn-sm edit text-white" style="background-color: rgb(37, 153, 134)">
+            Edit
+          </button>
+        </a>
+      </td>`
+              : ``
+          }
                   </tr>`;
 
     if (user.role === "Admin") {
@@ -118,7 +140,6 @@ document
   .getElementById("deleteButton")
   .addEventListener("click", async function () {
     const id = this.dataset.id;
-    console.log("Deleting ID:", id);
 
     try {
       const response = await fetch(`${backendURL}/api/user/${id}`, {

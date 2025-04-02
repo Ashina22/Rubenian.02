@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -19,6 +19,7 @@
     <script type="module" src="js/auth/create-new-users.js"></script>
   </head>
   <body>
+    <div class="loader-container d-none"><div class="dots"></div></div>
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -43,7 +44,7 @@
             <!-- Dashboard Section -->
             <li class="sidebar-header">Dashboard</li>
             <li class="sidebar-item">
-              <a href="index.html" class="sidebar-link">
+              <a href="dashboard.html" class="sidebar-link">
                 <i class="fa-solid fa-home pe-2"></i> Home
               </a>
             </li>
@@ -164,9 +165,8 @@
                   />
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a href="#" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Setting</a>
-                  <a href="login.html" class="dropdown-item">Logout</a>
+                  <a href="profile.html" class="dropdown-item">Profile</a>
+                  <button class="dropdown-item" id="logoutBtn">Logout</button>
                 </div>
               </li>
             </ul>
@@ -275,12 +275,65 @@
                       <option value="" selected disabled>
                         Select Department
                       </option>
-                      <option value="Information Technology">
-                        Information Technology
+                      <option value="" disabled selected>
+                        Select Department
                       </option>
-                      <option value="Human Resource">Human Resource</option>
-                      <option value="Finance">Finance</option>
-                      <option value="Marketing">Marketing</option>
+                      <optgroup label="Core Departments">
+                        <option value="Member Services">Member Services</option>
+                        <option value="Chapters Management">
+                          Chapters Management
+                        </option>
+                        <option value="Events & Programs">
+                          Events & Programs
+                        </option>
+                        <option value="Communications">Communications</option>
+                        <option value="Strategic Planning">
+                          Strategic Planning
+                        </option>
+                        <option value="Public Relations">
+                          Public Relations
+                        </option>
+                      </optgroup>
+
+                      <optgroup label="Operational Departments">
+                        <option value="Information Technology">
+                          Information Technology
+                        </option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Finance & Accounting">
+                          Finance & Accounting
+                        </option>
+                        <option value="Marketing & Outreach">
+                          Marketing & Outreach
+                        </option>
+                        <option value="Legal & Compliance">
+                          Legal & Compliance
+                        </option>
+                        <option value="Administration">Administration</option>
+                        <option value="Research & Development">
+                          Research & Development
+                        </option>
+                      </optgroup>
+
+                      <optgroup label="Regional Operations">
+                        <option value="National Chapter">
+                          National Chapter
+                        </option>
+                        <option value="Regional Coordination">
+                          Regional Coordination
+                        </option>
+                        <option value="Provincial Operations">
+                          Provincial Operations
+                        </option>
+                        <option value="Municipal Affairs">
+                          Municipal Affairs
+                        </option>
+                        <option value="Community Engagement">
+                          Community Engagement
+                        </option>
+                      </optgroup>
+
+                      <option value="Other">Other</option>
                     </select>
                     <div class="invalid-feedback">
                       Please select a department.
