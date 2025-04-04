@@ -27,7 +27,7 @@ async function fetchUser() {
 
 function renderUserData(data) {
   function formatValue(value) {
-    return value ? value : "None";
+    return value ? value : "";
   }
 
   document.getElementById("firstname").value = formatValue(data.firstname);

@@ -1,4 +1,10 @@
-import { backendURL, removeURLParams, showToast } from "../utils/utils.js";
+import {
+  backendURL,
+  removeURLParams,
+  showToast,
+  storeActivity,
+  userId,
+} from "../utils/utils.js";
 
 const form_register = document.getElementById("createUserForm");
 
@@ -37,6 +43,13 @@ form_register.onsubmit = async (e) => {
   if (response.ok) {
     form_register.reset();
     showToast("Successfully created an account.");
+    storeActivity(
+      userId,
+      "Create User",
+      `Created an Account: ${formData.get("username")} - (Name: ${formData.get(
+        "firstname"
+      )} ${formData.get("lastname")})`
+    );
   }
 
   document.querySelector("#createUserForm button").disabled = false;

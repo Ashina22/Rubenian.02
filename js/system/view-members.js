@@ -55,6 +55,7 @@ async function fetchMembers() {
   if (masterList === null) {
     endpoint += `?list=${chapterList}&page=${currentPage}&per_page=${perPage}`;
   } else if (masterList !== null && label === null) {
+    localStorage.setItem("chapter-list", "");
     endpoint += `?view-master-list&page=${currentPage}&per_page=${perPage}`;
   }
 
@@ -366,5 +367,111 @@ document
       deleteModal.hide();
     } catch (error) {
       console.error("Error deleting chapter:", error);
+    }
+  });
+
+// Open Modal
+document.getElementById("exportBtn").addEventListener("click", function () {
+  const modal = document.getElementById("exportModal");
+  modal.style.display = "flex";
+
+  // Set default filename with today's date
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById("exportFilename").value = document
+    .getElementById("exportFilename")
+    .value.replace("YYYY-MM-DD", today);
+});
+
+// Close Modal
+document.getElementById("cancelExport").addEventListener("click", function () {
+  document.getElementById("exportModal").style.display = "none";
+});
+
+document
+  .getElementById("confirmExport")
+  .addEventListener("click", async function () {
+    const limit = document.getElementById("exportLimit").value.trim();
+    const columns = document.getElementById("exportColumns").value.trim();
+    const search = document.getElementById("exportSearch").value.trim();
+    let filename = document.getElementById("exportFilename").value.trim();
+
+    // Validate required fields
+    if (!limit) {
+      showToast("Please enter a row limit (number or 'all')", "danger");
+      return;
+    }
+
+    console.log(limit);
+
+    // Default filename if empty
+    if (!filename) {
+      filename = `members_export_${new Date().toISOString().slice(0, 10)}.csv`;
+    } else if (!filename.toLowerCase().endsWith(".csv")) {
+      filename += ".csv";
+    }
+
+    if (masterList !== null && label === null) {
+      localStorage.setItem("chapter-list", ``);
+      const chapterList = ``;
+      console.log(chapterList);
+    }
+
+    try {
+      // Ensure chapterList is properly formatted
+      let chapterIds = chapterList;
+      if (Array.isArray(chapterList)) {
+        chapterIds = chapterList.join(",");
+      } else if (typeof chapterList === "string") {
+        // Already in correct format
+      } else {
+        chapterIds = "";
+      }
+
+      // Prepare request payload
+      const payload = {
+        limit: limit === "all" ? null : parseInt(limit),
+        columns: columns,
+        filters: {
+          chapter_ids: chapterIds,
+          search: search,
+        },
+        filename: filename,
+      };
+
+      // Make API request
+      const response = await fetch(`${backendURL}/api/members/export`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const error = await response
+          .json()
+          .catch(() => ({ message: "Export failed" }));
+        throw new Error(error.message || "Export failed");
+      }
+
+      // Handle file download
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+
+      // Close modal
+      document.getElementById("exportModal").style.display = "none";
+      showToast("Export started successfully", "success");
+    } catch (error) {
+      console.error("Export failed:", error);
+      showToast(`Export failed: ${error.message}`, "danger");
     }
   });

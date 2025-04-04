@@ -56,12 +56,12 @@ function displayChapters(chapterData) {
         .filter((value) => value && value !== "None")
         .join(", ");
 
-      return ` <li class="list-group-item">
-                  ${chapters} Chapter
+      return ` <li class="list-group-item d-flex border-bottom border-2">
+                  <small style="width: 85%; font-size: 14px" >${chapters} Chapter</small>
                   ${
                     userType === "Admin"
                       ? `<button
-                    class="delete-btn deleteChapter"
+                    class="delete-btn deleteChapter deleteChaptBtn"
                     data-id="${chapter.id}"
                     data-chapter-name="${chapters}"
 
@@ -123,8 +123,18 @@ document.getElementById("toggleSearch").addEventListener("click", function () {
     searchInputs.forEach((input) => (input.style.display = "none"));
   }
 });
+
+document
+  .querySelector(".search-chapters")
+  .addEventListener("input", function () {
+    searchInputs = this.value;
+    if (searchInputs.length === 0) {
+      fetchChapters();
+    }
+  });
 document.getElementById("search_form").addEventListener("submit", (e) => {
   e.preventDefault();
+
   let searchInputs = document.querySelector(".search-chapters").value;
 
   fetchChapters(searchInputs);

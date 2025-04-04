@@ -234,23 +234,24 @@ a.sidebar-link {
 
 .theme-toggle {
   position: fixed;
-  bottom: 80%;
+  bottom: 82%;
   transform: translateY(-65%);
   text-align: center;
   z-index: 10;
-  right: 0;
+  right: 3px;
   left: auto;
   border: none;
+  border-radius: 10px;
   background-color: var(--bs-body-color);
 }
 
 html[data-bs-theme="dark"] .theme-toggle .fa-sun,
 html[data-bs-theme="light"] .theme-toggle .fa-moon {
   cursor: pointer;
-  padding: 5px;
+  padding: 4px;
   display: block;
   font-size: 1.25rem;
-  color: #ffffff;
+  color: #259986;
 }
 
 html[data-bs-theme="dark"] .theme-toggle .fa-moon {
@@ -259,6 +260,26 @@ html[data-bs-theme="dark"] .theme-toggle .fa-moon {
 
 html[data-bs-theme="light"] .theme-toggle .fa-sun {
   display: none;
+}
+
+html[data-bs-theme="light"] .deleteChaptBtn {
+  color: rgb(52, 52, 52);
+}
+
+html[data-bs-theme="dark"] .deleteChaptBtn {
+  color: #259986;
+}
+
+html[data-bs-theme="light"] #exportModal div {
+  background-color: white;
+}
+
+html[data-bs-theme="dark"] #exportModal div {
+  background-color: rgb(52, 52, 52);
+}
+
+html[data-bs-theme="dark"] #exportModal h3 {
+  color: rgb(247, 247, 247);
 }
 
 .custom-search-input {
@@ -399,8 +420,8 @@ input[type="file"]#photoInput {
 
 /*masterlist css*/
 .btn-add {
-  padding: 10px 10px;
-  border-radius: 10px;
+  padding: 8px 10px;
+  border-radius: 4px;
   background-color: rgb(37, 153, 134);
   color: #ffffff;
   letter-spacing: 1px;
@@ -525,7 +546,7 @@ th {
   color: #212121;
   letter-spacing: 1px;
   transition: all 0.3s ease;
-  min-width: 150px; /* Minimum button width */
+  min-width: 130px; /* Minimum button width */
 }
 
 .btn-region a {
@@ -724,4 +745,36 @@ th {
 
 .toggle-container.active .icon-on {
   opacity: 1;
+}
+
+@media (max-width: 576px) {
+  /* Targets small screens like mobile */
+  #toggleDelete {
+    transform: scale(0.8); /* Makes the toggle smaller */
+  }
+
+  .toggle-icon {
+    width: 13px; /* Reduce SVG icon size */
+    height: 13px;
+  }
+
+  .btn-add {
+    font-size: 10px; /* Reduce button text size */
+    padding: 8px 10px; /* Adjust button padding */
+  }
+
+  .btn-region {
+    font-size: 12px; /* Reduce button text size */
+    padding: 8px 7px; /* Adjust button padding */
+  }
+}
+
+.region-badge {
+  font-size: 0.7em;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  padding: 2px 5px;
+  margin-left: 5px;
+  color: #666;
+  white-space: nowrap;
 }

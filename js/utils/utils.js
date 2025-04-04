@@ -1,6 +1,6 @@
 import { setRouter } from "../router/router.js";
 
-const backendURL = "http://rii-portal-backend.test";
+const backendURL = "https://portal.rubenianinternational.com/public";
 
 setRouter();
 
@@ -111,6 +111,7 @@ if (userId !== null) {
 
 // API Endpoints
 const API_ENDPOINTS = [
+  "/api/chapters/locations",
   "/api/region",
   "/api/barangay",
   "/api/chapter",

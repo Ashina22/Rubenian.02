@@ -1,4 +1,4 @@
-import { backendURL } from "../utils/utils.js";
+import { backendURL, storeActivity } from "../utils/utils.js";
 
 const login_form = document.getElementById("login_form");
 
@@ -53,6 +53,12 @@ login_form.onsubmit = async (e) => {
     const timestamp = new Date().toISOString();
 
     localStorage.setItem("id", `${profileId}.${timestamp.split("T")[1]}rii`);
+
+    await storeActivity(
+      profileId,
+      "Logging In",
+      `Logged In User: ${profileData.username} - (Name: ${profileData.firstname} ${profileData.lastname})`
+    );
 
     const id = localStorage.getItem("id");
 

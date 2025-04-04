@@ -119,22 +119,22 @@ function renderTable(data) {
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <!-- <td>
                       <div class="d-flex align-items-center">
                         <span class="me-2">${
-                          chapter.contribution_percentage
+                          chapter?.contribution_percentage
                         }%</span>
                         <div class="progress w-100" style="height: 6px">
                           <div
                             class="progress-bar"
                             style="width: ${
-                              chapter.contribution_percentage
+                              chapter?.contribution_percentage
                             }%; background-color: #259986"
                           ></div>
                         </div>
                       </div>
                     </td>
-                    <td>₱${chapter.contributions.toLocaleString()}</td>
+                    <td>₱${chapter?.contributions?.toLocaleString()}</td> -->
                   </tr>`;
   });
   document.querySelector("#contributionsTable").innerHTML = tableHTML;
@@ -245,12 +245,12 @@ await loadChapterContributions();
 await fetchLogsLength();
 // Start animations simultaneously
 animateValue(document.getElementById("total_members"), 0, finalTotals.members);
-animateValue(
-  document.getElementById("total_contributions"),
-  0,
-  finalTotals.contributions,
-  true
-);
+// animateValue(
+//   document.getElementById("total_contributions"),
+//   0,
+//   finalTotals.contributions,
+//   true
+// );
 animateValue(
   document.getElementById("total_chapters"),
   0,

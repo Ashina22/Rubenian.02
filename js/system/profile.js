@@ -70,6 +70,8 @@ document.getElementById(
   </div>
 </main>`;
 
+let searchInputs = "";
+
 // Modified fetchData function with pagination
 async function fetchData(page = 1) {
   try {
@@ -83,7 +85,7 @@ async function fetchData(page = 1) {
     const profileData = await profileResponse.json();
 
     const response = await fetch(
-      `${backendURL}/api/logs/${userId}?page=${page}`,
+      `${backendURL}/api/logs/${userId}?page=${page}&search=${searchInputs}`,
       {
         headers: {
           Accept: "application/json",
@@ -218,6 +220,11 @@ function renderLogs(logsData) {
     logsBody.appendChild(row);
   });
 }
+
+document.querySelector("#searchInput").addEventListener("input", function () {
+  searchInputs = this.value;
+  fetchData();
+});
 
 // Initial fetch
 fetchData();

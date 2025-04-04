@@ -1,10 +1,9 @@
 const token = localStorage.getItem("token");
 
 function setRouter() {
-  const path = window.location.href;
-  const path2 = window.location.pathname;
+  const path = window.location.pathname;
 
-  console.log(path || path2);
+  console.log(path);
 
   switch (path) {
     case "/index.html":
