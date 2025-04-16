@@ -161,6 +161,7 @@
               <li class="nav-item dropdown">
                 <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                   <img
+                    id="userLogged"
                     src="image/profile.jpg"
                     class="avatar img-fluid rounded"
                     alt=""
@@ -178,6 +179,9 @@
         <!--main content-->
         <main class="content px-lg-3 py-2" style="margin-bottom: 30px">
           <div class="container-fluid">
+            <a id="print-member" class="btn border btn-sm">
+              <i class="fa-solid fa-print"></i> Print
+            </a>
             <form id="member_form">
               <div class="text-center p-4 mb-4">
                 <img
@@ -220,7 +224,7 @@
                 </button>
               </div>
 
-              <h5 class="mb-3">About Candidate</h5>
+              <h5 class="mb-3">Personal Data</h5>
               <div class="row" id="form-container">
                 <div class="col-md-4 mb-3">
                   <label>First Name</label>
@@ -395,6 +399,16 @@
                   </select>
                 </div>
                 <div class="col-md-4 mb-3">
+                  <label>Barangay</label>
+                  <input
+                    id="barangay"
+                    name="barangay"
+                    type="text"
+                    class="form-control"
+                    disabled
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
                   <label>Residence</label>
                   <input
                     id="residence"
@@ -558,7 +572,7 @@
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>HDMF No.</label>
+                  <label>Pag-IBIG ID No.</label>
                   <input
                     id="hdmf_no"
                     name="hdmf_no"
@@ -566,6 +580,21 @@
                     class="form-control"
                     disabled
                   />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label>Status</label>
+                  <select
+                    class="form-control"
+                    name="status"
+                    id="status"
+                    disabled
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Waived">Waived</option>
+                    <option value="Terminated">Terminated</option>
+                    <option value="Expelled">Expelled</option>
+                  </select>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label>Number of Children</label>

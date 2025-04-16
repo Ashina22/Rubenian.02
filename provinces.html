@@ -173,6 +173,7 @@
               <li class="nav-item dropdown">
                 <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                   <img
+                    id="userLogged"
                     src="image/profile.jpg"
                     class="avatar img-fluid rounded"
                     alt=""
@@ -194,11 +195,11 @@
             <h2 class="text-center my-4">Province Chapter</h2>
           </div>
           <div class="container">
-            <div
+            <!-- <div
               class="d-flex align-items-center justify-content-end mx-4"
               id="managementActionsContainer"
               style="margin-bottom: -10px"
-            ></div>
+            ></div> -->
             <div class="btn-container" id="provinceContainer"></div>
           </div>
         </main>
@@ -220,17 +221,78 @@
               </div>
               <form id="create_province_form">
                 <div class="modal-body">
+                  <!-- Region Selection -->
                   <div class="mb-3">
-                    <label for="chapterName" class="form-label"
-                      >Province Name</label
+                    <label for="regionSelect" class="form-label">Region</label>
+                    <select
+                      class="form-select"
+                      id="regionSelect"
+                      name="region"
+                      required
                     >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="chapterName"
+                      <option value="" selected disabled>Select Region</option>
+                      <option value="NCR">National Capital Region (NCR)</option>
+                      <option value="CAR">
+                        Cordillera Administrative Region (CAR)
+                      </option>
+                      <option value="Region I">Region I - Ilocos Region</option>
+                      <option value="Region II">
+                        Region II - Cagayan Valley
+                      </option>
+                      <option value="Region III">
+                        Region III - Central Luzon
+                      </option>
+                      <option value="Region IV-A">
+                        Region IV-A - CALABARZON
+                      </option>
+                      <option value="Region IV-B">
+                        Region IV-B - MIMAROPA
+                      </option>
+                      <option value="Region V">Region V - Bicol Region</option>
+                      <option value="Region VI">
+                        Region VI - Western Visayas
+                      </option>
+                      <option value="Region VII">
+                        Region VII - Central Visayas
+                      </option>
+                      <option value="Region VIII">
+                        Region VIII - Eastern Visayas
+                      </option>
+                      <option value="Region IX">
+                        Region IX - Zamboanga Peninsula
+                      </option>
+                      <option value="Region X">
+                        Region X - Northern Mindanao
+                      </option>
+                      <option value="Region XI">
+                        Region XI - Davao Region
+                      </option>
+                      <option value="Region XII">
+                        Region XII - SOCCSKSARGEN
+                      </option>
+                      <option value="Region XIII">Region XIII - Caraga</option>
+                      <option value="BARMM">
+                        Bangsamoro Autonomous Region (BARMM)
+                      </option>
+                    </select>
+                  </div>
+
+                  <!-- Province Selection -->
+                  <div class="mb-3">
+                    <label for="provinceSelect" class="form-label"
+                      >Province</label
+                    >
+                    <select
+                      class="form-select"
+                      id="provinceSelect"
                       name="province"
-                      placeholder="e.g. Batangas, Pampanga, Iloilo"
-                    />
+                      required
+                    >
+                      <option value="" selected disabled>
+                        Select Province
+                      </option>
+                      <!-- Options will be populated dynamically based on region selection -->
+                    </select>
                   </div>
                 </div>
                 <div class="modal-footer">

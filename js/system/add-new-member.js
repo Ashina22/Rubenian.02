@@ -34,7 +34,7 @@ if (createMemberForm) {
         method: "POST",
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           // Don't set Content-Type - let browser set it for FormData
         },
         body: formData,

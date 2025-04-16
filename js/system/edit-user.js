@@ -12,7 +12,7 @@ async function fetchUser() {
   const response = await fetch(backendURL + "/api/user/" + id, {
     headers: {
       Accept: "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   });
 
@@ -40,6 +40,13 @@ function renderUserData(data) {
   document.getElementById("role").value = formatValue(data.role);
   document.getElementById("imagePreview").src =
     backendURL + "/" + data.profile_picture;
+
+  if (parseInt(userId) === parseInt(data.id)) {
+    document.getElementById("password").classList.remove("d-none");
+    document.getElementById("password_confirmation").classList.remove("d-none");
+    document.getElementById("passLabel").classList.remove("d-none");
+    document.getElementById("cpassLabel").classList.remove("d-none");
+  }
 }
 
 document
@@ -62,7 +69,7 @@ document
       const response = await fetch(url, {
         method: "POST",
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
         body: formData,
       });
@@ -84,7 +91,7 @@ document
         )} ${formData.get("lastname")})`
       );
 
-      window.location.href = "/viewusers.html";
+      window.location.pathname = "/viewusers.html";
     } catch (error) {
       console.error("Error:", error);
     }

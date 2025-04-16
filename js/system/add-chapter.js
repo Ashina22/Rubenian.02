@@ -40,30 +40,10 @@ formMappings.forEach(({ id, endpoint, updateUI }) => {
   }
 });
 
-async function updateRegionList() {
-  const data = await getData("/api/region");
-  renderList("regionContainer", data, "region");
-}
-
-async function updateProvinceList() {
-  const data = await getData("/api/province");
-  renderList("provinceContainer", data, "province");
-}
-
-async function updateMunicipalityList() {
-  const data = await getData("/api/municipality");
-  renderList("municipalityContainer", data, "municipality");
-}
-
-async function updateCityList() {
-  const data = await getData("/api/city");
-  renderList("cityContainer", data, "city");
-}
-
-async function updateBarangayList() {
-  const data = await getData("/api/barangay");
-  renderList("barangayContainer", data, "barangay");
-}
+// async function updateProvinceList() {
+//   const data = await getData("/api/province");
+//   renderList("provinceContainer", data, "province");
+// }
 
 async function updateChapterList() {
   const data = await getData("/api/chapter");

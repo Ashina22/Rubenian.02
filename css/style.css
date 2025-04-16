@@ -767,6 +767,10 @@ th {
     font-size: 12px; /* Reduce button text size */
     padding: 8px 7px; /* Adjust button padding */
   }
+
+  .btn-custom {
+    font-size: 10px; /* Reduce button text size */
+  }
 }
 
 .region-badge {

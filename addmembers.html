@@ -160,6 +160,7 @@
               <li class="nav-item dropdown">
                 <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                   <img
+                    id="userLogged"
                     src="image/profile.jpg"
                     class="avatar img-fluid rounded"
                     alt=""
@@ -208,7 +209,7 @@
                 </div>
               </div>
 
-              <h5 class="mb-3">About Candidate</h5>
+              <h5 class="mb-3">Personal Data</h5>
               <div class="row" id="form-container">
                 <div class="col-md-4 mb-3">
                   <label class="required-field">First Name</label>
@@ -388,6 +389,15 @@
                   />
                 </div>
                 <div class="col-md-4 mb-3">
+                  <label>Barangay</label>
+                  <input
+                    id="barangay"
+                    name="barangay"
+                    type="text"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
                   <div
                     class="d-flex align-items-center justify-content-between"
                     style="margin-top: -10px; margin-bottom: 2px"
@@ -518,7 +528,7 @@
                   <input
                     id="tax_date"
                     name="tax_date"
-                    type="text"
+                    type="date"
                     class="form-control"
                   />
                 </div>
@@ -532,13 +542,27 @@
                   />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label>HDMF No.</label>
+                  <label>Pag IBIG No.</label>
                   <input
                     id="hdmf_no"
                     name="hdmf_no"
                     type="text"
                     class="form-control"
                   />
+                </div>
+                 <div class="col-md-4 mb-3">
+                  <label>Status</label>
+                  <select
+                    class="form-control"
+                    name="status"
+                    id="status"
+                  >
+                    <option value="">Select Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Waived">Waived</option>
+                    <option value="Terminated">Terminated</option>
+                    <option value="Expelled">Expelled</option>
+                  </select>
                 </div>
               </div>
               <div class="row">

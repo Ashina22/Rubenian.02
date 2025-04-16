@@ -26,6 +26,7 @@ form_register.onsubmit = async (e) => {
     method: "POST",
     headers: {
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
     body: formData,
   });

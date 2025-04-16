@@ -4,187 +4,153 @@ let eventSource;
 let existingLogIds = new Set();
 let currentPage = 1;
 let totalPages = 1;
+let searchInputs = "";
 const logsPerPage = 20;
 const paginationContainer = document.querySelector(".pagination");
+let isInitialLoad = true;
 
-function connectSSE() {
-  eventSource = new EventSource(`${backendURL}/api/log/stream`);
+eventSource = new EventSource(`${backendURL}/api/log/stream`);
 
-  eventSource.onopen = () => console.log("SSE Connection established");
+eventSource.onopen = () => console.log("SSE Connection established");
 
-  eventSource.onmessage = (e) => {
-    try {
-      if (e.data.trim() === ": heartbeat") return;
+eventSource.onmessage = (e) => {
+  try {
+    if (e.data.trim() === ": heartbeat") return;
 
-      const data = JSON.parse(e.data);
-      if (Array.isArray(data)) {
-        const newLogs = data.filter((log) => !existingLogIds.has(log.id));
+    const data = JSON.parse(e.data);
+    if (Array.isArray(data)) {
+      const newLogs = data.filter((log) => !existingLogIds.has(log.id));
 
-        if (newLogs.length > 0) {
-          newLogs.forEach((log) => existingLogIds.add(log.id));
+      if (newLogs.length > 0) {
+        newLogs.forEach((log) => existingLogIds.add(log.id));
 
-          // Only prepend if we're on the first page
-          if (currentPage === 1) {
-            prependNewLogs(newLogs);
-          }
-          // Always update the total count (you'll need to adjust your SSE endpoint to return total count)
-          // totalLogs += newLogs.length;
-          // updatePagination();
+        // Only update UI if we're on the first page and not during initial load
+        if (currentPage === 1 && !isInitialLoad) {
+          prependNewLogs(newLogs);
         }
       }
-    } catch (err) {
-      console.error("SSE Parse error:", err);
     }
-  };
+  } catch (err) {
+    console.error("SSE Parse error:", err);
+  }
+};
 
-  eventSource.onerror = (e) => {
-    console.error("SSE Error:", e);
-    eventSource.close();
-    setTimeout(connectSSE, 3000);
-  };
-}
+eventSource.onerror = (e) => {
+  console.error("SSE Error:", e);
+  eventSource.close();
+  setTimeout(connectSSE, 3000);
+};
 
 function prependNewLogs(logs) {
   const tableBody = document.getElementById("logsTable");
   const fragment = document.createDocumentFragment();
 
-  logs.reverse().forEach((log) => {
-    const row = document.createElement("tr");
+  // Sort new logs by timestamp (newest first)
+  logs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-    // ID column
-    const idCell = document.createElement("td");
-    idCell.textContent = log.id;
-    idCell.style.textAlign = "center";
-    idCell.style.verticalAlign = "middle";
-    row.appendChild(idCell);
-
-    // Timestamp column
-    const timestampCell = document.createElement("td");
-    timestampCell.textContent = new Date(log.created_at).toLocaleString();
-    timestampCell.style.textAlign = "center";
-    timestampCell.style.verticalAlign = "middle";
-    row.appendChild(timestampCell);
-
-    // User column
-    const userCell = document.createElement("td");
-    const middleName = log.user?.middlename ? ` ${log.user.middlename}` : "";
-    userCell.innerHTML = `${log.user?.firstname || ""}${middleName} ${
-      log.user?.lastname || ""
-    } `;
-    userCell.style.textAlign = "center";
-    userCell.style.verticalAlign = "middle";
-    userCell.style.whiteSpace = "nowrap";
-    row.appendChild(userCell);
-
-    // Action column
-    const actionCell = document.createElement("td");
-    actionCell.textContent = log.action;
-    actionCell.style.verticalAlign = "middle";
-    actionCell.style.textAlign = "center";
-    row.appendChild(actionCell);
-
-    // Details column
-    const detailsCell = document.createElement("td");
-    detailsCell.textContent = log.details;
-    detailsCell.style.whiteSpace = "nowrap";
-    detailsCell.style.padding = "0 15px";
-    detailsCell.style.overflow = "hidden";
-    detailsCell.style.textOverflow = "ellipsis";
-    detailsCell.style.verticalAlign = "middle";
-    detailsCell.style.textAlign = "center";
-    detailsCell.title = log.details;
-    row.appendChild(detailsCell);
-
-    fragment.prepend(row);
+  logs.forEach((log) => {
+    const row = createLogRow(log);
+    fragment.appendChild(row);
   });
 
-  tableBody.prepend(fragment);
+  // Insert new logs at the top while maintaining proper order
+  if (tableBody.firstChild) {
+    tableBody.insertBefore(fragment, tableBody.firstChild);
+  } else {
+    tableBody.appendChild(fragment);
+  }
+
+  // Ensure we don't exceed the page limit
+  const allRows = tableBody.querySelectorAll("tr");
+  if (allRows.length > logsPerPage) {
+    for (let i = logsPerPage; i < allRows.length; i++) {
+      tableBody.removeChild(allRows[i]);
+    }
+  }
+}
+
+function createLogRow(log) {
+  const row = document.createElement("tr");
+
+  const idCell = document.createElement("td");
+  idCell.textContent = log.id;
+  idCell.style.textAlign = "center";
+  idCell.style.verticalAlign = "middle";
+  row.appendChild(idCell);
+
+  const timestampCell = document.createElement("td");
+  timestampCell.textContent = new Date(log.created_at).toLocaleString();
+  timestampCell.style.textAlign = "center";
+  timestampCell.style.verticalAlign = "middle";
+  row.appendChild(timestampCell);
+
+  const userCell = document.createElement("td");
+  const middleName = log.user?.middlename ? ` ${log.user.middlename}` : "";
+  userCell.innerHTML = `${log.user?.firstname || ""}${middleName} ${
+    log.user?.lastname || ""
+  }`;
+  userCell.style.textAlign = "center";
+  userCell.style.verticalAlign = "middle";
+  userCell.style.whiteSpace = "nowrap";
+  row.appendChild(userCell);
+
+  const actionCell = document.createElement("td");
+  actionCell.textContent = log.action;
+  actionCell.style.verticalAlign = "middle";
+  actionCell.style.textAlign = "center";
+  row.appendChild(actionCell);
+
+  const detailsCell = document.createElement("td");
+  detailsCell.textContent = log.details;
+  detailsCell.style.whiteSpace = "nowrap";
+  detailsCell.style.padding = "0 15px";
+  detailsCell.style.overflow = "hidden";
+  detailsCell.style.textOverflow = "ellipsis";
+  detailsCell.style.verticalAlign = "middle";
+  detailsCell.style.textAlign = "center";
+  detailsCell.title = log.details;
+  row.appendChild(detailsCell);
+
+  return row;
 }
 
 async function loadLogs(page = 1) {
   try {
     const response = await fetch(
-      `${backendURL}/api/log?page=${page}&per_page=${logsPerPage}`,
+      `${backendURL}/api/log?page=${page}&per_page=${logsPerPage}&search=${searchInputs}`,
       {
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       }
     );
 
     const data = await response.json();
+    const tableBody = document.getElementById("logsTable");
+
     if (data.logs.length === 0) {
-      document.getElementById(
-        "logsTable"
-      ).innerHTML = `<td colspan="4" class="text-center">No Logs Found.</td>`;
+      tableBody.innerHTML = `<td colspan="5" class="text-center">No Logs Found.</td>`;
       return;
     }
 
-    if (data.logs && Array.isArray(data.logs)) {
-      const tableBody = document.getElementById("logsTable");
-      tableBody.innerHTML = ""; // Clear existing logs
+    tableBody.innerHTML = ""; // Clear existing logs
 
-      // Add to existingLogIds only if loading first page
-      if (page === 1) {
-        existingLogIds = new Set(data.logs.map((log) => log.id));
-      }
+    // Sort logs by timestamp (newest first)
+    data.logs.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-      data.logs.forEach((log) => {
-        const row = document.createElement("tr");
-
-        // ID column
-        const idCell = document.createElement("td");
-        idCell.textContent = log.id;
-        idCell.style.textAlign = "center";
-        idCell.style.verticalAlign = "middle";
-        row.appendChild(idCell);
-
-        // Timestamp column
-        const timestampCell = document.createElement("td");
-        timestampCell.textContent = new Date(log.created_at).toLocaleString();
-        timestampCell.style.textAlign = "center";
-        timestampCell.style.verticalAlign = "middle";
-        row.appendChild(timestampCell);
-
-        // User column
-        const userCell = document.createElement("td");
-        const middleName = log.user?.middlename
-          ? ` ${log.user.middlename}`
-          : "";
-        userCell.innerHTML = `${log.user?.firstname || ""}${middleName} ${
-          log.user?.lastname || ""
-        } `;
-        userCell.style.textAlign = "center";
-        userCell.style.verticalAlign = "middle";
-        userCell.style.whiteSpace = "nowrap";
-        row.appendChild(userCell);
-
-        // Action column
-        const actionCell = document.createElement("td");
-        actionCell.textContent = log.action;
-        actionCell.style.verticalAlign = "middle";
-        actionCell.style.textAlign = "center";
-        row.appendChild(actionCell);
-
-        // Details column
-        const detailsCell = document.createElement("td");
-        detailsCell.textContent = log.details;
-        detailsCell.style.whiteSpace = "nowrap";
-        detailsCell.style.padding = "0 15px";
-        detailsCell.style.overflow = "hidden";
-        detailsCell.style.textOverflow = "ellipsis";
-        detailsCell.style.verticalAlign = "middle";
-        detailsCell.style.textAlign = "center";
-        detailsCell.title = log.details;
-        row.appendChild(detailsCell);
-
-        tableBody.appendChild(row);
-      });
-
-      setupPagination(data);
-      currentPage = page;
+    // Update existingLogIds only if loading first page
+    if (page === 1) {
+      existingLogIds = new Set(data.logs.map((log) => log.id));
     }
+
+    data.logs.forEach((log) => {
+      const row = createLogRow(log);
+      tableBody.appendChild(row);
+    });
+
+    setupPagination(data);
+    currentPage = page;
   } catch (error) {
     console.error("Error loading logs:", error);
   }
@@ -268,13 +234,17 @@ window.changePage = function (page) {
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
-  // Load first page
-  loadLogs(1);
-
-  // Connect SSE
-  connectSSE();
+  loadLogs(1); // 👈 SSE will be connected *after* initial logs are fully loaded
 });
 
 window.addEventListener("beforeunload", () => {
   if (eventSource) eventSource.close();
+});
+
+// Search functionality
+document.querySelector(".search-logs").addEventListener("input", function () {
+  searchInputs = this.value;
+  currentPage = 1; // Reset to first page when searching
+  console.log(searchInputs);
+  loadLogs(currentPage);
 });

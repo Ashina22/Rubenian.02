@@ -9,9 +9,15 @@ const search = document.querySelector(".search-members");
 const membersList = document.getElementById("membersTable");
 const paginationContainer = document.querySelector(".pagination");
 const chapterLabel = document.getElementById("chapter-label");
+const regionLabel = document.getElementById("region-label");
+const rowsSelect = document.getElementById("rows");
+const volNoSelect = document.getElementById("volNoSelect");
 
 const params = new URLSearchParams(window.location.search);
 let list = params.get("list");
+let region_info = params.get("region-info");
+let barangayLabel = params.get("barangay");
+let memberIds = params.get("member_ids");
 
 // Restore list if missing when navigating back
 if (!list) {
@@ -39,26 +45,35 @@ const masterList = params.get("view-master-list");
 const label = params.get("label");
 
 if (label) {
-  chapterLabel.textContent = `${label} - Members`;
+  const regionBadge = region_info
+    ? `<span class="region-badge rounded-2 ms-2" style="font-size: 13px">${region_info}</span>`
+    : "";
+  chapterLabel.innerHTML = `<div class="d-flex align-items-center justify-content-center">${label} - Members ${regionBadge}</div>`;
+}
+
+if (barangayLabel) {
+  chapterLabel.textContent = `${barangayLabel} - Members`;
 }
 const userType = localStorage.getItem("type");
 
 let currentPage = 1;
 let totalPages = 1;
-const perPage = 10;
+let perPage = 10;
 let searchQuery = "";
+let vol_no = "";
 
 // Fetch Members with Pagination
 async function fetchMembers() {
   let endpoint = "/api/members";
 
-  if (masterList === null) {
-    endpoint += `?list=${chapterList}&page=${currentPage}&per_page=${perPage}`;
-  } else if (masterList !== null && label === null) {
+  if (masterList === null && barangayLabel === null) {
+    endpoint += `?list=${chapterList}&page=${currentPage}&per_page=${perPage}&vol_no=${vol_no}`;
+  } else if (masterList !== null && label === null && barangayLabel === null) {
     localStorage.setItem("chapter-list", "");
-    endpoint += `?view-master-list&page=${currentPage}&per_page=${perPage}`;
+    endpoint += `?view-master-list&page=${currentPage}&per_page=${perPage}&vol_no=${vol_no}`;
+  } else if (barangayLabel !== null && memberIds !== null) {
+    endpoint += `?member-list=${memberIds}&page=${currentPage}&per_page=${perPage}&vol_no=${vol_no}`;
   }
-
   if (searchQuery.trim() !== "") {
     endpoint += `&search=${encodeURIComponent(searchQuery)}`;
   }
@@ -66,7 +81,7 @@ async function fetchMembers() {
   const response = await fetch(backendURL + endpoint, {
     headers: {
       Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
     },
   });
 
@@ -78,62 +93,12 @@ async function fetchMembers() {
   const data = await response.json();
 
   if (data.data.length === 0) {
-    membersList.innerHTML = `<tr class="text-center"><td colspan="5">No members found.</td></tr>`;
+    membersList.innerHTML = `<tr class="text-center"><td colspan="7">No members found.</td></tr>`;
     return;
   }
 
   displayMembers(data.data);
   setupPagination(data);
-}
-
-function cleanImageName(str) {
-  return str.replace(/^[\d\s;.'/-]+/, "").trim(); // Removes leading symbols/numbers
-}
-
-function checkImageExists(url) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.src = url;
-    img.onload = () => resolve(true); // Image exists
-    img.onerror = () => resolve(false); // Image does not exist
-  });
-}
-
-async function getValidImagePath(member) {
-  const defaultImage = "image/profile.jpg";
-
-  if (!member.id_pic) return defaultImage; // No image set
-
-  const cleanedName = cleanImageName(member.id_pic);
-  const originalPath = `${backendURL}/uploads/members/${member.id_pic}`;
-  const anotherPath = `${backendURL}/${member.id_pic}`;
-  const cleanedPath = `${backendURL}/${cleanedName || member.id_pic}`;
-  const anotherCleanedPath = `${backendURL}/uploads/members/${
-    cleanedName || member.id_pic
-  }`;
-
-  // Check if cleanedPath exists first
-  if (await checkImageExists(cleanedPath)) {
-    return cleanedPath;
-  }
-
-  // Check if cleanedPath exists first
-  if (await checkImageExists(anotherCleanedPath)) {
-    return anotherCleanedPath;
-  }
-
-  // Check if anotherPath exists first
-  if (await checkImageExists(anotherPath)) {
-    return anotherPath;
-  }
-
-  // Check if originalPath exists next
-  if (await checkImageExists(originalPath)) {
-    return originalPath;
-  }
-
-  // Fallback to default
-  return defaultImage;
 }
 
 // Display Members in Table
@@ -143,26 +108,26 @@ function displayMembers(members) {
   members.sort((a, b) => a.page_no - b.page_no);
 
   members.forEach((member) => {
-    getValidImagePath(member).then((imagePath) => {
-      const timestamp = new Date().toISOString();
+    const timestamp = new Date().toISOString();
 
-      const row = document.createElement("tr");
-      row.innerHTML = `<td class="text-center">
-        <a href="member-profile.html?member-id=${member.id}?${timestamp}">
-          <img src="${imagePath}" alt="Profile" class="member-img"  />
-        </a>
-      </td>
+    const row = document.createElement("tr");
+    row.innerHTML = `
       <td>
         <a href="member-profile.html?member-id=${member.id}?${timestamp}">
           ${member.first_name} ${
-        member.middle_name ? member.middle_name : ``
-      } ${member.last_name}  
+      member.middle_name ? member.middle_name : ``
+    } ${member.last_name}  
           ${member.ext_name ? member.ext_name : ``}
         </a>
       </td>
 
-      <td>${member.residence}</td>
       <td>${member.reg_no}</td>
+      <td>${member.vol_no}</td>
+      <td>${member.page_no}</td>
+      <td>${member.residence}</td>
+      <td class="text-center" ><small class="bg-secondary-subtle py-1 px-3 rounded-3" style="border: 1px solid #259986">${
+        member.status || `Active`
+      }</small></td>
       ${
         userType !== "Admin"
           ? ``
@@ -174,9 +139,8 @@ function displayMembers(members) {
       }
     `;
 
-      // Append row to members list
-      membersList.appendChild(row);
-    });
+    // Append row to members list
+    membersList.appendChild(row);
   });
 }
 
@@ -284,7 +248,7 @@ const handleSearch = () => {
 };
 
 // Debounced version (300ms delay)
-const debouncedSearch = debounce(handleSearch, 300);
+const debouncedSearch = debounce(handleSearch, 100);
 
 // Event listeners
 if (searchForm) {
@@ -312,6 +276,35 @@ if (searchInput) {
 // Initial Fetch
 fetchMembers();
 
+if (rowsSelect) {
+  console.log(rowsSelect);
+  rowsSelect.addEventListener("change", function (e) {
+    perPage = parseInt(e.target.value);
+    currentPage = 1;
+    fetchMembers();
+  });
+
+  // Set initial value to match the perPage variable
+  rowsSelect.value = perPage;
+}
+
+// loop and display option for volume number
+for (let i = 1; i <= parseInt(sessionStorage.getItem("last_volume_no")); i++) {
+  volNoSelect.innerHTML += `<option value="${i}">${i}</option>`;
+}
+
+if (volNoSelect) {
+  console.log(volNoSelect);
+  volNoSelect.addEventListener("change", function (e) {
+    vol_no = e.target.value !== "" ? parseInt(e.target.value) : "";
+    currentPage = 1;
+    fetchMembers();
+  });
+
+  // Set initial value to match the vol_no variable
+  volNoSelect.value = vol_no;
+}
+
 document.addEventListener("click", function (e) {
   if (e.target.closest(".deleteMember")) {
     const button = e.target.closest(".deleteMember");
@@ -338,7 +331,7 @@ document
         method: "DELETE",
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       });
 
@@ -357,7 +350,7 @@ document
       storeActivity(
         userId,
         "Delete Member",
-        `Deleted Member: ${data.data.first_name} ${data.data.last_name} - ${data.data.sex} - (Registration Number: ${data.data.reg_no})`
+        `Deleted Member: ${data.data.firstname} ${data.data.lastname} - ${data.data.sex} - (Registration Number: ${data.data.reg_no})`
       );
 
       // Close the modal
@@ -444,7 +437,7 @@ document
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
         body: JSON.stringify(payload),
       });

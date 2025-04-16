@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Member Personal Data</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script type="module" src="js/system/print-member.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        color: #000;
+      }
+      .form-container {
+        max-width: 800px;
+        margin: 10px auto;
+        padding: 15px;
+      }
+      .header {
+        margin-bottom: 15px;
+        text-align: center;
+      }
+      .company-name {
+        font-weight: bold;
+        font-size: 22px;
+      }
+      .form-title {
+        font-weight: bold;
+        text-align: center;
+        margin: 10px 0;
+        text-decoration: underline;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid #000;
+      }
+      th,
+      td {
+        padding: 5px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+      }
+
+      .registration-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+      .registration-info div {
+        margin: 2px 5px;
+      }
+      @media print {
+        .no-print {
+          display: none;
+        }
+        body {
+          padding: 0;
+        }
+        #back-member-profile {
+          display: none;
+        }
+         #logoutBtn {
+          display: none !important;
+        }
+      }
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 0.5rem 1rem; /* Adjust padding for smaller screens */
+        }
+      }
+
+      @media (max-width: 767.98px) {
+        .navbar,
+        footer {
+          width: 100vw;
+        }
+       
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex justify-content-end mt-2">
+      <a
+        id="back-member-profile"
+        class="btn btn-sm bg-secondary text-white me-2"
+        >Back</a
+      >
+      <button
+        class="btn btn-sm text-white me-2"
+        style="background-color: #259986"
+        id="logoutBtn"
+      >
+        Logout
+      </button>
+      <img
+        id="userLogged"
+        src="image/profile.jpg"
+        class="avatar rounded d-none"
+        alt=""
+      />
+    </div>
+    <div class="loader-container d-none"><div class="dots"></div></div>
+
+    <div class="form-container" style="margin-top: -15px">
+      <div class="header d-flex justify-content-center align-items-center">
+        <div>
+          <img
+            src="image/Rubenian-Logo-344.png"
+            width="80"
+            alt="Logo"
+            class="mb-2 me-2"
+          />
+        </div>
+        <div>
+          <div class="company-name">RUBENIAN INTERNATIONAL, INC.</div>
+          <div style="font-size: 15px">S.E.C. Reg. No. CN201727875</div>
+          <div style="font-size: 15px">
+            Main Office: Poblacion, San Jose, Dinagat Islands, Philippines
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-title fs-6">PERSONAL INFORMATION</div> -->
+      <div class="d-flex justify-content-center mt-4">
+        <h5 class="fw-bold">PERSONAL DATA</h5>
+      </div>
+      <!-- Personal Info with Photo -->
+      <table class="mb-3">
+        <tr>
+          <td>Volume No.: <span id="vol_no"></span></td>
+          <td>Page No.: <span id="page_no"></span></td>
+          <td>RICN: <span id="ricn"></span></td>
+          <td>Date Reg.: <span id="date_reg"></span></td>
+        </tr>
+        <tr>
+          <td
+            rowspan="1"
+            class="d-flex justify-content-center border-0 align-items-center"
+            style="padding: -100px"
+          >
+            <img
+              src=""
+              style="
+                width: 100px;
+                height: 120px;
+                padding: 0;
+                margin-right: fit-content !important;
+              "
+              alt="Member Photo"
+              id="member_photo"
+            />
+          </td>
+          <td colspan="5">
+            <table width="100%" style="border: none">
+              <tr>
+                <td width="15%">LAST NAME</td>
+                <td width="20%" id="last_name"></td>
+                <td width="15%">FIRST NAME</td>
+                <td width="20%" id="first_name"></td>
+                <td width="15%">MIDDLE NAME</td>
+                <td width="15%" id="middle_name"></td>
+              </tr>
+              <tr>
+                <td width="15%">EXT. NAME</td>
+                <td width="20%" id="ext_name"></td>
+                <td width="15%">SEX</td>
+                <td width="20%" id="sex"></td>
+                <td width="15%">BIRTH DATE</td>
+                <td width="15%" id="birth_date"></td>
+              </tr>
+              <tr>
+                <td width="15%">BIRTH PLACE</td>
+                <td width="35%" colspan="2" id="birth_place"></td>
+                <td width="15%">CIVIL STATUS</td>
+                <td colspan="2" width="20%" id="civil_status"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <table width="100%" style="border: none">
+              <tr>
+                <td width="15%">ADDRESS</td>
+                <td width="85%" colspan="5" id="residence"></td>
+              </tr>
+              <tr>
+                <td width="15%">CONTACT NO.</td>
+                <td width="20%" id="contact_no"></td>
+                <td width="15%">OCCUPATION</td>
+                <td width="20%" id="occupation"></td>
+                <td width="15%">RELIGION</td>
+                <td width="15%" id="religion"></td>
+              </tr>
+              <tr>
+                <td width="15%">NATIONALITY</td>
+                <td width="20%" id="nationality"></td>
+                <td width="15%">CHAPTER ADDRESS</td>
+                <td width="20%" id="chapter"></td>
+                <td width="15%">REGION</td>
+                <td width="15%" id="region"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Family Info -->
+      <table class="mb-3">
+        <tr>
+          <th colspan="4">FAMILY INFORMATION</th>
+        </tr>
+        <tr>
+          <td>SPOUSE NAME</td>
+          <td colspan="3" id="spouse_name"></td>
+        </tr>
+        <tr>
+          <td width="15%">MOTHER NAME</td>
+          <td width="35%" id="mother_name"></td>
+          <td width="15%">FATHER NAME</td>
+          <td width="35%" id="father_name"></td>
+        </tr>
+      </table>
+
+      <!-- Children -->
+      <table class="mb-3">
+        <tr>
+          <th colspan="3">CHILDREN</th>
+        </tr>
+        <tbody id="childTable"></tbody>
+      </table>
+
+      <!-- Beneficiaries -->
+      <table class="mb-3">
+        <tr>
+          <th colspan="3">BENEFICIARIES</th>
+        </tr>
+        <tbody id="beneTable"></tbody>
+      </table>
+
+      <!-- Emergency Contact -->
+      <table class="mb-3">
+        <tr>
+          <th colspan="4">EMERGENCY CONTACT</th>
+        </tr>
+        <tr>
+          <td width="15%">NAME</td>
+          <td width="35%" id="emergency_name"></td>
+          <td width="15%">CONTACT NO.</td>
+          <td width="35%" id="emergency_contact"></td>
+        </tr>
+        <tr>
+          <td>ADDRESS</td>
+          <td colspan="3" id="emergency_address"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="no-print text-center mt-3 mb-4">
+      <button onclick="window.print()" class="btn btn-primary btn-sm">
+        Print Form
+      </button>
+    </div>
+
+    <script></script>
+  </body>
+</html>

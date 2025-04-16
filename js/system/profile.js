@@ -1,9 +1,9 @@
 import { backendURL, userId } from "../utils/utils.js";
 
-// Add these variables at the top of your script
+// Pagination variables
 let totalPages = 1;
 let currentPage = 1;
-const paginationContainer = document.querySelector(".pagination");
+let searchInputs = "";
 
 document.getElementById(
   "placeholder"
@@ -70,30 +70,36 @@ document.getElementById(
   </div>
 </main>`;
 
-let searchInputs = "";
+// Initial skeleton loader
+document.getElementById("placeholder").innerHTML = `
+  <!-- Your skeleton loader HTML remains the same -->
+`;
 
-// Modified fetchData function with pagination
+// Modified fetchData function with proper pagination handling
 async function fetchData(page = 1) {
   try {
     const profileResponse = await fetch(backendURL + "/api/show/profile", {
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
 
     const profileData = await profileResponse.json();
+    console.log(profileData);
 
     const response = await fetch(
-      `${backendURL}/api/logs/${userId}?page=${page}&search=${searchInputs}`,
+      `${backendURL}/api/logs/${profileData.id}?page=${page}&search=${searchInputs}`,
       {
         headers: {
           Accept: "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
       }
     );
+
     const data = await response.json();
+    console.log(data);
 
     renderUser(profileData);
     renderLogs(data.logs);
@@ -103,13 +109,29 @@ async function fetchData(page = 1) {
   }
 }
 
-// Your existing setupPagination function
+// Improved setupPagination function
 function setupPagination(data) {
   totalPages = data.last_page;
   currentPage = data.current_page;
+
+  const paginationContainer = document.querySelector(".pagination");
+  if (!paginationContainer) {
+    console.error("Pagination container not found");
+    return;
+  }
+
   paginationContainer.innerHTML = "";
 
-  const maxVisiblePages = 3;
+  // Previous Button
+  const prevLi = document.createElement("li");
+  prevLi.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+  prevLi.innerHTML = `<a class="page-link" href="#" data-page="${
+    currentPage - 1
+  }">Previous</a>`;
+  paginationContainer.appendChild(prevLi);
+
+  // Page Numbers
+  const maxVisiblePages = 5;
   let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
   let endPage = startPage + maxVisiblePages - 1;
 
@@ -118,72 +140,70 @@ function setupPagination(data) {
     startPage = Math.max(1, endPage - maxVisiblePages + 1);
   }
 
-  // Previous Button
-  paginationContainer.innerHTML += `
-    <li class="page-item ${currentPage === 1 ? "disabled" : ""}">
-      <a class="page-link" href="#" onclick="changePage(${
-        currentPage - 1
-      })">Previous</a>
-    </li>
-  `;
-
-  // First Page + Ellipsis
+  // First page and ellipsis if needed
   if (startPage > 1) {
-    paginationContainer.innerHTML += `
-      <li class="page-item">
-        <a class="page-link" href="#" onclick="changePage(1)">1</a>
-      </li>
-    `;
-    // if (startPage > 2) {
-    //   paginationContainer.innerHTML += `
-    //     <li class="page-item disabled"><span class="page-link">...</span></li>
-    //   `;
-    // }
+    const firstLi = document.createElement("li");
+    firstLi.className = "page-item";
+    firstLi.innerHTML = `<a class="page-link" href="#" data-page="1">1</a>`;
+    paginationContainer.appendChild(firstLi);
+
+    if (startPage > 2) {
+      const ellipsisLi = document.createElement("li");
+      ellipsisLi.className = "page-item disabled";
+      ellipsisLi.innerHTML = `<span class="page-link">...</span>`;
+      paginationContainer.appendChild(ellipsisLi);
+    }
   }
 
-  // Page Numbers
+  // Middle pages
   for (let i = startPage; i <= endPage; i++) {
-    paginationContainer.innerHTML += `
-      <li class="page-item ${i === currentPage ? "active" : ""}">
-        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-      </li>
-    `;
+    const pageLi = document.createElement("li");
+    pageLi.className = `page-item ${i === currentPage ? "active" : ""}`;
+    pageLi.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+    paginationContainer.appendChild(pageLi);
   }
 
-  // Last Page + Ellipsis
+  // Last page and ellipsis if needed
   if (endPage < totalPages) {
     if (endPage < totalPages - 1) {
-      paginationContainer.innerHTML += `
-        <li class="page-item disabled"><span class="page-link" style="margin-left: -20px; margin-right: -20px">...</span></li>
-      `;
+      const ellipsisLi = document.createElement("li");
+      ellipsisLi.className = "page-item disabled";
+      ellipsisLi.innerHTML = `<span class="page-link">...</span>`;
+      paginationContainer.appendChild(ellipsisLi);
     }
-    paginationContainer.innerHTML += `
-      <li class="page-item">
-        <a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a>
-      </li>
-    `;
+
+    const lastLi = document.createElement("li");
+    lastLi.className = "page-item";
+    lastLi.innerHTML = `<a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>`;
+    paginationContainer.appendChild(lastLi);
   }
 
   // Next Button
-  paginationContainer.innerHTML += `
-    <li class="page-item ${currentPage === totalPages ? "disabled" : ""}">
-      <a class="page-link" href="#" onclick="changePage(${
-        currentPage + 1
-      })">Next</a>
-    </li>
-  `;
+  const nextLi = document.createElement("li");
+  nextLi.className = `page-item ${
+    currentPage === totalPages ? "disabled" : ""
+  }`;
+  nextLi.innerHTML = `<a class="page-link" href="#" data-page="${
+    currentPage + 1
+  }">Next</a>`;
+  paginationContainer.appendChild(nextLi);
+
+  // Add event listeners to all page links
+  document.querySelectorAll(".pagination .page-link").forEach((link) => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      const page = parseInt(this.getAttribute("data-page"));
+      if (page !== currentPage) {
+        currentPage = page;
+        fetchData(currentPage);
+      }
+    });
+  });
 }
 
-// Change Page Function
-window.changePage = function (page) {
-  if (page < 1 || page > totalPages) return;
-  currentPage = page;
-  fetchData();
-};
+// Render functions remain the same
 function renderUser(userData) {
-  // Populate profile
   document.querySelector(".userDetails").classList.remove("d-none");
-
   document.getElementById(
     "fullName"
   ).textContent = `${userData.firstname} ${userData.lastname}`;
@@ -197,13 +217,12 @@ function renderUser(userData) {
   profileImg.src = profilePicture;
 }
 
-// Modified renderLogs function to clear existing content
 function renderLogs(logsData) {
   document.querySelector(".logsDetails").classList.remove("d-none");
   document.getElementById("placeholder").innerHTML = "";
 
   const logsBody = document.getElementById("logsBody");
-  logsBody.innerHTML = ""; // Clear existing content
+  logsBody.innerHTML = "";
 
   if (logsData.length === 0) {
     logsBody.innerHTML = `<tr class="text-center"><td colspan="3">No logs found.</td></tr>`;
@@ -213,18 +232,20 @@ function renderLogs(logsData) {
   logsData.forEach((log) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-            <td>${new Date(log.created_at).toLocaleString()}</td>
-            <td><span style="color: #259986;">${log.action}</span></td>
-            <td>${log.details}</td>
-        `;
+      <td>${new Date(log.created_at).toLocaleString()}</td>
+      <td><span style="color: #259986;">${log.action}</span></td>
+      <td>${log.details}</td>
+    `;
     logsBody.appendChild(row);
   });
 }
 
+// Search functionality
 document.querySelector("#searchInput").addEventListener("input", function () {
   searchInputs = this.value;
-  fetchData();
+  currentPage = 1; // Reset to first page when searching
+  fetchData(currentPage);
 });
 
 // Initial fetch
-fetchData();
+fetchData(currentPage);

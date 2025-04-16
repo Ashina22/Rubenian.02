@@ -3,74 +3,83 @@ import { backendURL, storeActivity } from "../utils/utils.js";
 const login_form = document.getElementById("login_form");
 
 const headers = {
-  Accept: "application/json",
-  Authorization: "Bearer " + localStorage.getItem("token"),
+    Accept: "application/json",
+    Authorization: "Bearer " + sessionStorage.getItem("token"),
 };
 
 login_form.onsubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const loginButton = document.querySelector("#login_form button");
-  loginButton.disabled = true;
+    const loginButton = document.querySelector("#login_form button");
+    loginButton.disabled = true;
 
-  const formData = new FormData(login_form);
+    const formData = new FormData(login_form);
 
-  const loginResponse = await fetch(backendURL + "/api/login", {
-    method: "POST",
-    headers,
-    body: formData,
-  });
-
-  const loginData = await loginResponse.json();
-
-  // throw error
-  if (!loginResponse.ok) {
-    document.querySelector(".loader-container").classList.add("d-none");
-    loginButton.disabled = false;
-    loginButton.innerHTML = `Login`;
-    alert(loginData.message);
-    throw new Error(await loginResponse.text());
-  }
-
-  document.querySelector(".loader-container").classList.remove("d-none");
-
-  if (loginResponse.ok) {
-    localStorage.setItem("token", loginData.token);
-    localStorage.setItem("type", loginData.type);
-
-    const profileResponse = await fetch(backendURL + "/api/show/profile", {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+    const loginResponse = await fetch(backendURL + "/api/login", {
+        method: "POST",
+        headers,
+        body: formData,
     });
 
-    const profileData = await profileResponse.json();
+    const loginData = await loginResponse.json();
 
-    console.log(profileData);
+    // throw error
+    if (!loginResponse.ok) {
+        document.querySelector(".loader-container").classList.add("d-none");
+        loginButton.disabled = false;
+        loginButton.innerHTML = `Login`;
+        alert(loginData.message);
+        throw new Error(await loginResponse.text());
+    }
 
-    const profileId = profileData.id;
-    const timestamp = new Date().toISOString();
+    document.querySelector(".loader-container").classList.remove("d-none");
 
-    localStorage.setItem("id", `${profileId}.${timestamp.split("T")[1]}rii`);
+    if (loginResponse.ok) {
+        sessionStorage.setItem("token", loginData.token);
 
-    await storeActivity(
-      profileId,
-      "Logging In",
-      `Logged In User: ${profileData.username} - (Name: ${profileData.firstname} ${profileData.lastname})`
-    );
+        const profileResponse = await fetch(backendURL + "/api/show/profile", {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+        });
 
-    const id = localStorage.getItem("id");
+        const profileData = await profileResponse.json();
 
-    console.log(id.split(".")[0]);
+        console.log(profileData);
 
-    window.location.href = "/dashboard.html";
+        const profileId = profileData.id;
+        const profilelink = profileData.profile_picture;
+        const timestamp = new Date().toISOString();
 
-    login_form.reset();
-  } else {
-    alert(loginData.message);
-  }
+        localStorage.setItem(
+            "id",
+            `${profileId}.${timestamp.split("T")[1]}rii`
+        );
+        localStorage.setItem(
+            "profile",
+            `${profilelink}.${timestamp.split("T")[1]}rii`
+        );
 
-  loginButton.disabled = false;
-  loginButton.innerHTML = `Login`;
+        localStorage.setItem("type", loginData.type);
+
+        await storeActivity(
+            profileId,
+            "Logging In",
+            `Logged In User: ${profileData.username} - (Name: ${profileData.firstname} ${profileData.lastname})`
+        );
+
+        const id = localStorage.getItem("id");
+
+        console.log(id.split(".")[0]);
+
+        // window.location.href = "/dashboard.html";
+
+        login_form.reset();
+    } else {
+        alert(loginData.message);
+    }
+
+    loginButton.disabled = false;
+    loginButton.innerHTML = `Login`;
 };

@@ -44,7 +44,7 @@ async function loadChapterContributions(page = 1, search = "", sort = "desc") {
     const response = await fetch(url, {
       headers: {
         Accept: "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     });
 
@@ -86,7 +86,7 @@ async function fetchLogsLength() {
     const response = await fetch(backendURL + "/api/log", {
       headers: {
         Accept: "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
     });
     if (!response.ok) throw new Error(await response.text());
@@ -256,3 +256,10 @@ animateValue(
   0,
   finalTotals.chapters
 );
+animateValue(
+  document.getElementById("highest_vol_no"),
+  0,
+  finalTotals.highest_vol_no
+);
+
+sessionStorage.setItem("last_volume_no", finalTotals.highest_vol_no);

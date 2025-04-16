@@ -1,6 +1,7 @@
 import {
   backendURL,
   getCachedData,
+  showToast,
   storeActivity,
   userId,
 } from "../utils/utils.js";
@@ -12,9 +13,12 @@ const addChildrenNamesBtn = document.getElementById("addChildrenNamesBtn");
 const addBeneficiariesNamesBtn = document.getElementById(
   "addBeneficiariesNamesBtn"
 );
+const printHref = document.getElementById("print-member");
 
 const params = new URLSearchParams(window.location.search);
 const memberId = params.get("member-id").split("?")[0];
+
+printHref.href = `/print.html?id=${memberId}`;
 
 function cleanImageName(str) {
   return str.replace(/^[\d\s;.'/-]+/, "").trim(); // Removes leading symbols/numbers
@@ -35,17 +39,31 @@ async function getValidImagePath(member) {
   if (!member.id_pic) return defaultImage; // No image set
 
   const cleanedName = cleanImageName(member.id_pic);
-  const originalPath = `${backendURL}/storage/images/${member.id_pic}`;
-  const cleanedPath = `${backendURL}/storage/images/${cleanedName}`;
+  const originalPath = `${backendURL}/uploads/members/${member.id_pic}`;
+  const anotherPath = `${backendURL}/${member.id_pic}`;
+  const cleanedPath = `${backendURL}/${cleanedName || member.id_pic}`;
+  const anotherCleanedPath = `${backendURL}/uploads/members/${
+    cleanedName || member.id_pic
+  }`;
+
+  // Check if cleanedPath exists first
+  if (await checkImageExists(anotherCleanedPath)) {
+    return anotherCleanedPath;
+  }
+
+  // Check if originalPath exists next
+  if (await checkImageExists(originalPath)) {
+    return originalPath;
+  }
 
   // Check if cleanedPath exists first
   if (await checkImageExists(cleanedPath)) {
     return cleanedPath;
   }
 
-  // Check if originalPath exists next
-  if (await checkImageExists(originalPath)) {
-    return originalPath;
+  // Check if anotherPath exists first
+  if (await checkImageExists(anotherPath)) {
+    return anotherPath;
   }
 
   // Fallback to default
@@ -56,7 +74,7 @@ async function fetchMember() {
   const response = await fetch(backendURL + "/api/member/" + memberId, {
     headers: {
       Accept: "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   });
 
@@ -73,7 +91,7 @@ async function fetchMember() {
 async function renderMember(member) {
   getValidImagePath(member).then((imagePath) => {
     function formatValue(value) {
-      return value ? value : "None";
+      return value ? value : "";
     }
 
     const regNoElements = document.querySelectorAll("#reg_no");
@@ -126,6 +144,8 @@ async function renderMember(member) {
       member.civil_status
     );
 
+    document.getElementById("barangay").value = formatValue(member.barangay);
+
     const residenceElements = document.querySelectorAll("#residence");
 
     if (residenceElements.length > 0) {
@@ -137,6 +157,7 @@ async function renderMember(member) {
     }
 
     document.getElementById("spouse_name").value = member.spouse_name;
+    document.getElementById("status").value = member.status || "Active";
     document.getElementById("father_name").value = formatValue(
       member.father_name
     );
@@ -274,7 +295,7 @@ update_member_form.addEventListener("submit", async (e) => {
     method: "POST",
     headers: {
       Accept: "application/json",
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
     body: formData,
   });
@@ -288,12 +309,17 @@ update_member_form.addEventListener("submit", async (e) => {
     "Update Member Details",
     `Updated Member: ${formData.get("first_name")} ${formData.get(
       "last_name"
-    )} - (Regisration Number:${formData.get("reg_no")})`
+    )} - (Registration Number:${formData.get("reg_no")})`
   );
+
+  showToast("Successfully Updated Member Details.");
+
+  window.location.pathname = `/member-profile.html`;
 
   // Update member details in the DOM
   const updatedMember = await response.json();
-  renderMember(updatedMember);
+  console.log(updatedMember);
+  renderMember(updatedMember.data.member);
 
   // Disable all input fields
   const inputs = document.querySelectorAll('input:not([type="file"])');
@@ -327,7 +353,7 @@ let chapterOptions = chapterData
       chapter.city?.city,
       chapter.barangay?.barangay,
     ]
-      .filter((value) => value && value !== "None")
+      .filter((value) => value && value !== "None" && value !== "")
       .join(", ");
 
     return `<option value="${chapter.id}">${chapters}</option>`;

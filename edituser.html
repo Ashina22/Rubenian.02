@@ -160,6 +160,7 @@
               <li class="nav-item dropdown">
                 <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                   <img
+                    id="userLogged"
                     src="image/profile.jpg"
                     class="avatar img-fluid rounded"
                     alt=""
@@ -334,6 +335,46 @@
                       <option value="Staff">Staff</option>
                     </select>
                     <div class="invalid-feedback">Please select a role.</div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="col-md-3">
+                    <label
+                      for="password"
+                      id="passLabel"
+                      class="form-label d-none"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control d-none"
+                      id="password"
+                      name="password"
+                      placeholder="Enter New Password"
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a password.
+                    </div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="col-md-3">
+                    <label
+                      for="password"
+                      id="cpassLabel"
+                      class="form-label d-none"
+                      >Password Confirmation</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control d-none"
+                      id="password_confirmation"
+                      name="password_confirmation"
+                      placeholder="Confirm New Password"
+                    />
+                    <div class="invalid-feedback">
+                      Please provide a password.
+                    </div>
                   </div>
 
                   <!-- Form Buttons -->
