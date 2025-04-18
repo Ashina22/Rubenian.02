@@ -371,7 +371,7 @@ html[data-bs-theme="dark"] #exportModal h3 {
 
 /*members-profile css*/
 .btn-edit {
-  padding: 10px 10px;
+  padding: 8px 8px;
   border-radius: 10px;
   margin-bottom: 15px;
   background-color: rgb(37, 153, 134);
@@ -380,7 +380,7 @@ html[data-bs-theme="dark"] #exportModal h3 {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
   border: none;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 #editPhotoSection,
@@ -420,7 +420,7 @@ input[type="file"]#photoInput {
 
 /*masterlist css*/
 .btn-add {
-  padding: 8px 10px;
+  padding: 8px 8px;
   border-radius: 4px;
   background-color: rgb(37, 153, 134);
   color: #ffffff;
@@ -428,7 +428,7 @@ input[type="file"]#photoInput {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease-in-out;
   border: none;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .btn-edit:hover,
@@ -463,10 +463,19 @@ th {
     height: 40px;
   }
 
-  .btn-danger.btn-sm {
+  .btn-danger .btn-sm {
     padding: 5px 8px;
     font-size: 12px;
   }
+}
+
+.btn-danger {
+  padding: 5px 8px;
+  font-size: 12px;
+}
+.btn-sm {
+  padding: 5px 8px;
+  font-size: 11px;
 }
 /*table*/
 
@@ -506,7 +515,7 @@ th {
   border: none;
   transition: all 0.2s ease-in-out;
   letter-spacing: 1px;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .btn-add-chapter:hover {

@@ -9,16 +9,18 @@ import {
 const editBtn = document.getElementById("editBtn");
 const saveBtn = document.getElementById("saveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
+const sendRequestBtn = document.getElementById("sendRequestBtn");
 const addChildrenNamesBtn = document.getElementById("addChildrenNamesBtn");
 const addBeneficiariesNamesBtn = document.getElementById(
   "addBeneficiariesNamesBtn"
 );
-const printHref = document.getElementById("print-member");
+// const printHref = document.getElementById("print-member");
 
 const params = new URLSearchParams(window.location.search);
 const memberId = params.get("member-id").split("?")[0];
+let editableMemberData = [];
 
-printHref.href = `/print.html?id=${memberId}`;
+// printHref.href = `/print.html?id=${memberId}`;
 
 function cleanImageName(str) {
   return str.replace(/^[\d\s;.'/-]+/, "").trim(); // Removes leading symbols/numbers
@@ -78,23 +80,45 @@ async function fetchMember() {
     },
   });
 
+  const editableResponse = await fetch(
+    backendURL + "/api/editable-member/" + memberId,
+    {
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (!editableResponse.ok) {
+    console.error("Failed to fetch editable member");
+    return;
+  }
   if (!response.ok) {
     console.error("Failed to fetch member");
     return;
   }
   const data = await response.json();
+  editableMemberData = await editableResponse.json();
 
-  // localStorage.setItem("member-data", JSON.stringify(data.data));
-  renderMember(data.data);
+  console.log(editableMemberData);
+
+  renderMember(data.data, editableMemberData.data);
 }
 
-async function renderMember(member) {
+async function renderMember(member, editableMemberData) {
   getValidImagePath(member).then((imagePath) => {
     function formatValue(value) {
       return value ? value : "";
     }
 
     const regNoElements = document.querySelectorAll("#reg_no");
+
+    if (editableMemberData.length === 0) {
+      sendRequestBtn.classList.remove("d-none");
+    } else {
+      editBtn.classList.remove("d-none");
+    }
 
     document.getElementById("fullname").innerText = [
       member.first_name,
@@ -287,7 +311,14 @@ update_member_form.addEventListener("submit", async (e) => {
 
   const formData = new FormData(update_member_form);
 
+  const jsonData = {};
+  formData.forEach((value, key) => {
+    jsonData[key] = value;
+  });
+
   // formData.forEach((value, key) => console.log(key, value));
+
+  await submitChanges(memberId, jsonData);
 
   formData.append("_method", "PUT");
 
@@ -304,22 +335,23 @@ update_member_form.addEventListener("submit", async (e) => {
     throw new Error(await response.text());
   }
 
-  storeActivity(
-    userId,
-    "Update Member Details",
-    `Updated Member: ${formData.get("first_name")} ${formData.get(
-      "last_name"
-    )} - (Registration Number:${formData.get("reg_no")})`
-  );
+  // storeActivity(
+  //   userId,
+  //   "Update Member Details",
+  //   `Updated Member: ${formData.get("first_name")} ${formData.get(
+  //     "last_name"
+  //   )} - (Registration Number:${formData.get("reg_no")})`
+  // );
 
   showToast("Successfully Updated Member Details.");
 
-  window.location.pathname = `/member-profile.html`;
+  // window.location.pathname = `/external-user-member-view.html`;
 
   // Update member details in the DOM
   const updatedMember = await response.json();
+
   console.log(updatedMember);
-  renderMember(updatedMember.data.member);
+  await renderMember(updatedMember.data.member);
 
   // Disable all input fields
   const inputs = document.querySelectorAll('input:not([type="file"])');
@@ -329,7 +361,7 @@ update_member_form.addEventListener("submit", async (e) => {
 
   const fileinputs = document.querySelectorAll('input[type="file"]');
   fileinputs.forEach((input) => {
-    input.disabled = true;
+    input.classList.add("d-none");
   });
 
   const selects = document.querySelectorAll("select");
@@ -342,9 +374,10 @@ update_member_form.addEventListener("submit", async (e) => {
   addBeneficiariesNamesBtn.classList.add("d-none");
 
   // Toggle buttons back
-  editBtn.classList.remove("d-none");
+  editBtn.classList.add("d-none");
   saveBtn.classList.add("d-none");
   cancelBtn.classList.add("d-none");
+  sendRequestBtn.classList.remove("d-none");
 });
 
 const chapterData = await getCachedData("/api/chapter");
@@ -381,3 +414,74 @@ document.getElementById("toggleSearch").addEventListener("click", function () {
 });
 
 fetchMember();
+
+sendRequestBtn.addEventListener("click", async function () {
+  sendRequestBtn.innerText = `Sending Request...`;
+  const response = await fetch(
+    backendURL + "/api/send-edit-requests/" + memberId,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    sendRequestBtn.innerHTML = `<i class="fa-regular fa-circle-xmark"></i> Failed to send Request`;
+    sendRequestBtn.disabled = true;
+    showToast(data.error || data.message, "danger");
+    throw new Error(await response.text());
+  }
+
+  if (response.ok) {
+    showToast(data.message);
+    sendRequestBtn.innerHTML = `<i class="fa-regular fa-circle-check"></i> Request Sent`;
+    sendRequestBtn.disabled = true;
+  }
+});
+
+const submitChanges = async (memberId, changes) => {
+  try {
+    console.log(memberId, changes);
+    const response = await fetch(
+      `${backendURL}/api/edit-request-changes-made/${memberId}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-type": "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          changes: changes,
+        }),
+      }
+    );
+
+    await fetch(
+      `${backendURL}/api/mark-as-not-editable/${editableMemberData.data[0].id}`,
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      }
+    );
+
+    const result = await response.json();
+
+    if (response.ok) {
+      console.log("Edit request submitted:", result.data);
+    } else {
+      showToast(result.message || "Failed to submit changes", "danger");
+      console.error(result);
+    }
+  } catch (error) {
+    showToast("An error occurred while submitting the edit request.", "danger");
+    console.error("Request error:", error);
+  }
+};

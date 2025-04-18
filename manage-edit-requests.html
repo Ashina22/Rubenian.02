@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contributions</title>
+    <title>View Members</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
 
     <link rel="stylesheet" href="css/style.css" />
@@ -17,12 +17,11 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <script type="module" src="js/system/contributions.js"></script>
+    <script type="module" src="js/system/edit-requests-list.js"></script>
   </head>
 
   <body>
     <div class="loader-container d-none"><div class="dots"></div></div>
-
     <div class="wrapper">
       <aside id="sidebar" class="js-sidebar">
         <!-- Content For Sidebar -->
@@ -40,7 +39,7 @@
                 margin-top: 5px;
               "
             />
-            <a href="#">Rubenian</a>
+            <a href="#" class="fs-6">Rubenian International, Inc.</a>
           </div>
 
           <ul class="sidebar-nav">
@@ -116,12 +115,12 @@
                 <i class="fa-solid fa-clock pe-2"></i> Logs
               </a>
             </li>
-            <li class="sidebar-item">
+            <!-- <li class="sidebar-item">
               <a href="contributions.html" class="sidebar-link">
                 <i class="fa-solid fa-hand-holding-heart pe-2"></i>
                 Contributions
               </a>
-            </li>
+            </li> -->
 
             <!-- User Management Section -->
             <li class="sidebar-header">User Access</li>
@@ -132,7 +131,7 @@
                 </a>
                 <a
                   href="#"
-                  class="sidebar-link collapsed admin-access"
+                  class="sidebar-link collapsed"
                   data-bs-target="#users"
                   data-bs-toggle="collapse"
                   aria-expanded="false"
@@ -140,7 +139,7 @@
               </div>
               <ul
                 id="users"
-                class="sidebar-dropdown list-unstyled collapse admin-access"
+                class="sidebar-dropdown list-unstyled collapse"
                 data-bs-parent="#sidebar"
               >
                 <li class="sidebar-item">
@@ -163,18 +162,18 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Search Form -->
-            <div class="d-flex mx-auto w-50" role="search">
+            <form id="search_form" class="d-flex mx-auto w-50" role="search">
               <input
                 class="form-control me-2 search-members"
                 type="search"
-                placeholder="Search Contributions"
+                placeholder="Search Members"
+                name="search"
                 aria-label="Search"
-                id="searchInput"
               />
               <button class="btn search-btn" type="submit">
                 <i class="fa-solid fa-search"></i>
               </button>
-            </div>
+            </form>
             <!-- Profile Dropdown -->
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
@@ -199,39 +198,83 @@
         <main class="content px-lg-3 py-2">
           <div class="container-fluid">
             <div class="container">
-              <h2 class="text-center my-4" id="chapter-label">Contributions</h2>
-              <div class="d-flex justify-content-end mb-2">
+              <h2 class="text-center my-4" id="chapter-label">
+                Member Edit Requests
+              </h2>
+              <!-- Button to Open Modal -->
+              <div class="text-end">
                 <button
-                  class="btn btn-add"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addContributionModal"
                   type="button"
+                  class="btn btn-add mb-1 admin-access"
+                  data-bs-toggle="modal"
+                  data-bs-target="#sendEmailModal"
                 >
-                  Add Contribution
+                  Send Create Account Link
                 </button>
+              </div>
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                id="sendEmailModal"
+                tabindex="-1"
+                aria-labelledby="sendEmailModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5
+                        class="modal-title text-white"
+                        id="sendEmailModalLabel"
+                      >
+                        Send Create Account Access Link
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="sendEmailForm">
+                        <div class="mb-3">
+                          <label for="emailInput" class="form-label"
+                            >Email</label
+                          >
+                          <input
+                            type="email"
+                            class="form-control"
+                            id="emailInput"
+                            name="email"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <button type="submit" class="btn btn-edit w-100">
+                            Send
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Responsive wrapper -->
               <div class="table-responsive">
                 <table class="table table-striped table-bordered">
-                  <!-- Add search input and pagination -->
-
                   <thead class="thead-dark">
                     <tr>
-                      <th class="text-center" data-sort="name">Contribution</th>
-                      <th data-sort="member.name">Contributed By</th>
-                      <th data-sort="amount">Amount</th>
-                      <th data-sort="contribution_date">Contribution Date</th>
-                      <th data-sort="payment_method">Payment Method</th>
-                      <th>Notes</th>
+                      <th>Requested Member</th>
+                      <th>Requested By</th>
+                      <th>Changes</th>
+                      <th>Status</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
-                  <tbody id="contributionsTable"></tbody>
+                  <tbody id="editRequestsTable"></tbody>
                 </table>
-
-                <nav aria-label="Page navigation">
-                  <ul class="pagination justify-content-center"></ul>
-                </nav>
               </div>
             </div>
             <nav
@@ -243,38 +286,56 @@
           </div>
         </main>
 
-        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="changesModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-white">Changes Made</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+              <div class="modal-body" id="changesModalBody">
+                <!-- Filled with JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- accept Confirmation Modal -->
         <div
           class="modal fade"
-          id="deleteModal"
+          id="acceptModal"
           tabindex="-1"
-          aria-labelledby="deleteModalLabel"
+          aria-labelledby="acceptModalLabel"
           aria-hidden="true"
         >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header justify-content-center text-white">
-                <h5 class="modal-title text-white" id="deleteModalLabel">
-                  Confirm Deletion
+                <h5 class="modal-title text-white" id="acceptModalLabel">
+                  Confirm Acceptance
                 </h5>
               </div>
               <div class="modal-body text-center">
-                Are you sure you want to delete this member?
+                Are you sure you want to accept this request?
               </div>
               <div class="modal-footer justify-content-center">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  class="btn btn-danger btn-sm bg-secondary border-0"
                   data-bs-dismiss="modal"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  id="deleteButton"
-                  class="btn btn-danger btn-sm"
+                  id="acceptButton"
+                  class="btn btn-danger btn-sm border-0"
                 >
-                  Delete
+                  Accept
                 </button>
               </div>
             </div>
@@ -300,214 +361,7 @@
         </footer>
       </div>
     </div>
-
-    <div
-      class="modal fade"
-      id="addContributionModal"
-      tabindex="-1"
-      aria-labelledby="addContributionModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header d-flex justify-content-between">
-            <h5 class="modal-title text-white" id="addContributionModalLabel">
-              Add New Contribution
-            </h5>
-            <div class="d-flex align-items-center">
-              <div id="toggleSearch" class="toggle-container">
-                <div class="toggle-slider"></div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  class="toggle-icon icon-on"
-                  style="color: #259986"
-                  width="13"
-                  height="13"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  class="toggle-icon icon-off"
-                  style="color: #259986"
-                  width="13"
-                  height="13"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-4.35-4.35M16 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <form id="create_contribution_form">
-            <div class="modal-body">
-              <p class="fw-bold">
-                <span class="text-danger">Note:</span> Click toggle at the top
-                right for easier search. Also, You can leave member and chapter
-                fields as blank.
-              </p>
-              <!-- Name Field -->
-              <div class="mb-3 mt-2">
-                <label for="contributionName" class="form-label fw-bold"
-                  >Contribution Name</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="contributionName"
-                  name="name"
-                  placeholder="Enter your contribution name"
-                  required
-                />
-              </div>
-
-              <!-- Member Search -->
-              <div class="mb-3">
-                <label for="memberSearch" class="form-label fw-bold"
-                  >Member
-                </label>
-                <input
-                  type="text"
-                  id="memberSearch"
-                  class="form-control search-input"
-                  placeholder="Search member..."
-                />
-                <select
-                  class="form-select"
-                  name="member_id"
-                  id="memberSelect"
-                  required
-                >
-                  <option value="">Select a member (optional)</option>
-                </select>
-              </div>
-
-              <!-- Chapter Search -->
-              <div class="mb-3">
-                <label for="chapterSearch" class="form-label fw-bold"
-                  >Chapter
-                </label>
-                <input
-                  type="text"
-                  id="chapterSearch"
-                  class="form-control search-input"
-                  placeholder="Search chapter..."
-                />
-                <select
-                  class="form-select"
-                  name="chapter_id"
-                  id="chapterSelect"
-                >
-                  <option value="">Select a chapter (optional)</option>
-                </select>
-              </div>
-
-              <!-- Amount -->
-              <div class="mb-3">
-                <label for="contributionAmount" class="form-label fw-bold"
-                  >Amount</label
-                >
-                <div class="input-group">
-                  <span class="input-group-text">₱</span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="contributionAmount"
-                    name="amount"
-                    step="0.01"
-                    min="0"
-                    placeholder="Enter contribution amount"
-                    required
-                  />
-                </div>
-              </div>
-
-              <!-- Contribution Date -->
-              <div class="mb-3">
-                <label for="contributionDate" class="form-label fw-bold"
-                  >Contribution Date</label
-                >
-                <input
-                  type="date"
-                  class="form-control"
-                  id="contributionDate"
-                  name="contribution_date"
-                  required
-                />
-              </div>
-
-              <!-- Payment Method -->
-              <div class="mb-3">
-                <label for="paymentMethod" class="form-label fw-bold"
-                  >Payment Method</label
-                >
-                <select
-                  class="form-select"
-                  id="paymentMethod"
-                  name="payment_method"
-                  required
-                >
-                  <option value="">Select payment method</option>
-                  <option value="Cash">Cash</option>
-                  <option value="Bank Transfer">Bank Transfer</option>
-                  <option value="Check">Check</option>
-                  <option value="Credit Card">Credit Card</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <!-- Notes -->
-              <div class="mb-3">
-                <label for="contributionNotes" class="form-label fw-bold"
-                  >Notes (optional)</label
-                >
-                <textarea
-                  class="form-control"
-                  id="contributionNotes"
-                  name="notes"
-                  rows="3"
-                ></textarea>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                class="btn btn-add-chapter"
-                id="saveContribution"
-              >
-                Save Contribution
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
     <script>
-      let searchInputs = document.querySelectorAll(".search-input");
-      searchInputs.forEach((input) => (input.style.display = "none"));
-
       document.querySelectorAll(".admin-access").forEach((element) => {
         const userType = localStorage.getItem("type");
         if (userType !== "Admin") {

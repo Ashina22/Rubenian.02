@@ -101,6 +101,11 @@
                 </li>
               </ul>
             </li>
+            <li class="sidebar-item">
+              <a href="manage-edit-requests.html" class="sidebar-link">
+                <i class="fa-solid fa-clipboard-check pe-2"></i> Edit Requests
+              </a>
+            </li>
 
             <!-- Records & Reports Section -->
             <li class="sidebar-header">Records & Reports</li>
@@ -550,13 +555,9 @@
                     class="form-control"
                   />
                 </div>
-                 <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3">
                   <label>Status</label>
-                  <select
-                    class="form-control"
-                    name="status"
-                    id="status"
-                  >
+                  <select class="form-control" name="status" id="status">
                     <option value="">Select Status</option>
                     <option value="Active">Active</option>
                     <option value="Waived">Waived</option>
@@ -666,16 +667,16 @@
                 </div>
               </div>
 
-              <div class="text-center mt-2">
+              <div class="text-center mt-2 d-flex justify-content-center">
                 <a
                   href="masterlist.html"
                   type="button"
-                  class="btn btn-edit bg-secondary"
+                  class="btn btn-add me-1 bg-secondary"
                   id="saveBtn"
                 >
                   Back
                 </a>
-                <button type="submit" class="btn btn-edit" id="saveBtn">
+                <button type="submit" class="btn btn-add" id="saveBtn">
                   Create New Member
                 </button>
               </div>

@@ -1,4 +1,5 @@
 const token = sessionStorage.getItem("token");
+const userType = localStorage.getItem("type");
 
 function setRouter() {
   const path = window.location.pathname;
@@ -7,7 +8,8 @@ function setRouter() {
 
   switch (path) {
     case "/index.html":
-      if (token !== null) {
+    case "/create-external-users.html":
+      if (token !== null && userType !== "external user") {
         window.location.pathname = "/dashboard.html";
       }
       break;
@@ -28,8 +30,20 @@ function setRouter() {
     case "/regionalchapter.html":
     case "/viewmembers.html":
     case "/viewusers.html":
-      if (token === null) {
+    case "/manage-edit-requests.html":
+      if (token === null || userType === "external user") {
         window.location.pathname = "/index.html";
+      }
+      break;
+
+    case "/external-user-member-view.html":
+    case "/chapter-members.html":
+      if (userType !== "external user") {
+        if (token === null) {
+          window.location.pathname = "/index.html";
+        } else {
+          window.location.pathname = "/dashboard.html";
+        }
       }
       break;
 

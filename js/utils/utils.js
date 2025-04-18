@@ -1,130 +1,128 @@
-// import { setRouter } from "../router/router.js";
+import { setRouter } from "../router/router.js";
 
-// const backendURL = "https://portal.rubenianinternational.com/public";
-const backendURL = "http://public_html.test";
+const backendURL = "https://portal.rubenianinternational.com/public";
+// const backendURL = "http://rii-portal-backend.test";
 
-// setRouter();
+setRouter();
 
 let userId = null;
 let token = null;
 let userType = null;
 
 function removeURLParams() {
-    const newUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, document.title, newUrl);
+  const newUrl = window.location.origin + window.location.pathname;
+  window.history.replaceState({}, document.title, newUrl);
 }
 
 function showToast(message, type = "primary", duration = 3000) {
-    let toastContainer = document.getElementById("toastContainer");
-    if (!toastContainer) {
-        toastContainer = document.createElement("div");
-        toastContainer.id = "toastContainer";
-        toastContainer.className =
-            "position-fixed top-0 start-50 translate-middle-x p-3";
-        toastContainer.style.zIndex = "1050";
-        document.body.appendChild(toastContainer);
-    }
+  let toastContainer = document.getElementById("toastContainer");
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.id = "toastContainer";
+    toastContainer.className =
+      "position-fixed top-0 start-50 translate-middle-x p-3";
+    toastContainer.style.zIndex = "1050";
+    document.body.appendChild(toastContainer);
+  }
 
-    const toast = document.createElement("div");
-    toast.className = `toast align-items-center text-white bg-${type} border-0 fade show`;
-    toast.setAttribute("role", "alert");
-    toast.setAttribute("aria-live", "assertive");
-    toast.setAttribute("aria-atomic", "true");
+  const toast = document.createElement("div");
+  toast.className = `toast align-items-center text-white bg-${type} border-0 fade show`;
+  toast.setAttribute("role", "alert");
+  toast.setAttribute("aria-live", "assertive");
+  toast.setAttribute("aria-atomic", "true");
 
-    toast.innerHTML = `
+  toast.innerHTML = `
         <div class="d-flex">
             <div class="toast-body">${message}</div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     `;
 
-    toastContainer.appendChild(toast);
+  toastContainer.appendChild(toast);
 
-    const bootstrapToast = new bootstrap.Toast(toast);
+  const bootstrapToast = new bootstrap.Toast(toast);
 
-    setTimeout(() => {
-        bootstrapToast.hide();
-        setTimeout(() => toast.remove(), 500);
-    }, duration);
+  setTimeout(() => {
+    bootstrapToast.hide();
+    setTimeout(() => toast.remove(), 500);
+  }, duration);
 }
 
 if (sessionStorage.getItem("token") !== null || token !== null) {
-    userId = localStorage.getItem("id").split(".")[0];
-    token = sessionStorage.getItem("token");
-    userType = localStorage.getItem("type");
+  userId = localStorage.getItem("id").split(".")[0];
+  token = sessionStorage.getItem("token");
+  userType = localStorage.getItem("type");
 }
 
 async function storeActivity(userId, action, details) {
-    const url = backendURL + "/api/log";
+  const url = backendURL + "/api/log";
 
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                user_id: userId,
-                action: action,
-                details: details,
-            }),
-        });
-        if (!response.ok) {
-            throw new Error(`POST request failed: ${await response.text()}`);
-        }
-    } catch (error) {
-        console.error("Error in storeActivity:", error);
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        action: action,
+        details: details,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(`POST request failed: ${await response.text()}`);
     }
+  } catch (error) {
+    console.error("Error in storeActivity:", error);
+  }
 }
 
 if (userId !== null) {
-    logoutBtn.addEventListener("click", async () => {
-        document.querySelector(".loader-container").classList.remove("d-none");
+  logoutBtn.addEventListener("click", async () => {
+    document.querySelector(".loader-container").classList.remove("d-none");
 
-        try {
-            const response = await fetch(backendURL + "/api/logout", {
-                headers: {
-                    Accept: "application/json",
-                    Authorization: "Bearer " + sessionStorage.getItem("token"),
-                },
-            });
+    try {
+      const response = await fetch(backendURL + "/api/logout", {
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + sessionStorage.getItem("token"),
+        },
+      });
 
-            if (!response.ok) {
-                document
-                    .querySelector(".loader-container")
-                    .classList.add("d-none");
-                throw new Error("Failed to log out");
-            }
+      if (!response.ok) {
+        document.querySelector(".loader-container").classList.add("d-none");
+        throw new Error("Failed to log out");
+      }
 
-            const cacheNames = await caches.keys();
-            for (const cacheName of cacheNames) {
-                await caches.delete(cacheName);
-            }
+      const cacheNames = await caches.keys();
+      for (const cacheName of cacheNames) {
+        await caches.delete(cacheName);
+      }
 
-            localStorage.clear();
-            sessionStorage.clear();
+      localStorage.clear();
+      sessionStorage.clear();
 
-            window.location.href = "/index.html";
-        } catch (error) {
-            console.error(error.message);
-        }
-    });
+      window.location.href = "/index.html";
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
 }
 
 // API Endpoints
 const API_ENDPOINTS = [
-    "/api/chapters/locations",
-    "/api/region",
-    "/api/barangay",
-    "/api/chapter",
-    "/api/city",
-    "/api/municipality",
-    "/api/province",
-    "/api/log",
-    "/api/members",
-    "/api/members/barangays/list",
+  "/api/chapters/locations",
+  "/api/region",
+  "/api/barangay",
+  "/api/chapter",
+  "/api/city",
+  "/api/municipality",
+  "/api/province",
+  "/api/log",
+  "/api/members",
+  "/api/members/barangays/list",
 ];
 
 // Cache name
@@ -132,145 +130,143 @@ const CACHE_NAME = "api-cache";
 
 // Function to fetch and store API responses **only once**
 async function cacheAPIData() {
-    if (!sessionStorage.getItem("token")) {
-        console.warn("No token found. Skipping cache update.");
-        return;
+  if (!sessionStorage.getItem("token")) {
+    console.warn("No token found. Skipping cache update.");
+    return;
+  }
+
+  const cache = await caches.open(CACHE_NAME);
+
+  for (const endpoint of API_ENDPOINTS) {
+    const url = backendURL + endpoint;
+
+    // Check if data is already cached
+    const cachedResponse = await cache.match(url);
+    if (cachedResponse) {
+      // console.log(`Skipped (Already Cached): ${endpoint}`);
+      continue; // Skip if already cached
     }
 
-    const cache = await caches.open(CACHE_NAME);
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    for (const endpoint of API_ENDPOINTS) {
-        const url = backendURL + endpoint;
-
-        // Check if data is already cached
-        const cachedResponse = await cache.match(url);
-        if (cachedResponse) {
-            // console.log(`Skipped (Already Cached): ${endpoint}`);
-            continue; // Skip if already cached
+      if (response.ok) {
+        await cache.put(url, response.clone());
+        // console.log(`Cached (First Load): ${endpoint}`);
+      } else {
+        const cacheNames = await caches.keys();
+        for (const cacheName of cacheNames) {
+          await caches.delete(cacheName);
         }
 
-        try {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (response.ok) {
-                await cache.put(url, response.clone());
-                // console.log(`Cached (First Load): ${endpoint}`);
-            } else {
-                const cacheNames = await caches.keys();
-                for (const cacheName of cacheNames) {
-                    await caches.delete(cacheName);
-                }
-
-                localStorage.clear();
-                sessionStorage.clear();
-                console.warn(
-                    `Failed to fetch: ${endpoint} - Status: ${response.status}`
-                );
-            }
-        } catch (error) {
-            console.error(`Error fetching ${endpoint}:`, error);
-        }
+        localStorage.clear();
+        sessionStorage.clear();
+        console.warn(
+          `Failed to fetch: ${endpoint} - Status: ${response.status}`
+        );
+      }
+    } catch (error) {
+      console.error(`Error fetching ${endpoint}:`, error);
     }
+  }
 }
 
 // Function to retrieve cached data (never re-fetches)
 async function getCachedData(endpoint) {
-    const cache = await caches.open(CACHE_NAME);
-    const url = backendURL + endpoint;
+  const cache = await caches.open(CACHE_NAME);
+  const url = backendURL + endpoint;
 
-    const cachedResponse = await cache.match(url);
-    if (cachedResponse) {
-        // console.log(`Serving from cache storage: ${endpoint}`);
-        return cachedResponse.json();
-    }
+  const cachedResponse = await cache.match(url);
+  if (cachedResponse) {
+    // console.log(`Serving from cache storage: ${endpoint}`);
+    return cachedResponse.json();
+  }
 
-    console.warn(`No cached data found for: ${endpoint}`);
-    return null;
+  console.warn(`No cached data found for: ${endpoint}`);
+  return null;
 }
 
 if (sessionStorage.getItem("token") !== null) {
-    cacheAPIData();
+  cacheAPIData();
 }
 
 async function getData(endpoint) {
-    const cache = await caches.open(CACHE_NAME);
-    const url = backendURL + endpoint;
+  const cache = await caches.open(CACHE_NAME);
+  const url = backendURL + endpoint;
 
-    try {
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-        });
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        if (response.ok) {
-            const data = await response.json();
-            await cache.put(url, new Response(JSON.stringify(data)));
-            return data;
-        } else {
-            console.warn(
-                `Failed to fetch: ${endpoint} - Status: ${response.status}`
-            );
-        }
-    } catch (error) {
-        console.error(`Error fetching ${endpoint}:`, error);
+    if (response.ok) {
+      const data = await response.json();
+      await cache.put(url, new Response(JSON.stringify(data)));
+      return data;
+    } else {
+      console.warn(`Failed to fetch: ${endpoint} - Status: ${response.status}`);
     }
+  } catch (error) {
+    console.error(`Error fetching ${endpoint}:`, error);
+  }
 }
 
 async function postData(endpoint, data, formElement, refreshUI) {
-    const url = backendURL + endpoint;
+  const url = backendURL + endpoint;
 
-    // data.forEach((value, key) => console.log(key, value));
+  // data.forEach((value, key) => console.log(key, value));
 
-    try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-            },
-            body: data,
-        });
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      body: data,
+    });
 
-        if (!response.ok) {
-            showToast("Failed to create. Try again.", "danger");
-            formElement.reset();
-            throw new Error(`POST request failed: ${await response.text()}`);
-        }
-
-        storeActivity(
-            userId,
-            `Create ${
-                endpoint.split("/")[2].charAt(0).toUpperCase() +
-                endpoint.split("/")[2].slice(1)
-            }`,
-            `Created New ${
-                endpoint.split("/")[2].charAt(0).toUpperCase() +
-                endpoint.split("/")[2].slice(1)
-            }: ${data.get(`${endpoint.split("/")[2]}`)}`
-        );
-
-        // Fetch updated data after posting
-        const updatedData = await getData(endpoint);
-
-        showToast("Successfully created a new entry.");
-        formElement.reset();
-
-        if (typeof refreshUI === "function") {
-            refreshUI(updatedData);
-        }
-    } catch (error) {
-        console.error("Error in postData:", error);
-        return null;
+    if (!response.ok) {
+      showToast("Failed to create. Try again.", "danger");
+      formElement.reset();
+      throw new Error(`POST request failed: ${await response.text()}`);
     }
+
+    storeActivity(
+      userId,
+      `Create ${
+        endpoint.split("/")[2].charAt(0).toUpperCase() +
+        endpoint.split("/")[2].slice(1)
+      }`,
+      `Created New ${
+        endpoint.split("/")[2].charAt(0).toUpperCase() +
+        endpoint.split("/")[2].slice(1)
+      }: ${data.get(`${endpoint.split("/")[2]}`)}`
+    );
+
+    // Fetch updated data after posting
+    const updatedData = await getData(endpoint);
+
+    showToast("Successfully created a new entry.");
+    formElement.reset();
+
+    if (typeof refreshUI === "function") {
+      refreshUI(updatedData);
+    }
+  } catch (error) {
+    console.error("Error in postData:", error);
+    return null;
+  }
 }
 
 // async function putData(endpoint, data) {
@@ -306,29 +302,30 @@ async function postData(endpoint, data, formElement, refreshUI) {
 // }
 
 document.querySelectorAll(".closeModal").forEach((button) => {
-    button.addEventListener("click", () => {
-        document.getElementById("addChapterModal").style.display = "none";
-    });
+  button.addEventListener("click", () => {
+    document.getElementById("addChapterModal").style.display = "none";
+  });
 });
 
 if (token !== null) {
-    document.getElementById("userLogged").src =
-        backendURL +
-        "/" +
-        `${localStorage.getItem("profile").split(".")[0]}.${
-            localStorage.getItem("profile").split(".")[1]
-        }`;
+  const profile = localStorage.getItem("profile");
+  const imagePath =
+    profile.split(".")[0] !== "null"
+      ? `${backendURL}/${profile.split(".")[0]}.${profile.split(".")[1]}`
+      : "image/profile.jpg";
+
+  document.getElementById("userLogged").src = imagePath;
 }
 
 export {
-    backendURL,
-    removeURLParams,
-    showToast,
-    getCachedData,
-    postData,
-    getData,
-    storeActivity,
-    userId,
-    userType,
-    token,
+  backendURL,
+  removeURLParams,
+  showToast,
+  getCachedData,
+  postData,
+  getData,
+  storeActivity,
+  userId,
+  userType,
+  token,
 };

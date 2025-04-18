@@ -44,12 +44,6 @@ const themeToggle = {
   },
 };
 
-// Sidebar Toggle
-const sidebarToggle = document.querySelector("#sidebar-toggle");
-sidebarToggle?.addEventListener("click", () => {
-  document.querySelector("#sidebar").classList.toggle("collapsed");
-});
-
 // Initialize theme
 if (localStorage.getItem("light") === null) {
   themeToggle.swapTextClasses("text-light", "text-dark");
